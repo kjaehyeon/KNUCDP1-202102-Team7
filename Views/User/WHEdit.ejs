@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+  <script src="/JS/jquery.serializeObject.js"></script>
+  <script src="/JS/editWH.js"></script>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <h2 class="mt-5 mb-5">Edit Warehouse</h2>
+        <form action="Edit/Save" method="post" enctype="multipart/form-data" id="enrollForm" onsubmit="return false;">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Warehouse Name (창고 이름)</label>
+            <div class="col-sm-4"><input type="text" class="form-control" value="<%= wh.warehouseName %>" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Warehouse Address (창고 주소)</label>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" value="<%= wh.zipcode %>" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" value="<%= wh.address %>" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" value="<%= wh.addressDetail %>" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Email (이메일)</label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="warehouseEmail" name="warehouseEmail"
+                value="<%= wh.warehouseEmail %>" placeholder="Contact Email"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Tel (창고 전화 번호)</label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="warehouseTel" name="warehouseTel"
+                value="<%= wh.warehouseTEL %>" placeholder="Telephone Number (ex. 010-0000-0000)"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">LandArea (총 면적)</label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="landArea" name="landArea"
+                value="<%= wh.landArea %>" placeholder="Numbers Only (m²)"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">FloorArea (층 면적)</label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="floorArea" name="floorArea"
+                value="<%= wh.floorArea %>" placeholder="Numbers Only (m²)"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Useable Area (사용가능 면적)</label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="useableArea" name="useableArea"
+                value="<%= wh.useableArea %>" placeholder="Numbers Only (m²)"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Price Per m<sup>2</sup> (m²당 가격)</label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="price" name="price"
+                value="<%= wh.perprice %>" placeholder="(ex. 100$)"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Info Comment (추가 정보)</label>
+            <div class="col-sm-9"><input type="text" class="form-control" id="infoComment" name="infoComment"
+                value="<%= wh.infoComment %>" placeholder="Information Comment"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Etc Comment (기타 정보)</label>
+            <div class="col-sm-9"><input type="text" class="form-control" id="etcComment" name="etcComment"
+                value="<%= wh.etcComment %>" placeholder="Etc Comment"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Warehouse Image (창고 사진)</label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control" id="img_name" name="img_name" readonly="readonly"
+                disabled="disabled" placeholder="Warehouse Image(1개만 등록 가능)">
+            </div>
+            <div class="col-sm-2">
+              <label class="form-control btn-primary" for="profile_img" style="text-align:center;">Upload Image</label>
+              <input type='file' class="upload-btn-hidden" id='profile_img' name='profile_img' accept='image/*'
+                multiple />
+            </div>
+          </div>
+          <input type="hidden" name="warehouseID" value="<%= wh.warehouseID %>">
+          <div class="center-wrap">
+            <input type="submit" class="btn btn-main btn-two-l" id="enrollBtn" value="Apply">
+          </div>
+        </form>
+        <div>
+          <input type="submit" class="btn btn-grey btn-two-l ml-1" id="cancelBtn" value="Cancel"
+            onclick="history.back()">
+        </div>
+      </div>
+    </section>
+    <footer>
+      <%- include('../footer') %>
+    </footer>
+  </div>
+</body>
+
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+  $(document).ready(function () {
+    var imgTarget = $("#profile_img");
+    imgTarget.on("change", function () { // 값이 변경되면
+      if (window.FileReader) { // modern browser
+        var imgname = $(this)[0].files[0].name;
+      } else { // old IE
+        var imgname = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출
+      } // 추출한 파일명 삽입
+      $("#img_name").val(imgname);
+
+    });
+  });
+
+  function sample4_execDaumPostcode() {
+    new daum.Postcode({
+      oncomplete: function (data) {
+        var roadAddr = data.roadAddress;
+        document.getElementById("zipcode").value = data.zonecode;
+        document.getElementById("address").value = data.roadAddressEnglish;
+        var baseAPIUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+        baseAPIUrl = baseAPIUrl + roadAddr + "&key=" + "<%= process.env.GOOGLE_MAP_GEOCODING_KEY %>"
+        $.ajax({
+          url: baseAPIUrl,
+          type: "GET",
+          success: function (data) {
+            document.getElementById("lat").value = data.results[0].geometry.location.lat;
+            document.getElementById("lng").value = data.results[0].geometry.location.lng;
+          }
+        });
+      }
+    }).open();
+  }
+</script>
+
+</html>

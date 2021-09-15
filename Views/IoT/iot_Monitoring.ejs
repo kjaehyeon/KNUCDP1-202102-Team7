@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+  <title>Monitoring</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/JS/monitoring.js"></script>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('iot_Nav') %>
+    </header>
+    <section id="iot">
+      <div class="container">
+        <div class="sensor">
+          <canvas id="chart1" width="350" height="350"></canvas>
+        </div>
+        <div class="sensor">
+          <canvas id="chart2" width="350" height="350"></canvas>
+        </div>
+        <div class="sensor">
+          <canvas id="chart3" width="350" height="350"></canvas>
+        </div>
+        <div class="sensor">
+          <canvas id="chart4" width="350" height="350"></canvas>
+        </div>
+      </div>
+      <input type="hidden" id="ws" value="<%= iotServer %>" />
+    </section>
+    <footer>
+      <%- include('../footer') %>
+    </footer>
+  </div>
+</body>
+
+</html>

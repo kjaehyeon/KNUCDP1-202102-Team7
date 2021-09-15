@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+  <title>Change Product Information</title>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('iot_Nav') %>
+    </header>
+    <section id="iot">
+      <div class="container-info mb-3">
+        <h2 class="mb-3">Edit Product Information</h2>
+        <form action="/IoT/EditSave" method="POST" id="itemForm">
+          <table class="board-table table">
+            <thead class="thead-dark">
+              <tr>
+                <th>Info List</th>
+                <th>Product Info</th>
+              </tr>
+            </thead>
+            <tbody class="table-bg">
+              <tr>
+                <th>RFID</th>
+                <td><input type="text" name="RFID" id="RFID" class="box" value="<%= RFID %>" readonly>
+                </td>
+              </tr>
+              <tr>
+                <th>Product Name</th>
+                <td><input type="text" name="name" id="name" class="box" value="<%= name %>"></td>
+              </tr>
+              <tr>
+                <th>Product Quantity</th>
+                <td><input type="number" name="num" id="num" class="box" value="<%= num %>"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="center-wrap">
+            <button type="submit" class="btn btn-main btn-two-l">Save</button>
+          </div>
+        </form>
+        <button class="btn btn-grey btn-two-l ml-1" onclick="location.href='Warehousing'">Back</button>
+      </div>
+  </div>
+  </section>
+  <footer>
+    <%- include('../footer') %>
+  </footer>
+  </div>
+</body>
+
+<script>
+  $(document).ready(function () {
+    $("#itemForm").submit(function (evt) {
+      evt.preventDefault();
+
+      var textReg = /^[a-zA-Z0-9\s$@$!%*#?&\-,]*$/;
+      var numReg = /^[0-9]*$/;
+      var RFID = $("#RFID").val();
+      var name = $("#name").val();
+      var num = $("#num").val();
+
+      var swalError = (text) => Swal.fire({
+        icon: 'error',
+        title: 'Fail',
+        text: text
+      });
+
+      if (!RFID)
+        swalError('Do not delete RFID');
+      else if (!name)
+        swalError(`You have to insert item's name`);
+      else if (!num)
+        swalError(`You have to insert your warehouse contact telephone number`);
+      else if (false === textReg.test(name))
+        swalError('Only english, numbers, blank, special character(@$!%*#?&-,) can be entered in name field');
+      else if (false === numReg.test(num))
+        swalError('Only numbers can be entered in quantity field');
+
+      //finish all test
+      else {
+        var formData = new FormData(document.getElementById('itemForm'));
+        $.ajax({
+          url: $(this).attr('action'),
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (data) {
+            if (data == "error1") {
+              Swal.fire({
+                icon: 'error',
+                title: 'Fail',
+                text: `DO NOT CHANGE RFID!!!`,
+              }).then(() => {
+                location.href = "Warehousing";
+              })
+            }
+            else if (data == "success") {
+              Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Successfully completed product edit.',
+              }).then(() => {
+                location.href = "Warehousing";
+              })
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Fail',
+                text: 'An error was occurred.',
+              })
+            }
+          },
+          error: function (request, status, error) {
+            Swal.fire({
+              title: 'Error',
+              html: `code: ${request.status}<br>message: ${request.responseText}<br>error: ${error}`,
+              icon: 'error'
+            });
+          }
+        })
+      }
+    })
+  })
+</script>
+
+</html>

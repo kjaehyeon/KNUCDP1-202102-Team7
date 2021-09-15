@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container mt-4">
+        <div class="container pt-3 mb-3" style="width:50%; float:left;">
+          <div id="map" style="width:100%; height:80vh;"></div>
+        </div>
+        <div class="container pt-3 mb-3" style="width:50%; float:right; overflow:auto;">
+          <table class="table table-bordered">
+            <div id="image_container"></div>
+            <tbody>
+              <tr>
+                <th class="thead-dark-vertical">Name</th>
+                <td id="whName"></td>
+              </tr>
+              <tr>
+                <th rowspan="2" class="thead-dark-vertical" id="mid">Warehouse Address</th>
+                <td id="whAddress">　</td>
+              </tr>
+              <tr>
+                <td id="whAddressDetail">　</td>
+              </tr>
+              <tr>
+                <th class="thead-dark-vertical">Land Area</th>
+                <td id="whLandArea"></td>
+              </tr>
+              <tr>
+                <th class="thead-dark-vertical">Floor Area</th>
+                <td id="whFloorArea"></td>
+              </tr>
+              <tr>
+                <th class="thead-dark-vertical">Usable Area</th>
+                <td id="whUseableArea"></td>
+              </tr>
+              <tr>
+                <th class="thead-dark-vertical">Price Per m<sup>2</sup></th>
+                <td id="whPrice"></td>
+              </tr>
+              <tr>
+                <th class="thead-dark-vertical">Email</th>
+                <td id="whEmail"></td>
+              </tr>
+              <tr>
+                <th class="thead-dark-vertical">Tel</th>
+                <td id="whPhone"></td>
+              </tr>
+              <tr>
+                <th class="thead-dark-vertical">IoT</th>
+                <td id="whIoT"></td>
+              </tr>
+              <tr>
+                <th class="thead-dark-vertical">Info Comment</th>
+                <td id=whInfoComment></td>
+              </tr>
+              <tr>
+                <th class="thead-dark-vertical">Etc Comment</th>
+                <td id=whEtcComment></td>
+                <td id="whID" style="display: none"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button class="btn btn-warning btn-block mb-4 collapsed" id="btnInquire" data-toggle="collapse" data-target="#inquire" style="display: none;">Inquire</button>
+          <button class="btn btn-warning btn-block mb-4" id="btnContact" style="display: none;">
+            <i class="fas fa-phone-alt" style="margin-right: 5px;"></i>
+            Please contact us
+          </button>
+          <div class="black_bg"></div>
+          <div class="modal_wrap">
+            <div class="modal_body_2">
+              <h4>Contact service@autoingroup.com</h4>
+              <div class="modal_close">
+                <button type="button" class="btn btn-grey">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="inquire" class="collapse">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Rental Area</label>
+            <div class="col-sm-8"><input type="text" class="form-control" id="area" placeholder="Rental Area">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Start Date</label>
+            <div class="col-sm-8 input-group date" id="datetimepicker1" data-target-input="nearest">
+              <input id="sDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1">
+              <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                <div class="input-group-text">
+                  <i class="fa fa-calendar"></i>
+                </div>
+              </div>
+            </div>
+            <label class="col-sm-4 col-form-label">End Date</label>
+            <div class="col-sm-8 input-group date" id="datetimepicker2" data-target-input="nearest">
+              <input id="eDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2">
+              <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                <div class="input-group-text">
+                  <i class="fa fa-calendar"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="center-wrap">
+            <button type="submit" class="btn btn-main" id="btn">Submit</button>
+          </div>
+        </div>
+        <p id="startDate" style="display: none"></p>
+        <p id="endDate" style="display: none"></p>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <%- include('../../footer_forMain') %>
+  </footer>
+</body>
+
+<script type="text/javascript" src="/JS/findWH.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_MAP_JAVASCRIPT_KEY %>&callback=initMap"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js">
+</script>
+<script>
+  window.onload = function () {
+  function onClick() {
+    document.querySelector('.modal_wrap').style.display = 'block';
+  }
+  function offClick() {
+    document.querySelector('.modal_wrap').style.display = 'none';
+  }
+  document.querySelector('#btnContact').addEventListener('click', onClick);
+  document.querySelector('.modal_close').addEventListener('click', offClick);
+};
+</script>
+</html>

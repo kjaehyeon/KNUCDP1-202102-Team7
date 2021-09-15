@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+  <%- include('../../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');">
+        </div>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <h2 class="mt-5 mb-3">My Warehouse</h2>
+        <table class="board-table table " id="myWH">
+          <thead class="thead-dark">
+            <tr>
+              <th>Warehouse ID</th>
+              <th>Warehouse Name</th>
+              <th>IoT</th>
+              <th>Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i=0; i < Object.keys(wList).length; i++) { %>
+            <tr class="table-success" id='#row<%= i %>'>
+              <td>
+                <%= wList['item' + i].warehouseID %>
+              </td>
+              <td>
+                <%= wList['item' + i].warehouseName %>
+              </td>
+              <% if (wList['item' + i].iotStat=="Y" ){ %>
+              <td id="td-btn">
+                <form action="/IoT" method="POST">
+                  <input id="wid" name="wid" type="hidden" value="<%= wList['item' + i].warehouseID %>">
+                  <button class="btn btn-td btn-main">IoT Page</button>
+                </form>
+              </td>
+              <% } else if (wList['item' + i].iotStat=="W" ){ %>
+              <td id="td-btn">
+                Pending Approval
+                <button class="btn btn-td btn-grey"
+                  onclick="reqClick(<%= i %>, <%= wList['item' + i].warehouseID %>, 0)" type="button">Cancel</button>
+                <p id="IoTReqID<%= i %>" style="display: none"><%= IoTitems[wList['item' + i].warehouseID].reqID %></p>
+              </td>
+              <% } else if (wList['item' + i].iotStat=="R" ){ %>
+              <td id="td-btn">
+                <button class="btn btn-td" onclick="reqClick(<%= i %>, <%= wList['item' + i].warehouseID %>, 1)"
+                  type="button">Rejected...</button>
+                <p id="IoTRejectCmt<%= i %>" style="display: none"><%= IoTitems[wList['item' + i].warehouseID].rejectCmt %></p>
+                <p id="IoTReqID<%= i %>" style="display: none"><%= IoTitems[wList['item' + i].warehouseID].reqID %></p>
+              </td>
+              <% } else if (wList['item' + i].iotStat=="N" ){ %>
+              <td id="td-btn">
+                <button class="btn btn-td btn-main"
+                  onclick="reqClick(<%= i %>, <%= wList['item' + i].warehouseID %>, 3)" type="button">Request Service</button>
+              </td>
+              <% } %>
+              <td id="td-btn">
+                <form action="/Provider/WHInfo" method="POST">
+                  <input id="warehouseID" name="warehouseID" type="hidden" value="<%= wList['item' + i].warehouseID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Warehouse Register List</h2>
+        <% for(var i = 0; i < Object.keys(enrollItems).length; i++) { %>
+        <p id="whID0<%= i %>" style="display: none"><%= enrollItems['item' + i].warehouseID %></p>
+        <p id="reqID0<%= i %>" style="display: none"><%= enrollItems['item' + i].reqID %></p>
+        <p id="reqType0<%= i %>" style="display: none"><%= enrollItems['item' + i].reqType %></p>
+        <p id="memberID0<%= i %>" style="display: none"><%= enrollItems['item' + i].providerID %></p>
+        <% } %>
+        <table class="board-table table ">
+          <thead class="thead-dark">
+            <tr>
+              <th>Warehouse ID</th>
+              <th>Warehouse Name</th>
+              <th>State</th>
+              <th>Info</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < Object.keys(enrollItems).length; i++) { %>
+            <% if(enrollItems['item' + i].reqType == "ReqEnrollPV"){ %>
+            <tr class="table-warning">
+              <td><%= enrollItems['item' + i].warehouseID %></td>
+              <td><%= enrollItems['item' + i].warehouseName %></td>
+              <td>Pending Approval</td>
+              <td id="td-btn">
+                <form action="/Provider/EnrollWHInfo" method="POST">
+                  <input id="warehouseID" name="warehouseID" type="hidden"
+                    value="<%= enrollItems['item' + i].warehouseID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+              <td id="td-btn">
+                <button class="btn btn-td btn-grey" onclick="pvClick(0,<%= i %>, 0)" type="button">Cancel</button>
+              </td>
+            </tr>
+            <% } %>
+            <% if(enrollItems['item' + i].reqType == "RejByAdmin"){ %>
+            <tr class="table-danger">
+              <td><%= enrollItems['item' + i].warehouseID %></td>
+              <td><%= enrollItems['item' + i].warehouseName %></td>
+              <td>Rejected by Admin</td>
+              <td id="td-btn">
+                <form action="/Provider/EnrollWHInfo" method="POST">
+                  <input id="warehouseID" name="warehouseID" type="hidden"
+                    value="<%= enrollItems['item' + i].warehouseID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+              <input id="enrollRejectCmt<%= i %>" type="hidden" value="<%= enrollItems['item' + i].rejectCmt %>">
+              <td id="td-btn">
+                <button class="btn btn-td btn-info" onclick="pvClick(0, <%= i %>, 2)" type="button">View</button>
+              </td>
+            </tr>
+            <% } %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Warehouse Buy Request List</h2>
+        <table class="board-table table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Req ID</th>
+              <th>Warehouse ID</th>
+              <th>Buyer ID</th>
+              <th>State</th>
+              <th>Rental Period</th>
+              <th>Info</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (var i=0; i < Object.keys(requestItems).length; i++) { %>
+            <% if (['ReqByAdmin', 'ReqByPv' , 'CnlByBuyer4' , 'CnlByBuyer5' ].includes(requestItems['item' +
+                i].reqType)) { %>
+            <% if (requestItems['item' + i].reqType === 'ReqByAdmin') { %>
+            <tr class="table-warning">
+              <td><%= requestItems['item' + i].reqID %></td>
+              <td><%= requestItems['item' + i].warehouseID %></td>
+              <td><%= requestItems['item' + i].buyerID %></td>
+              <td>Pending Approval</td>
+              <td><%= requestItems['item' + i].startDate %> ~ <%= requestItems['item' + i].endDate %></td>
+              <td id="td-btn">
+                <form action="/Provider/RequestWHInfo" method="POST">
+                  <input id="reqID" name="reqID" type="hidden" value="<%= requestItems['item' + i].reqID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+              <td id="td-btn">
+                <button class="btn btn-td btn-success" onclick="pvClick(1, <%= i %>, 1)" type="button">Approve</button>
+                <button class="btn btn-td btn-danger" onclick="pvClick(1, <%= i %>, 0)" type="button">Reject</button>
+              </td>
+            </tr>
+
+            <% } else if (requestItems['item' + i].reqType == 'ReqByPv') { %>
+            <tr class="table-basic">
+              <td><%= requestItems['item' + i].reqID %></td>
+              <td><%= requestItems['item' + i].warehouseID %></td>
+              <td><%= requestItems['item' + i].buyerID %></td>
+              <td>Waiting for Payment</td>
+              <td><%= requestItems['item' + i].startDate %> ~ <%= requestItems['item' + i].endDate %></td>
+              <td id="td-btn">
+                <form action="/Provider/RequestWHInfo" method="POST">
+                  <input id="reqID" name="reqID" type="hidden" value="<%= requestItems['item' + i].reqID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+              <td id="td-btn">
+              </td>
+            </tr>
+
+            <% } else if (requestItems['item' + i].reqType.includes('CnlByBuyer')) { %>
+            <tr class="table-danger">
+              <td><%= requestItems['item' + i].reqID %></td>
+              <td><%= requestItems['item' + i].warehouseID %></td>
+              <td><%= requestItems['item' + i].buyerID %></td>
+              <td>Canceled by Buyer</td>
+              <td><%= requestItems['item' + i].startDate %> ~ <%= requestItems['item' + i].endDate %></td>
+              <td id="td-btn">
+                <form action="/Provider/RequestWHInfo" method="POST">
+                  <input id="reqID" name="reqID" type="hidden" value="<%= requestItems['item' + i].reqID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+              <td id="td-btn">
+                <button class="btn btn-td btn-info" onclick="pvClick(1, <%= i %>, 2)" type="button">View</button>
+              </td>
+            </tr>
+            <% } %>
+            <p id="whID1<%= i %>" style="display: none"><%= requestItems['item' + i].warehouseID %></p>
+            <p id="reqID1<%= i %>" style="display: none"><%= requestItems['item' + i].reqID %></p>
+            <p id="reqType1<%= i %>" style="display: none"><%= requestItems['item' + i].reqType %></p>
+            <p id="memberID1<%= i %>" style="display: none"><%= requestItems['item' + i].buyerID %></p>
+            <p id="area1<%= i %>" style="display: none"><%= requestItems['item' + i].area %></p>
+            <p id="buyRejectCmt<%= i %>" style="display: none"><%= requestItems['item' + i].rejectCmt %></p>
+            <% } %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <footer>
+      <%- include('../../footer') %>
+    </footer>
+  </div>
+</body>
+
+<script src="/JS/alerts.js"></script>
+<script src="/JS/pv_MyWH.js"></script>
+
+</html>

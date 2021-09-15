@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Warehouse Request List</h2>
+        <p id="totalMoney" style="display: none">0</p>
+        <p id="payFlag" style="display: none">F</p>
+        <% for(var i = 0; i < Object.keys(items).length; i++) { %>
+        <p id="whID<%= i %>" style="display: none"><%= items['item' + i].warehouseID %></p>
+        <p id="reqID<%= i %>" style="display: none"><%= items['item' + i].reqID %></p>
+        <p id="reqType<%= i %>" style="display: none"><%= items['item' + i].reqType %></p>
+        <p id="buyerID<%= i %>" style="display: none"><%= items['item' + i].buyerID %></p>
+        <p id="area<%= i %>" style="display: none"><%= items['item' + i].area %></p>
+        <p id="startDate<%= i %>" style="display: none"><%= items['item' + i].startDate %></p>
+        <p id="endDate<%= i %>" style="display: none"><%= items['item' + i].endDate %></p>
+        <% } %>
+        <table class="board-table table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Req ID</th>
+              <th>Warehouse ID</th>
+              <th>State</th>
+              <th>Rental Period</th>
+              <th>Price</th>
+              <th>Info</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < Object.keys(items).length; i++) { %>
+            <% if(['ReqByBuyer', 'ReqByAdmin'].includes(items['item' + i].reqType)){ %>
+            <tr class="table-warning">
+              <td><%= items['item' + i].reqID %></td>
+              <td><%= items['item' + i].warehouseID %></td>
+              <td>Pending Approval</td>
+              <td><%= items['item' + i].startDate %> ~ <%= items['item' + i].endDate %></td>
+              <td><%= items['item' + i].amount %> $</td>
+              <td id="td-btn">
+                <form action="/Buyer/RequestWHInfo" method="POST">
+                  <input name="reqID" type="hidden" value="<%= items['item' + i].reqID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+              <td id="td-btn">
+                <button type="button" class="btn btn-td btn-grey" onclick="byClick(<%= i %>, 0)">Cancel</button>
+              </td>
+            </tr>
+            <% } %>
+            <% if(['RejByPv2', 'RejByPv3', 'RejByAdmin'].includes(items['item' + i].reqType)){ %>
+            <tr class="table-danger">
+              <td><%= items['item' + i].reqID %></td>
+              <td><%= items['item' + i].warehouseID %></td>
+              <% if (items['item' + i].reqType.includes('RejByPv')) { %>
+              <td>Rejected by Provider</td>
+              <% } else { %>
+              <td>Rejected by Admin</td>
+              <% } %>
+              <td><%= items['item' + i].startDate %> ~ <%= items['item' + i].endDate %></td>
+              <td><%= items['item' + i].amount %> $</td>
+              <td id="td-btn">
+                <form action="/Buyer/RequestWHInfo" method="POST">
+                  <input type="hidden" value="<%= items['item' + i].reqID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+              <td id="td-btn">
+                <button type="button" class="btn btn-td btn-info" onclick="byClick(<%= i %>, 2)">View</button>
+              </td>
+              <input type="hidden" id="rejectCmt<%= i %>" value="<%= items['item' + i].rejectCmt %>">
+            </tr>
+            <% } %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Payment List</h2>
+        <table class="board-table table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Check List</th>
+              <th>Req ID</th>
+              <th>Warehouse ID</th>
+              <th>State</th>
+              <th>Period</th>
+              <th>Price</th>
+              <th>Info</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < Object.keys(items).length; i++) { %>
+            <% if(items['item' + i].reqType == "ReqByPv"){ %>
+            <script>
+              document.getElementById('payFlag').innerText = 'T';
+            </script>
+            <p id="count<%= i %>" style="display: none"><%= i %></p>
+            <p id="reqType<%= i %>" style="display: none"><%= items['item' + i].reqType %></p>
+            <tr class="table-basic">
+              <td>
+                <input type="checkbox" name="paymentCheck" value="<%= items['item' + i].amount %>"
+                  onclick='getCheckboxValue(event)' />
+              </td>
+              <td><%= items['item' + i].reqID %></td>
+              <td><%= items['item' + i].warehouseID %></td>
+              <td>Waiting for Payment</td>
+              <td><%= items['item' + i].startDate %> ~ <%= items['item' + i].endDate %></td>
+              <td id="amount<%= i %>"><%= items['item' + i].amount %> $</td>
+              <td id="td-btn">
+                <form action="/Buyer/RequestWHInfo" method="POST">
+                  <input name="reqID" type="hidden" value="<%= items['item' + i].reqID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+              <td></td>
+              <!-- <td id="td-btn"><button type="button" class="btn btn-td btn-info"
+                  onclick="byClick(<%= i %>, 1)">Pay</button></td> -->
+              <td id="td-btn"><button type="button" class="btn btn-td btn-grey"
+                  onclick="byClick(<%= i %>, 0)">Cancel</button></td>
+            </tr>
+            <% } %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <!--Paypal-->
+      <div class="center-wrap">
+        <div id="smart-button-container" style="width: max-content;">
+          <div id="paypal-button-container" style="text-align: center;"></div>
+        </div>
+      </div>
+    </div>
+    </section>
+    <footer>
+      <%- include('../../footer_forMain') %>
+    </footer>
+  </div>
+</body>
+
+<script
+  src="https://www.paypal.com/sdk/js?client-id=AVTGoMn8H9F9YqVPP8EshG1M6L0BhU9zNHWfQF9u0FdJa6PTakC1b5kwlfk77cUz81s5_QxbLz1SxFc0">
+</script>
+<script src="/JS/alerts.js"></script>
+<script src="/JS/by_RequestStatus.js"></script>
+
+</html>

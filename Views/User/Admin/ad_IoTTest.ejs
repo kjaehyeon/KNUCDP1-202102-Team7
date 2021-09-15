@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../../head') %>
+  <script src="https://cdn.rawgit.com/mgalante/jquery.redirect/master/jquery.redirect.js"></script>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container-info">
+        <h2 class="mb-3">IoT Connect Page</h2>
+        <div class="form-group row">
+          <div class="col-sm-11">
+            <input type="text" class="form-control" id="iotServer"
+              placeholder="Input websocket address          ex) ws://localhost:5000">
+          </div>
+        </div>
+        <div class="center-wrap">
+          <button class="btn btn-td btn-info" id="btn_test" onclick="adClick('Test')">Test</button>
+          <button type="button" class="btn btn-td btn-danger btn-two-r ml-1" id="btn_reject"
+            onclick="adClick('Reject')">Reject</button>
+          <button type="button" class="btn btn-td btn-success btn-two-r ml-1" id="btn_approve"
+            onclick="adClick('Approve')">Approve</button>
+        </div>
+        <input type="hidden" id="wid" value="<%= wid %>">
+      </div>
+    </section>
+    <footer>
+      <%- include('../../footer') %>
+    </footer>
+  </div>
+</body>
+
+<script src="/JS/alerts.js"></script>
+<script src="/JS/ad_RequestIoT.js"></script>
+
+</html>

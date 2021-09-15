@@ -1,0 +1,34 @@
+version: "3.1"
+
+networks:
+  app-tier:
+    driver: bridge
+services:
+  mysql:
+    networks:
+      - app-tier
+    image: "mysql/mysql-server:5.7"
+    container_name: mysql_container
+    restart: always
+    ports:
+      - "3307:3306"
+    env_file:
+      - .env
+  nodejs:
+    environment:
+      MYSQL_HOST_IP: mysql # the name of mysql service in your docker-compose, which will get resolved to the internal IP of the mysql container
+    networks:
+      - app-tier
+    build:
+      context: .
+ #     dockerfile: ./dockerfile
+    restart: always
+    ports:
+      - "5000:5000"
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    container_name: autoinven
+#    volumes:
+#      - ./:/usr/src/app

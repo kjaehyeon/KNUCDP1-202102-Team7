@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+  <title>Product Register & Confirmation</title>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('iot_Nav') %>
+    </header>
+    <section id="iot">
+      <div class="container">
+        <div class="container mb-3">
+          <h2 class="mb-3">Product Register Confirmation
+              <!-- <form action="RandomTest" method="GET" style="display: inline-block;">
+                <button class="btn btn-big btn-main">Random Register</button>
+              </form> -->
+              <% if (userType !="provider" ){ %>
+                <button class="btn btn-big btn-main ml-1" onclick="location.href='RegisterItem'">Register Product</button>
+              <% } %>
+          </h2>
+        </div>
+          <table class="board-table table">
+            <thead class="thead-dark">
+              <tr>
+                <% if (userType !="buyer" ){ %>
+                <th>Buyer ID</th>
+                <% } %>
+                <th>RFID</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>State</th>
+                <% if (userType !="provider" ){ %>
+                <th>Edit</th>
+                <th>Delete</th>
+                <% } %>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i=0; i < Object.keys(itemlist).length; i++) { %>
+              <tr>
+                <% if (userType !="buyer" ){ %>
+                <td id="id">
+                  <%= itemlist['item' + i].id %>
+                </td>
+                <% } %>
+                <td id="rfid">
+                  <%= itemlist['item' + i].rfid %>
+                </td>
+                <td id="name">
+                  <%= itemlist['item' + i].name %>
+                </td>
+                <td id="num">
+                  <%= itemlist['item' + i].num %>
+                </td>
+                <td id="received">
+                  <%= itemlist['item' + i].received %>
+                </td>
+                <% if (userType !="provider" ){ %>
+                <td id="td-btn">
+                  <form action="/IoT/EditItem" method="POST">
+                    <button class="btn btn-td btn-info">Edit</button>
+                    <input type="hidden" id="RFID" name="RFID" value="<%= itemlist['item' + i].rfid %>">
+                    <input type="hidden" id="name" name="name" value="<%= itemlist['item' + i].name %>">
+                    <input type="hidden" id="num" name="num" value="<%= itemlist['item' + i].num %>">
+                  </form>
+                </td>
+                <td id="td-btn">
+                  <form action="/IoT/DeleteItem" method="POST">
+                    <button class="btn btn-td btn-grey">Delete</button>
+                    <input type="hidden" id="itemDel" name="itemDel" value="<%= itemlist['item' + i].rfid %>">
+                  </form>
+                </td>
+                <% } %>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+      </div>
+    </section>
+    <footer>
+      <%- include('../footer') %>
+    </footer>
+  </div>
+</body>
+
+<script>
+  function deleteItem(i, WID) {
+    $.ajax({
+      url: '/iot/deleteItem',
+      dataType: 'json',
+      type: 'POST',
+      data: {
+        warehouseID: parseInt(WID)
+      },
+      success: function (data) {
+        if (data == true) {
+          Swal.fire({
+            title: 'Submitted',
+            icon: 'success'
+          }).then(() => location.href = "/IoT/Warehousing");
+        } else {
+          Swal.fire({
+            title: 'Error',
+            text: 'An error has occurred.',
+            icon: 'error'
+          }).then(() => location.href = "/IoT/Warehousing");
+        }
+      }
+    });
+  }
+</script>
+
+</html>

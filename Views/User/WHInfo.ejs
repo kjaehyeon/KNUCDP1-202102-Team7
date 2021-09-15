@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+  <%- include('../head') %>
+  <script src="https://cdn.rawgit.com/mgalante/jquery.redirect/master/jquery.redirect.js"></script>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+    <%- include('../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container-info">
+        <h2 class="mt-5 mb-3">Warehouse Info
+          <% if (WHitems.iotStat === 'Y') { %>
+          <button class="btn btn-big btn-main" onclick="btnClick('pv', 'iot')">IoT</button>
+          <% } %>
+          <% if (session.type === 'provider') { %>
+          <button class="btn btn-big btn-info two-btn-l ml-1" onclick="btnClick('pv', 'edit')">Edit</button>
+          <% } %>
+        </h2>
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <th class="thead-dark-vertical">Warehouse ID</th>
+              <td><%= WHitems.warehouseID %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Warehouse Name</th>
+              <td><%= WHitems.warehouseName %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Zip Code</th>
+              <td><%= WHitems.zipcode %></td>
+            </tr>
+            <tr>
+              <th rowspan="2" class="thead-dark-vertical">Address</th>
+              <td><%= WHitems.address %></td>
+            </tr>
+            <tr>
+              <td><%= WHitems.addressDetail %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Email</th>
+              <td><%= WHitems.warehouseEmail %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Tel</th>
+              <td><%= WHitems.warehouseTEL %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Registered Date</th>
+              <td><%= WHitems.enrolledDate %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Land Area</th>
+              <td><%= WHitems.landArea %> m<sup>2</sup></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Floor Area</th>
+              <td><%= WHitems.floorArea %> m<sup>2</sup></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Usable Area</th>
+              <td><%= WHitems.useableArea %> m<sup>2</sup></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Price Per m<sup>2</sup></th>
+              <td><%= WHitems.perprice %> $</td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Info Comment</th>
+              <td><%= WHitems.infoComment %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Etc Comment</th>
+              <td><%= WHitems.etcComment %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <% if (session.type === 'admin') { %>
+      <div class="container-info">
+        <h2 class="mt-5 mb-3">Provider Info</h2>
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <th class="thead-dark-vertical">Provider ID</th>
+              <td><%= PVitems.memberID %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Provider Name</th>
+              <td><%= PVitems.name %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">National</th>
+              <td><%= PVitems.national %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Zip Code</th>
+              <td><%= PVitems.zipcode %></td>
+            </tr>
+            <tr >
+              <th class="thead-dark-vertical">Address</th>
+              <td><%= PVitems.address %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Email</th>
+              <td><%= PVitems.email %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Tel</th>
+              <td><%= PVitems.contactNumber %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <% } %>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Warehouse Usage</h2>
+        <table id="t1" class="board-table table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Req ID</th>
+              <th>Buyer ID</th>
+              <th>Rental Period</th>
+              <th>Rental Area</th>
+              <th>Price</th>
+              <th>Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < Object.keys(curItems).length; i++) { %>
+            <tr class="table-success">
+              <td id="reqID<%= i %>"><%= curItems['item' + i].reqID %></td>
+              <td id="buyerID<%= i %>"><%= curItems['item' + i].buyerID %></td>
+              <td id="Period<%= i %>"><%= curItems['item' + i].startDate %> ~ <%= curItems['item' + i].endDate %></td>
+              <td id="area<%= i %>"><%= curItems['item' + i].area %> m<sup>2</sup></td>
+              <td id="amount<%= i %>"><%= curItems['item' + i].amount %> $</td>
+              <td id="td-btn">
+                <button id="modal_btn" class="btn btn-td btn-info" onclick="curItemsClick('<%= i %>')">INFO</button>
+                <div class="modal_wrap" id="curItems<%= i %>" style="display:none;">
+                  <div class="modal_body">
+                    <h2 class="mt-5 mb-3">Buyer ID Info</h2>
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Buyer ID</th>
+                          <td id="modal_border"><%= curItems['item' + i].buyerID %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Buyer Name</th>
+                          <td id="modal_border"><%= curItems['item' + i].name %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">National</th>
+                          <td id="modal_border"><%= curItems['item' + i].national %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Zip Code</th>
+                          <td id="modal_border"><%= curItems['item' + i].zipcode %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Address</th>
+                          <td id="modal_border"><%= curItems['item' + i].address %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Email</th>
+                          <td id="modal_border"><%= curItems['item' + i].email %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Tel</th>
+                          <td id="modal_border"><%= curItems['item' + i].contactNumber %></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="modal_close">
+                      <button type="button" class="btn btn-grey" onclick="curItemsClose('<%= i %>')">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <% } %>
+            <% for(var i = 0; i < Object.keys(nextItems).length; i++) { %>
+            <tr class="table-warning">
+              <td id="reqID<%= i %>"><%= nextItems['item' + i].reqID %></td>
+              <td id="buyerID<%= i %>"><%= nextItems['item' + i].buyerID %></td>
+              <td id="Period<%= i %>"><%= nextItems['item' + i].startDate %> ~ <%= nextItems['item' + i].endDate %></td>
+              <td id="area<%= i %>"><%= nextItems['item' + i].area %> m<sup>2</sup></td>
+              <td id="amount<%= i %>"><%= nextItems['item' + i].amount %> $</td>
+              <td id="td-btn">
+                <button id="modal_btn" class="btn btn-td btn-info" onclick="nextItemsClick('<%= i %>')">INFO</button>
+                <div class="black_bg"></div>
+                <div class="modal_wrap" id="nextItems<%= i %>" style="display:none;">
+                  <div class="modal_body">
+                    <h2 class="mt-5 mb-3">Buyer ID Info</h2>
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Buyer ID</th>
+                          <td id="modal_border"><%= nextItems['item' + i].buyerID %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Buyer Name</th>
+                          <td id="modal_border"><%= nextItems['item' + i].name %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">National</th>
+                          <td id="modal_border"><%= nextItems['item' + i].national %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Zip Code</th>
+                          <td id="modal_border"><%= nextItems['item' + i].zipcode %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Address</th>
+                          <td id="modal_border"><%= nextItems['item' + i].address %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Email</th>
+                          <td id="modal_border"><%= nextItems['item' + i].email %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Contact Number</th>
+                          <td id="modal_border"><%= nextItems['item' + i].contactNumber %></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="modal_close">
+                      <button type="button" class="btn btn-grey" onclick="nextItemsClose('<%= i %>')">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Previous Warehouse Usage
+          <button id="btnView" class="btn btn-big btn-main">View</button>
+        </h2>
+        <table id="t2" class="board-table table" style="display: none;">
+          <thead class="thead-dark">
+            <tr>
+              <th>Req ID</th>
+              <th>Buyer ID</th>
+              <th>Rental Period</th>
+              <th>Rental Area</th>
+              <th>Price</th>
+              <th>Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < Object.keys(preItems).length; i++) { %>
+            <tr class="table-danger">
+              <td id="reqID<%= i %>"><%= preItems['item' + i].reqID %></td>
+              <td id="buyerID<%= i %>"><%= preItems['item' + i].buyerID %></td>
+              <td id="Period<%= i %>"><%= preItems['item' + i].startDate %> ~ <%= preItems['item' + i].endDate %></td>
+              <td id="area<%= i %>"><%= preItems['item' + i].area %> m<sup>2</sup></td>
+              <td id="amount<%= i %>"><%= preItems['item' + i].amount %> $</td>
+              <td id="td-btn">
+                <button id="modal_btn" class="btn btn-td btn-info" onclick="preItemsClick('<%= i %>')">INFO</button>
+                <div class="black_bg"></div>
+                <div class="modal_wrap" id="preItems<%= i %>" style="display:none;">
+                  <div class="modal_body">
+                    <h2 class="mt-5 mb-3">Buyer ID Info</h2>
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Buyer ID</th>
+                          <td id="modal_border"><%= preItems['item' + i].buyerID %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Buyer Name</th>
+                          <td id="modal_border"><%= preItems['item' + i].name %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">National</th>
+                          <td id="modal_border"><%= preItems['item' + i].national %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Zip Code</th>
+                          <td id="modal_border"><%= preItems['item' + i].zipcode %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Address</th>
+                          <td id="modal_border"><%= preItems['item' + i].address %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Email</th>
+                          <td id="modal_border"><%= preItems['item' + i].email %></td>
+                        </tr>
+                        <tr>
+                          <th class="thead-dark-vertical" id="modal_border">Tel</th>
+                          <td id="modal_border"><%= preItems['item' + i].contactNumber %></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="modal_close">
+                      <button type="button" class="btn btn-grey" onclick="preItemsClose('<%= i %>')">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <footer>
+      <%- include('../footer') %>
+    </footer>
+  </div>
+</body>
+
+<script>
+  $(document).ready(function () {
+    $("#t2").hide();
+    $("#btnView").click(function () {
+      if ($("#btnView").html() == 'View') {
+        $("#btnView").html('Close');
+        $("#t2").fadeIn();
+      } else {
+        $("#btnView").html('View');
+        $("#t2").fadeOut();
+      }
+    });
+  });
+
+
+  function curItemsClick(i) {
+    document.querySelector('#curItems'+i).style.display = 'block';
+  }
+  function curItemsClose(i) {
+    document.querySelector('#curItems'+i).style.display = 'none';
+  }
+
+  function nextItemsClick(i) {
+    document.querySelector('#nextItems'+i).style.display = 'block';
+  }
+  function nextItemsClose(i) {
+    document.querySelector('#nextItems'+i).style.display = 'none';
+  }
+
+  function preItemsClick(i) {
+    document.querySelector('#preItems'+i).style.display = 'block';
+  }
+  function preItemsClose(i) {
+    document.querySelector('#preItems'+i).style.display = 'none';
+  }
+
+
+
+  function btnClick(type, page) {
+    var wid = <%= req.body.warehouseID %>;
+    if (type === 'pv') {
+      if (page === 'iot') $.redirect('/iot', {'wid': wid});
+      else if (page === 'edit') $.redirect('WHInfo/Edit', {'wid': wid});
+    }
+  }
+
+</script>
+</html>

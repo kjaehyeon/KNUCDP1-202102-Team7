@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../../head') %>
+  <script src="/JS/jquery.serializeObject.js"></script>
+  <script src="/JS/enrollWH.js"></script>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');">
+        </div>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Register Warehouse</h2>
+        <form action="/Provider/EnrollWH" method="post" enctype="multipart/form-data" id="enrollForm"
+          onsubmit="return false;">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Warehouse Name (창고 이름) <a style="color: #f96332;">*</a>
+            </label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="warehouseName" name="warehouseName"
+                placeholder="Warehouse Name"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Warehouse Address (창고 주소) <a style="color: #f96332;">*</a></label>
+
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Zip Code" readonly>
+            </div>
+            <div class="col-sm-2">
+              <label class="form-control btn-main" for="search_address"
+                style="text-align:center; display: inline-block;">Search Address</label>
+              <input type="button" class="upload-btn-hidden" id='search_address' name='search_address'
+                onclick="sample4_execDaumPostcode()" value="Find address"><br>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="address" name="address" placeholder="Address" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="addressDetail" name="addressDetail"
+                placeholder="Detail Address (ex. 3rd Floor)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Email (이메일) <a style="color: #f96332;">*</a></label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="warehouseEmail" name="warehouseEmail"
+                placeholder="Contact Email"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Tel (창고 전화 번호) <a style="color: #f96332;">*</a></label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="warehouseTel" name="warehouseTel"
+                placeholder="Telephone Number (ex. 010-0000-0000)"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">LandArea (총 면적) <a style="color: #f96332;">*</a></label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="landArea" name="landArea"
+                placeholder="Numbers Only (m²)"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">FloorArea (층 면적) <a style="color: #f96332;">*</a></label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="floorArea" name="floorArea"
+                placeholder="Numbers Only (m²)"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Useable Area (사용가능 면적) <a style="color: #f96332;">*</a></label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="useableArea" name="useableArea"
+                placeholder="Numbers Only (m²)"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Price Per m<sup>2</sup> (m²당 가격) <a style="color: #f96332;">*</a></label>
+            <div class="col-sm-4"><input type="text" class="form-control" id="price" name="price"
+                placeholder="ex. 100 ($)"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Info Comment (추가 정보) </label>
+            <div class="col-sm-9"><input type="text" class="form-control" id="infoComment" name="infoComment"
+                placeholder="Information Comment"></div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Etc Comment (기타 정보)</label>
+            <div class="col-sm-9"><input type="text" class="form-control" id="etcComment" name="etcComment"
+                placeholder="Etc Comment"></div>
+          </div>
+          <div class="col-sm-10"><input type="hidden" class="form-control" id="lat" name="lat" placeholder="latitude">
+          </div>
+          <div class="col-sm-10"><input type="hidden" class="form-control" id="lng" name="lng" placeholder="longitude">
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Warehouse Image (창고 사진) <a style="color: #f96332;">*</a></label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control" id="img_name" name="img_name" readonly="readonly"
+                disabled="disabled" placeholder="Warehouse Image (1개만 등록 가능)">
+            </div>
+            <div class="col-sm-2">
+              <label class="form-control btn-main" for="profile_img" style="text-align:center;">Upload Image</label>
+              <input type='file' class="upload-btn-hidden" id='profile_img' name='profile_img' accept='image/*'
+                multiple />
+            </div>
+          </div>
+          <div class="center-wrap">
+            <input type="submit" class="btn btn-main" id="enrollBtn" value="Submit">
+          </div>
+        </form>
+      </div>
+    </section>
+    <footer>
+      <%- include('../../footer') %>
+    </footer>
+  </div>
+</body>
+
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+  $(document).ready(function () {
+    var imgTarget = $("#profile_img");
+    imgTarget.on("change", function () { // 값이 변경되면
+      if (window.FileReader) { // modern browser
+        var imgname = $(this)[0].files[0].name;
+      } else { // old IE
+        var imgname = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출
+      } // 추출한 파일명 삽입
+      $("#img_name").val(imgname);
+
+    });
+  });
+
+  function sample4_execDaumPostcode() {
+    new daum.Postcode({
+      oncomplete: function (data) {
+        var roadAddr = data.roadAddress;
+        document.getElementById("zipcode").value = data.zonecode;
+        document.getElementById("address").value = data.roadAddressEnglish;
+        var baseAPIUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+        baseAPIUrl = baseAPIUrl + roadAddr + "&key=" + "<%= process.env.GOOGLE_MAP_GEOCODING_KEY %>"
+        $.ajax({
+          url: baseAPIUrl,
+          type: "GET",
+          success: function (data) {
+            document.getElementById("lat").value = data.results[0].geometry.location.lat;
+            document.getElementById("lng").value = data.results[0].geometry.location.lng;
+          }
+        });
+      }
+    }).open();
+  }
+</script>
+
+</html>

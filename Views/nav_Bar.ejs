@@ -1,0 +1,103 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color: rgb(18, 20, 22);">
+  <div class="container">
+    <a id="home_title" class="navbar-brand js-scroll-trigger" href="/" style="margin-left:7%">
+      <img src="/Image/inven_logo.png" alt="" /></a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <i class="fas fa-bars ml-1"></i>
+    </button>
+    <div class="collapse navbar-collapse" data-hover="dropdown" id="navbarResponsive">
+      <ul class="navbar-nav text-uppercase ml-auto">
+        <% if(session.memberID) { %>
+        <% if(session.type=='admin' ) { %>
+        <div class="x991">
+          <li class="nav-item" id="resizemenu">
+            <div class="dropdown">
+              <a class="nav-link js-scroll-trigger dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color:transparent;">Request</a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="accountMenu">
+                <a class="dropdown-item" href="/Admin/RequestEnroll" id="account_ctrl">Warehouse Register</a>
+                <a class="dropdown-item" href="/Admin/RequestBuy">Warehouse Purchase</a>
+                <a class="dropdown-item" href="/Admin/RequestIoT">Warehouse IoT</a>
+              </div>
+            </div>
+          </li>
+        </div>
+        <div class="x991">
+          <li class="nav-item" id="resizemenu">
+            <div class="dropdown"><a class="nav-link js-scroll-trigger dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color:transparent;">List</a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="accountMenu">
+                <a class="dropdown-item" href="/Admin/WarehouseList">Warehouse</a>
+                <a class="dropdown-item" href="/Admin/UsageHistory">Usage History</a>
+              </div>
+            </div>  
+          </li>
+        </div>
+        <div class="x990">
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Admin/RequestEnroll">Warehouse Register Request</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Admin/RequestBuy">Warehouse Purchase Request</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Admin/RequestIoT">Warehouse IoT Request</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Admin/WarehouseList">Warehouse List</a>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Admin/UsageHistory">Usage History</a></li>
+        </div>
+        <li class="nav-item"><a href="/User/Show" class="nav-link js-scroll-trigger">My Info</a></li>
+        <% } else if(session.type=='buyer' ) { %>
+        <li class="nav-item"><a href="/Buyer/FindWH" class="nav-link js-scroll-trigger">Search Warehouse</a></li>
+        <% } else if(session.type=='provider' ) { %>
+        <li class="nav-item"><a href="/Provider/EnrollWH" class="nav-link js-scroll-trigger">Register Warehouse</a></li>
+        <% } %>
+        <% } %>
+        <ul class="navbar-nav">
+        <% if(!session.memberID) { %>
+          <li class="nav-item js-scroll-trigger"><a href="/User/Select" class="nav-link js-scroll-trigger">Sign Up</a></li>
+          <li class="nav-item js-scroll-trigger"><a href="/User/Login" class="nav-link js-scroll-trigger">Login</a></li>
+          <li class="nav-item">
+             <a class="nav-link js-scroll-trigger" rel="tooltip" title="Follow us on Twitter" data-placement="bottom" href="https://twitter.com/CreativeTim" target="_blank">
+               <i class="fab fa-twitter"></i>
+               <p class="d-lg-none d-xl-none">Twitter</p>
+             </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" rel="tooltip" title="Like us on Facebook" data-placement="bottom" href="https://www.facebook.com/CreativeTim" target="_blank">
+              <i class="fab fa-facebook-square"></i>
+              <p class="d-lg-none d-xl-none">Facebook</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" rel="tooltip" title="Follow us on Instagram" data-placement="bottom" href="https://www.instagram.com/CreativeTimOfficial" target="_blank">
+              <i class="fab fa-instagram"></i>
+              <p class="d-lg-none d-xl-none">Instagram</p>
+            </a>
+          </li>
+        <% } else { %>
+        <% if(session.type=='buyer' || session.type=='provider' ) { %>
+        <% if(session.type=='buyer' ) { %>
+          <div class="x991">
+            <li class="nav-item" id="resizemenu">
+              <div class="dropdown">
+                <a class="nav-link js-scroll-trigger dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color:transparent;">My Warehouse</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="accountMenu">
+                  <a class="dropdown-item" href="/Buyer/UsageHistory" id="account_ctrl">Usage History</a>
+                  <a class="dropdown-item" href="/Buyer/RequestStatus">Request Status</a>
+                </div>
+              </div>
+            </li>
+          </div>
+          <div class="x990">
+            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Buyer/UsageHistory">Usage History</a></li>
+            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Buyer/RequestStatus">Request Status</a></li>
+          </div>
+        <% } %>
+        <% if(session.type=='provider' ) { %>
+          <li class="nav-item"><a href="/Provider/MyWarehouse" class="nav-link js-scroll-trigger">My Warehouse</a></li>
+        <% } %>
+          <li class="nav-item"><a href="/User/Show" class="nav-link js-scroll-trigger">MyInfo</a></li>
+          <li class="nav-item"><a href="/User/Help" class="nav-link js-scroll-trigger">Help</a></li>
+        <% } %>
+          <li class="nav-item"><a href="/User/Logout" class="nav-link js-scroll-trigger" style="color: lightsalmon;">Logout</a></li>
+        <% } %>
+        </ul>
+      </ul>
+    </div>
+  </div>
+</nav>

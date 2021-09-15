@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+</head>
+
+<body class="login-page" style="overflow: auto;">
+  <header>
+    <%- include('../nav_Bar') %>
+  </header>
+  <section>
+    <div>
+      <div class="page-header clear-filter" filter-color="orange">
+        <div class="page-header-image" style="background-image:url(/Image/about_WH.jpg)"></div>
+        <div class="container" style="width: max-content;">
+          <form role="form" id="regForm" onsubmit="return false;">
+            <h1>Step2</h1>
+            <h3>Fill in the form below to get instant access</h3>
+            <div class="mt-5 mb-4">
+              <div class="form-group row">
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="memberID" name="memberID" placeholder="ID" />
+                  <% if(locals.err){ %>
+                  <span class="invalid-feedback"><%= locals.err %></span>
+                  <% } %>
+                </div>
+                <div class="col-sm-3">
+                  <label id="form-control-btn" class="form-control" for="idCheckButton">ID Check</label>
+                  <input type="button" class="upload-btn-hidden" id="idCheckButton" name="idCheckButton"
+                    value="ID Check"><br>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <input type="text" name="type" id="type" value="<%= req.query.userType %>" style="display: none;">
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="passwordConfirmation" name="passwordConfirmation" placeholder="Password Confirm" />
+                  <% if(locals.err){ %>
+                  <span class="invalid-feedback"><%= locals.err %></span>
+                  <% } %>
+                </div>
+                <div class="col-sm-3">
+                  <label id="form-control-btn" class="form-control" for="passwordCheckButton">PW Check</label>
+                  <input type="button" class="upload-btn-hidden" id="passwordCheckButton" name="passwordCheckButton" value="PW Check"><br>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="email" name="email" placeholder="Email" />
+                  <% if(locals.err){ %>
+                  <span class="invalid-feedback"><%= locals.err %></span>
+                  <% } %>
+                </div>
+                <div class="col-sm-3">
+                  <label id="form-control-btn" class="form-control" for="sendAuthCode">Send Auth Code</label>
+                  <input type="button" class="upload-btn-hidden" id="sendAuthCode" name="sendAuthCode"
+                    value="Send Auth Code"><br>
+                </div>
+              </div>
+              <div class="form-group row" id="div_auth" style="display: none;">
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="authCode" name="authCode" placeholder="Auth Code" />
+                  <% if(locals.err){ %>
+                  <span class="invalid-feedback"><%= locals.err %></span>
+                  <% } %>
+                </div>
+                <div class="col-sm-3">
+                  <label id="form-control-btn" class="form-control" for="codeCheck">Check</label>
+                  <input type="button" class="upload-btn-hidden" id="codeCheck" name="codeCheck" value="check"><br>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" id="name" name="name" placeholder="User Name" />
+                </div>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="national" name="national" placeholder="Nation" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Zip Code" />
+                </div>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="address" name="address" placeholder="Address" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" id="contactNumber1" name="contactNumber1"
+                    placeholder="Phone Number" />
+                </div>
+                <!--<div style="width:25px; font-weight: bold; font-size: large;">_</div>-->
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" id="contactNumber2" name="contactNumber2" />
+                </div>
+                <!--<div style="width:25px; font-weight: bold; font-size: large;">_</div>-->
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" id="contactNumber3" name="contactNumber3" />
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-main btn-round btn-lg" id="regFormBtn">Sign Up</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer></footer>
+</body>
+
+<style>
+  input {
+    border: 1px solid #d4d4d4;
+    height: 32px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    padding: 5px 15px;
+  }
+</style>
+
+
+<script src="/JS/jquery.serializeObject.js"></script>
+<script src="/JS/signUP.js"></script>
+<!--이미지 위에 글자가 표시되게하기 위한 class -->
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+  function sample4_execDaumPostcode(flag) {
+    new daum.Postcode({
+      oncomplete: function (data) {
+        var roadAddr = data.roadAddress;
+        if (flag == 0) {
+          document.getElementById("address").value = data.roadAddressEnglish;
+        } else {
+          document.getElementById("CA").value = data.roadAddressEnglish;
+        }
+      }
+    }).open();
+  }
+</script>
+
+</html>

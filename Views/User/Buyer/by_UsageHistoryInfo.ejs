@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container-info">
+        <table class="table table-bordered">
+          <h2 class="mt-5 mb-3">Provider Info</h2>
+          <tbody>
+            <tr>
+              <th class="thead-dark-vertical">Provider ID</th>
+              <td><%= PVitems.memberID %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Provider Name</th>
+              <td><%= PVitems.name %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">National</th>
+              <td><%= PVitems.national %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Zip Code</th>
+              <td><%= PVitems.zipcode %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Address</th>
+              <td><%= PVitems.address %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Email</th>
+              <td><%= PVitems.email %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Tel</th>
+              <td><%= PVitems.contactNumber %></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered">
+          <h2 class="mt-5 mb-3">Warehouse Info</h2>
+          <tbody>
+            <tr>
+              <th class="thead-dark-vertical">Warehouse ID</th>
+              <td><%= WHitems.warehouseID %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Warehouse Name</th>
+              <td><%= WHitems.warehouseName %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Zip Code</th>
+              <td><%= WHitems.zipcode %></td>
+            </tr>
+            <tr>
+              <th rowspan="2" class="thead-dark-vertical">Warehouse Address</th>
+              <td><%= WHitems.address %></td>
+            </tr>
+            <tr>
+              <td><%= WHitems.addressDetail %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Email</th>
+              <td><%= WHitems.warehouseEmail %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Tel</th>
+              <td><%= WHitems.warehouseTEL %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Registered Date</th>
+              <td><%= WHitems.enrolledDate %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Land Area</th>
+              <td><%= WHitems.landArea %> m<sup>2</sup></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Floor Area</th>
+              <td><%= WHitems.floorArea %> m<sup>2</sup></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Usable Area</th>
+              <td><%= WHitems.landArea %> m<sup>2</sup></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Price Per m<sup>2</sup></th>
+              <td><%= WHitems.perprice %> $</td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Info Comment</th>
+              <td><%= WHitems.infoComment %></td>
+            </tr>
+            <tr>
+              <th class="thead-dark-vertical">Etc Comment</th>
+              <td><%= WHitems.etcComment %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <footer>
+      <%- include('../../footer') %>
+    </footer>
+  </div>
+</body>
+
+</html>

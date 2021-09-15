@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <h2 class="mt-5 mb-3">My Info</h2>
+        <div class="form-group row">
+          <label for="memberID" class="col-sm-2 col-form-label">ID</label>
+          <div class="col-sm-3">
+            <input type="text" id="memberID" name="memberID" value="<%= session.memberID %>" disabled="disabled"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+            <!-- <div class="form-group">
+          <button type="submit" class="btn btn-primary" id = "idCheckButton" name="idCheckButton">id check</button>
+        </div> -->
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="password" class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-3">
+            <input type="password" id="password" name="password" value="..................." disabled="disabled"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="type" class="col-sm-2 col-form-label">Type</label>
+          <div class="col-sm-3">
+            <input type="text" id="type" name="type" value="<%= session.type %>" disabled="disabled"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="name" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-3">
+            <input type="text" id="name" name="name" value="<%= session.username %>" disabled="disabled"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="national" class="col-sm-2 col-form-label">National</label>
+          <div class="col-sm-8">
+            <input type="text" id="national" name="national" value="<%= session.national %>" disabled="disabled"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="email" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-8">
+            <input type="text" id="email" name="email" value="<%= session.email %>" disabled="disabled"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="contactNumber" class="col-sm-2 col-form-label">Tel</label>
+          <div class="col-sm-8">
+            <input type="text" id="contactNumber" name="contactNumber" value="<%= session.contactNumber %>"
+              disabled="disabled" class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="address" class="col-sm-2 col-form-label">Address</label>
+          <div class="col-sm-2">
+            <input type="text" id="zipcode" name="zipcode" value="<%= session.zipcode %>" disabled="disabled"
+                   class="form-control">
+          </div>
+          <div class="col-sm-6">
+            <input type="text" id="address" name="address" value="<%= session.address %>" disabled="disabled"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="form-group center-wrap">
+          <form action="/User/Edit" method="get">
+            <button type="EDIT" class="btn btn-main btn-two-l">Edit</button>
+          </form>
+        </div>
+        <form action="/" method="get">
+          <button type="BACK" class="btn btn-grey btn-two-l ml-1" onclick=location.href="/">Back</button>
+        </form>
+      </div>
+    </section>
+    <footer>
+      <%- include('../footer') %>
+    </footer>
+  </div>
+</body>
+
+<script>
+  $(document).ready(function () {
+    $('#deleteBtn').click(function () {
+      var session = '<%- session %>';
+      $.ajax({
+        url: '/User/Delete',
+        type: 'POST',
+        data: {
+          'session': session
+        },
+        success: function (result) {}
+      })
+    });
+    $('#idCheckButton').click(function () {
+      var memberID = $('#memberID').val();
+      if (memberID != '') {
+        $.ajax({
+          url: '/User/Register/MemberID',
+          type: 'POST',
+          data: {
+            'memberID': memberID
+          },
+          success: function (result) {
+            if (result == false) {
+              Swal.fire({
+                title: 'Error',
+                text: 'Overlapped ID',
+                icon: 'error'
+              });
+            } else {
+              Swal.fire({
+                title: 'Success',
+                text: 'You can use!',
+                icon: 'success'
+              });
+            }
+          }
+        });
+      }
+    });
+    $('#emailCheckButton').click(function () {
+      var email = $('#email').val();
+      if (email != '') {
+        $.ajax({
+          url: '/User/Register/EmailIDF',
+          type: 'POST',
+          data: {
+            'email': email
+          },
+          success: function (result) {
+            if (result == false) {
+              Swal.fire({
+                title: 'Error',
+                text: 'Email send error',
+                icon: 'error'
+              });
+            } else {
+              Swal.fire({
+                title: 'Success',
+                text: 'Email is sended',
+                icon: 'success'
+              });
+            }
+          }
+        });
+      }
+    });
+  })
+</script>
+
+</html>

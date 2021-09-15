@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+  <script src="/JS/login.js"></script>
+</head>
+
+<body class="login-page" style="overflow: hidden;">
+  <header>
+    <%- include('../nav_Bar') %>
+  </header>
+  <section>
+    <div>
+      <div class="page-header clear-filter" filter-color="orange">
+        <div class="page-header-image" style="background-image:url(/Image/main_home.jpg)"></div>
+        <div class="content col-md-5 ml-auto mr-auto">
+          <div class="card card-login card-plain">
+            <form class="form" id="form1" action="/User/Login" method="post" onsubmit="return false;">
+              <div class="card-header text-center">
+                <div class="logo-container">
+                  <img src="/Image/now-logo.png"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="input-group no-border input-lg">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="far fa-id-badge"></i></span>
+                  </div>
+                  <input type="text" name="memberID" id="memberID" class="form-control" placeholder="ID">
+                </div>
+                <div class="input-group no-border input-lg">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                  </div>
+                  <input type="password" name="password" id="password" placeholder="Password" class="form-control" />
+                </div>
+              </div>
+              <div class="card-footer text-center">
+                <button type="submit" id="loginFormBtn" class="btn btn-main btn-round btn-lg btn-block">SIGN IN</button>
+                <div style="float: left;">
+                  <h4><a href="Select" class="link">Create Account</a></h4>
+                </div>
+                <div style="float: right;">
+                  <h4><a href="Help" class="link">Need Help?</a></h4>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer></footer>
+</body>
+
+</html>

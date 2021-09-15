@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+</head>
+
+<body class="login-page" style="overflow:auto;">
+  <header>
+    <%- include('../nav_Bar') %>
+  </header>
+  <section>
+    <div>
+      <div class="page-header clear-filter" filter-color="orange">
+        <div class="page-header-image" style="background-image:url(/Image/about_WH.jpg)"></div>
+        <div class="container">
+          <h1>Step1</h1>
+          <h3>Choose which type to sign up for</h3>
+          <div style="overflow:auto;">
+            <form action="Register" method="GET" style="display:inline;">
+              <button class="select two-btn-l">
+                <h3>Warehouse Provider</h3><br>
+                <h6>I own a warehouse <br>&<br>I would like to provide it!</h6><img src="/Image/warehouse-provider.png"
+                  width="100px" height="100px">
+              </button>
+              <input type="hidden" name="userType" value="provider">
+            </form>
+            <form action="Register" method="GET" style="display:inline;">
+              <button class="select two-btn-l">
+                <h3>Warehouse<br>Buyer</h3><br>
+                <h6>I need space to store products <br>&<br>I want to rent a warehouse!</h6><img
+                  src="/Image/warehouse-buyer.png" width="100px" height="100px">
+              </button>
+              <input type="hidden" name="userType" value="buyer">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer></footer>
+</body>
+
+</html>

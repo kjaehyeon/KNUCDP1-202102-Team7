@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Edit</h2>
+        <div class="form-group row">
+          <label for="memberID" class="col-sm-2 col-form-label">ID</label>
+          <div class="col-sm-3">
+            <input type="text" id="memberID" name="memberID" value="<%= session.memberID %>" disabled="disabled"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="password" class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-2">
+            <label id="form-control-btn" class="form-control btn-form" for="change_password">Change Password</label>
+            <input type="button" class="upload-btn-hidden" id='change_password' name='change_password'
+              onclick=location.href="/User/Edit/PW"><br>
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="type" class="col-sm-2 col-form-label">Type</label>
+          <div class="col-sm-3">
+            <input type="text" id="type" name="type" value="<%= session.type %>" disabled="disabled"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="name" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-3">
+            <input type="text" id="name" name="name" value="<%= session.username %>" disabled="disabled"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="national" class="col-sm-2 col-form-label">National</label>
+          <div class="col-sm-8">
+            <input type="text" id="national" name="national" value="<%= session.national %>" class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="email" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-8">
+            <input type="text" id="email" name="email" value="<%= session.email %>" class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+          <div class="col-sm-2">
+            <label id="form-control-btn" class="form-control btn-form" for="sendAuthCode">Send Auth Code</label>
+            <input type="button" class="upload-btn-hidden" id='sendAuthCode' name='sendAuthCode'
+              value="email Check" disabled><br>
+          </div>
+        </div>
+
+        <div class="form-group row" id="div_auth" style="display: none;">
+          <label for="authCode" class="col-sm-2 col-form-label"></label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="authCode" name="authCode" placeholder="Auth Code" />
+            <% if(locals.err){ %>
+              <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+          <div class="col-sm-2">
+            <label id="form-control-btn" class="form-control btn-form" for="codeCheck">Check</label>
+            <input type="button" class="upload-btn-hidden" id="codeCheck" name="codeCheck" value="check"><br>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="contactNumber" class="col-sm-2 col-form-label">Tel</label>
+          <div class="col-sm-8">
+            <input type="text" id="contactNumber" name="contactNumber" value="<%= session.contactNumber %>"
+              class="form-control">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="address" class="col-sm-2 col-form-label">Address</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="zipcode" name="zipcode" value="<%= session.zipcode %>" placeholder="zipcode">
+          </div>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="address" name="address" value="<%=session.address%>" placeholder="address">
+            <% if(locals.err){ %>
+            <span class="invalid-feedback"><%= locals.err %></span>
+            <% } %>
+          </div>
+        </div>
+        <div class="center-wrap">
+          <button class="btn btn-main btn-two-l" id="save">Save</button>
+        </div>
+        <form action="/" method="get">
+          <input type="button" class="btn btn-grey btn-two-l ml-1" onclick=location.href="/User/Show" value="Back">
+        </form>
+      </div>
+    </section>
+    <footer>
+      <%- include('../footer') %>
+    </footer>
+  </div>
+</body>
+<script src="/JS/alerts.js"></script>
+<script src="/JS/user_Edit.js"></script>
+
+</html>

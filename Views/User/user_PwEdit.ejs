@@ -1,0 +1,54 @@
+<!-- È¸¿ø Á¤º¸ ÆäÀÌÁö -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container-info">
+        <h2 class="mt-5 mb-3">Edit Password</h2>
+        <form action="/User/Edit/PW" method="post" class="form" id="form" name="form">
+          <div class="form-group row">
+            <label for="oldPw" class="col-sm-3 col-form-label">Current Password</label>
+            <div class="col-sm-9">
+              <input type="password" id="oldPw" name="oldPw" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="newPw" class="col-sm-3 col-form-label">New Password</label>
+            <div class="col-sm-9">
+              <input type="password" id="newPw" name="newPw" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="pwChk" class="col-sm-3 col-form-label">Check New Password</label>
+            <div class="col-sm-9">
+              <input type="password" id="pwChk" name="pwChk" class="form-control">
+            </div>
+          </div>
+          <div class="center-wrap">
+            <button type="submit" class="btn btn-main btn-two-l">Save</button>
+          </div>
+        </form>
+        <form action="/" method="get">
+          <input type="button" class="btn btn-grey btn-two-l ml-1" onclick=location.href="/User/Edit" value="Back">
+        </form>
+      </div>
+    </section>
+    <footer>
+      <%- include('../footer') %>
+    </footer>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');">
+        </div>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <h2 class="mt-5 mb-3">How to use Autoinven</h2>
+        <div class="help-container">
+          <div class="btn-help-left" onclick=setDisplay(1)>
+            <div class="eff-left"></div>
+            <a id="help_a"> HELP </a>
+          </div>
+          <div class="btn-help-right" onclick=setDisplay(0)>
+            <div class="eff-right"></div>
+            <a id="faq_a"> FAQ </a>
+          </div>
+        </div>
+
+        <div id="help" class="container">
+          <ul id="help-list" class="list-feature">
+            <% if(!session.memberID) { %>
+            <img src="/Image/Help_Diagram.jpg" style="margin-top: 10px;">
+            <%}%>
+            <% if(session.memberID) { %>
+            <% if(session.type=='provider') { %>
+            <li>
+              <a data-toggle="collapse" class="collapsed" href="#help1">Register a warehouse<i
+                  class="ion-android-remove"></i></a>
+              <div id="help1" class="collapse" data-parent="#help-list">
+                <p>
+                  - Fill in the form and click the "Submit" button.<br>
+                  - Warehouse ID number is given to each warehouse and cannot be changed.<br>
+                  - Warehouses that have been requested registration is displayed yellow in the 'warehouse registration
+                  list'.<br>
+                  - Warehouses that have been rejected are displayed red in the 'Warehouse Registration List'. After
+                  checking the reason for rejection through the "View" button, click "Delete" to remove it from the
+                  list.<br>
+                  - The warehouse where the administrator has approved the registration is displayed green in 'My
+                  Warehouse'.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help2" class="collapsed">Edit warehouse information <i
+                  class="ion-android-remove"></i></a>
+              <div id="help2" class="collapse" data-parent="#help-list">
+                <p>
+                  - Select the "INFO" button in the warehouse "My Warehouse" you want to edit.<br>
+                  - Select the "edit" button on the right of "Warehouse Info".<br>
+                  - Edit the warehouse information and select the "apply" button.<br>
+                  - Warehouse name and address cannot be changed.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help3" class="collapsed">Delete a warehouse<i
+                  class="ion-android-remove"></i></a>
+              <div id="help3" class="collapse" data-parent="#help-list">
+                <p>Please contact service@autoinven.com to delete the warehouse.</p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help4" class="collapsed">Use IoT service<i
+                  class="ion-android-remove"></i></a>
+              <div id="help4" class="collapse" data-parent="#help-list">
+                <p>
+                  - This service can only be applied for registered warehouses.<br>
+                  - Check the warehouse ID and name in "My Warehouse", click the "Request Service" button and check the
+                  status become "Pending Approval".<br>
+                  - Application for use of IoT service can be canceled before the administrator approves it.<br>
+                  - If the administrator approves, you can use the "IoT Page" button.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help5" class="collapsed">Approve/reject warehouse use<i
+                  class="ion-android-remove"></i></a>
+              <div id="help5" class="collapse" data-parent="#help-list">
+                <p>
+                  - You can check "Buy Request Info", "Warehouse Info", and "Buyer Info" in "Warehouse Buy Request
+                  List".<br>
+                  - Click "approved" to enter "Waiting for Payment" status. When the user completes the payment, it
+                  moves to the list of "Warehouse Usage".<br>
+                  - If you click "reject", a form will appear where you can enter the reason for rejection. If the
+                  reason for rejection is entered, the user can confirm it.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help6" class="collapsed">Check warehouse usage status<i
+                  class="ion-android-remove"></i></a>
+              <div id="help6" class="collapse" data-parent="#help-list">
+                <p>
+                  - You can check the current warehouse usage status by clicking the "info" button in "My
+                  Warehouse".<br>
+                  - In "Warehouse Usage", the warehouse that are currently being used by buyer are in green, and the
+                  ones waiting to be used are in yellow.<br>
+                  - Previous warehouse usage history can be checked in "Previous Warehouse Usage".<br>
+                  - You can check user information by using the "info" button in all usage history.<br>
+                </p>
+              </div>
+            </li>
+            <% } else if(session.type=='buyer') {%>
+            <li>
+              <a data-toggle="collapse" href="#help7" class="collapsed">Search for warehouse<i
+                  class="ion-android-remove"></i></a>
+              <div id="help7" class="collapse" data-parent="#help-list">
+                <p>
+                  - You can search for warehouse in the google map.<br>
+                  - Select a warehouse and you can see the information of it.<br>
+                  - By selecting "inquire" button, you can fill in the form and submit.<br>
+                  - You can then check the approval state in "My Warehouse > Request Status".<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help8" class="collapsed">Check your warehouse usage history<i
+                  class="ion-android-remove"></i></a>
+              <div id="help8" class="collapse" data-parent="#help-list">
+                <p>
+                  - You can check the current warehouse usage status by clicking the "info" button in "My
+                  Warehouse".<br>
+                  - In "Warehouse Usage", the warehouse that are currently being used by buyer are in green, and the
+                  ones waiting to be used are in yellow.<br>
+                  - Previous warehouse usage history can be checked in "Previous Warehouse Usage".<br>
+                  - You can check user information by using the "info" button in all usage history.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help9" class="collapsed">Check your request status<i
+                  class="ion-android-remove"></i></a>
+              <div id="help9" class="collapse" data-parent="#help-list">
+                <p>
+                  - You can check your current warehouse approval state in "Request Status".<br>
+                  - Approval can be rejected by administrator or warehouse provider, and if rejected you can click
+                  "View" for the reason.<br>
+                  - Payment can be made after all approvals.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help10" class="collapsed">Payment<i class="ion-android-remove"></i></a>
+              <div id="help10" class="collapse" data-parent="#help-list">
+                <p>- Payment is made in two main ways: Pay via PayPal or Payment using debit card or credit card.<br>
+                  - After payment, you can check the warehouse usage in "My Warehouse > Usage Status"<br>
+                  and access the warehouse you have payed for.<br>
+              </div>
+            </li>
+            <% } else if(session.type=='admin') { %>
+            <h2>Provider</h2>
+            <li>
+              <a data-toggle="collapse" class="collapsed" href="#help1">Register a warehouse<i
+                  class="ion-android-remove"></i></a>
+              <div id="help1" class="collapse" data-parent="#help-list">
+                <p>
+                  - Fill in the form and click the "Submit" button<br>
+                  - Warehouse ID number is given to each warehouse and cannot be changed<br>
+                  - Warehouses that have been requested registration is displayed yellow in the 'Warehouse Registration
+                  List'.<br>
+                  - Warehouses that have been rejected are displayed red in the 'Warehouse Registration List'. After
+                  checking the reason for rejection through the "View" button, click "Delete" to remove it from the
+                  list.<br>
+                  - The warehouse where the administrator has approved the registration is displayed green in 'My
+                  Warehouse'.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help2" class="collapsed">Edit warehouse information <i
+                  class="ion-android-remove"></i></a>
+              <div id="help2" class="collapse" data-parent="#help-list">
+                <p>
+                  - Select the "INFO" button in the warehouse "My Warehouse" you want to edit.<br>
+                  - Select the "edit" button on the right of "Warehouse Info".<br>
+                  - Edit the warehouse information and select the "apply" button.<br>
+                  - Warehouse name and address cannot be changed.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help3" class="collapsed">Delete a warehouse <i
+                  class="ion-android-remove"></i></a>
+              <div id="help3" class="collapse" data-parent="#help-list">
+                <p>Please contact service@autoinven.com to delete the warehouse.</p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help4" class="collapsed">Use IoT service<i
+                  class="ion-android-remove"></i></a>
+              <div id="help4" class="collapse" data-parent="#help-list">
+                <p>
+                  - This service can only be applied for registered warehouses.<br>
+                  - Check the warehouse ID and name in "My Warehouse", click the "Request Service" button and check the
+                  status become "Pending Approval".<br>
+                  - Application for use of IoT service can be canceled before the administrator approves it.<br>
+                  - If the administrator approves, you can use the "IoT Page" button.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help5" class="collapsed">Approve/reject warehouse use<i
+                  class="ion-android-remove"></i></a>
+              <div id="help5" class="collapse" data-parent="#help-list">
+                <p>
+                  - You can check "Buy Request Info", "Warehouse Info", and "Buyer Info" in "Warehouse Buy Request
+                  List".<br>
+                  - Click "approved" to enter "Waiting for Payment" status. When the user completes the payment, it
+                  moves to the list of "Warehouse Usage".<br>
+                  - If you click "reject", a form will appear where you can enter the reason for rejection. If the
+                  reason for rejection is entered, the user can confirm it.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help6" class="collapsed">Check warehouse usage status<i
+                  class="ion-android-remove"></i></a>
+              <div id="help6" class="collapse" data-parent="#help-list">
+                <p>
+                  - You can check the current warehouse usage status by clicking the "info" button in "My
+                  Warehouse".<br>
+                  - In "Warehouse Usage", the warehouse that are currently being used by buyer are in green, and the
+                  ones waiting to be used are in yellow.<br>
+                  - Previous warehouse usage history can be checked in "Previous Warehouse Usage".<br>
+                  - You can check user information by using the "info" button in all usage history.<br>
+                </p>
+              </div>
+            </li>
+            <h2>Buyer</h2>
+            <li>
+              <a data-toggle="collapse" href="#help7" class="collapsed">Search for warehouse<i
+                  class="ion-android-remove"></i></a>
+              <div id="help7" class="collapse" data-parent="#help-list">
+                <p>
+                  - You can search for warehouse in the google map.<br>
+                  - Select a warehouse and you can see the information of it.<br>
+                  - By selecting "inquire" button, you can fill in the form and submit.<br>
+                  - You can then check the approval state in "My Warehouse > Request Status".<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help8" class="collapsed">Check your warehouse usage history<i
+                  class="ion-android-remove"></i></a>
+              <div id="help8" class="collapse" data-parent="#help-list">
+                <p>
+                  - You can check the current warehouse usage status by clicking the "info" button in "My
+                  Warehouse".<br>
+                  - In "Warehouse Usage", the warehouse that are currently being used by buyer are in green, and the
+                  ones waiting to be used are in yellow.<br>
+                  - Previous warehouse usage history can be checked in "Previous Warehouse Usage".<br>
+                  - You can check user information by using the "info" button in all usage history.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help9" class="collapsed">Check your request status<i
+                  class="ion-android-remove"></i></a>
+              <div id="help9" class="collapse" data-parent="#help-list">
+                <p>
+                  - You can check your current warehouse approval state in "Request Status" <br>
+                  - Approval can be rejected by administrator or warehouse provider, and if rejected you can click
+                  "View" for the reason.<br>
+                  - Payment can be made after all approvals.<br>
+                </p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help10" class="collapsed">Payment<i class="ion-android-remove"></i></a>
+              <div id="help10" class="collapse" data-parent="#help-list">
+                <p>
+                  - Payment is made in two main ways: Pay via PayPal or Payment using debit card or credit card.<br>
+                  - After payment, you can check the warehouse usage in "My Warehouse > Usage Status" and access the
+                  warehouse you have payed for.<br>
+                </p>
+              </div>
+            </li>
+            <% } %>
+            <% } %>
+          </ul>
+        </div>
+
+        <div id="faq" class="container" style="display: none;">
+          <ul id="faq-list" class="list-feature">
+            <li>
+              <a data-toggle="collapse" class="collapsed" href="#faq1">Update/Delete Users <i
+                  class="ion-android-remove"></i></a>
+              <div id="faq1" class="collapse" data-parent="#faq-list">
+                <p>- If you need update for your data, You can edit it in "MYINFO" page.<br>
+                - Please contact service@autoinven.com to delete the warehouse.</p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#faq2" class="collapsed">Forgot Email or Password <i
+                  class="ion-android-remove"></i></a>
+              <div id="faq2" class="collapse" data-parent="#faq-list">
+                <p>Please enter your email address and your password will be sent to the email address registered with
+                  your account and then you can creat your new password. Or you can send e-mail via
+                  service@autoinven.com.</p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#faq3" class="collapsed">Area and Price <i
+                  class="ion-android-remove"></i></a>
+              <div id="faq3" class="collapse" data-parent="#faq-list">
+                <p>Area is expressed in square meters(㎡), and prices are expressed in USD(＄).</p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#faq4" class="collapsed">How to Pay <i class="ion-android-remove"></i></a>
+              <div id="faq4" class="collapse" data-parent="#faq-list">
+                <p>AUTOINVEN.com Secure Payment aims to provide a safe payment service for membership. By partnering
+                  with an online payment platform (PayPal), AUTOINVEN.com provides payment security to membership.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <%- include('../footer') %>
+    </footer>
+  </div>
+</body>
+
+</html>
+
+<script>
+  function setDisplay(val) {
+    if (val == 1) { //val==1 faq
+      document.getElementById("faq_a").style.textDecoration="none";
+      document.getElementById("help_a").style.textDecoration="underline";
+      $('#help').show();
+      $('#faq').hide();
+    }
+    if (val == 0) { //val==0 help
+      document.getElementById("faq_a").style.textDecoration="underline";
+      document.getElementById("help_a").style.textDecoration="none";
+      $('#help').hide();
+      $('#faq').show();
+    }
+  }
+</script>

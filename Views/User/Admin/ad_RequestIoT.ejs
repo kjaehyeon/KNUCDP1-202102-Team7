@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <h2 class="mt-5 mb-3">IoT Service Request List</h2>
+        <table class="board-table table ">
+          <thead class="thead-dark">
+            <tr>
+              <th>Warehouse ID</th>
+              <th>Warehouse Name</th>
+              <th>Provider ID</th>
+              <th>State</th>
+              <th>Info</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < Object.keys(items).length; i++) { %>
+            <% if (items['item' + i].reqType == "ReqIoTPv") { %>
+            <tr class="table-warning">
+              <td><%= items['item' + i].warehouseID %></td>
+              <td><%= items['item' + i].warehouseName %></td>
+              <td><%= items['item' + i].memberID %></td>
+              <td>Waiting for Approval</td>
+              <td id="td-btn">
+              <form action="/Admin/IoTWHInfo" method="POST">
+                <input id="warehouseID" name="warehouseID" type="hidden" value="<%= items['item' + i].warehouseID %>">
+                <button class="btn btn-td btn-info">INFO</button>
+              </form>
+            </td>
+              <td id="td-btn">
+                <form action="IoTTest" method="POST">
+                  <input type="hidden" name="wid" value="<%= items['item' + i].warehouseID %>">
+                  <button class="btn btn-td btn-main">View</button>
+                </form>
+              </td>
+            </tr>
+
+            <% } else if (items['item' + i].reqType == "CnlByPv") { %>
+            <tr class="table-danger">
+              <td><%= items['item' + i].warehouseID %></td>
+              <td><%= items['item' + i].warehouseName %></td>
+              <td><%= items['item' + i].memberID %></td>
+              <td>Canceled by Provider</td>
+              <td id="td-btn">
+                <form action="/Admin/IoTWHInfo" method="POST">
+                  <input id="warehouseID" name="warehouseID" type="hidden" value="<%= items['item' + i].warehouseID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+              <td id="td-btn" class="col-1">
+                <button class="btn btn-td btn-info" onclick="adClick('Confirm', <%= i %>)">View</button>
+              </td>
+              <p id="reqID<%= i %>" style="display: none"><%= items['item' + i].reqID %></p>
+              <p id="rejectCmt<%= i %>" style="display: none"><%= items['item' + i].rejectCmt %></p>
+            </tr>
+            <% } %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <footer>
+      <%- include('../../footer') %>
+    </footer>
+  </div>
+</body>
+
+<script src="/JS/alerts.js"></script>
+<script src="/JS/ad_RequestIoT.js"></script>
+
+</html>

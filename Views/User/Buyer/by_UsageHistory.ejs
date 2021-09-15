@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../../nav_Bar') %>
+      <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
+      </div>
+    </header>
+    <section>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Warehouse Usage</h2>
+        <table class="board-table table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Req ID</th>
+              <th>Warehouse ID</th>
+              <th>Warehouse Name</th>
+              <th>Rental Period</th>
+              <th>Rental Area</th>
+              <th>Price</th>
+              <th>IoT</th>
+              <th>Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < Object.keys(curItems).length; i++) { %>
+            <tr class="table-success">
+              <td id="reqID<%= i %>"><%= curItems['item' + i].reqID %></td>
+              <td id="warehouseID<%= i %>"><%= curItems['item' + i].warehouseID %></td>
+              <td id="warehouseName<%= i %>"><%= curItems['item' + i].warehouseName %></td>
+              <td id="Period<%= i %>"><%= curItems['item' + i].startDate %> ~ <%= curItems['item' + i].endDate %></td>
+              <td id="area<%= i %>"><%= curItems['item' + i].area %> m<sup>2</sup></td>
+              <td id="amount<%= i %>"><%= curItems['item' + i].amount %> $</td>
+              <% if (curItems['item' + i].iotStat == "Y"){ %>
+              <td id="td-btn">
+                <form action="/IoT" method="POST">
+                  <input id="wid" name="wid" type="hidden" value="<%= curItems['item' + i].warehouseID %>">
+                  <button class="btn btn-td btn-main">IoT Page</button>
+                </form>
+              </td>
+              <% } else if (curItems['item' + i].iotStat == "W"){ %>
+              <td>Pending Approval</td>
+              <% } else if (curItems['item' + i].iotStat == "N"){ %>
+              <td>Not Currently Used</td>
+              <% } %>
+              <td id="td-btn">
+                <form action="/Buyer/UsageHistory/INFO" method="POST">
+                  <input id="reqID" name="reqID" type="hidden" value="<%= curItems['item' + i].reqID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+            </tr>
+            <% } %>
+            <% for(var i = 0; i < Object.keys(nextItems).length; i++) { %>
+            <tr class="table-warning">
+              <td id="reqID<%= i %>"><%= nextItems['item' + i].reqID %></td>
+              <td id="warehouseID<%= i %>"><%= nextItems['item' + i].warehouseID %></td>
+              <td id="warehouseName<%= i %>"><%= nextItems['item' + i].warehouseName %></td>
+              <td id="Period<%= i %>"><%= nextItems['item' + i].startDate %> ~ <%= nextItems['item' + i].endDate %></td>
+              <td id="area<%= i %>"><%= nextItems['item' + i].area %> m<sup>2</sup></td>
+              <td id="amount<%= i %>"><%= nextItems['item' + i].amount %> $</td>
+              <% if (nextItems['item' + i].iotStat == "Y"){ %>
+              <td id="td-btn">
+                <form action="/IoT" method="POST">
+                  <input id="wid" name="wid" type="hidden" value="<%= nextItems['item' + i].warehouseID %>">
+                  <button class="btn btn-td btn-main">IoT Page</button>
+                </form>
+              </td>
+              <% } else if (nextItems['item' + i].iotStat == "W"){ %>
+              <td>Pending Approval</td>
+              <% } else if (nextItems['item' + i].iotStat == "N"){ %>
+              <td>Not Currently Used</td>
+              <% } %>
+              <td id="td-btn">
+                <form action="/Buyer/UsageHistory/INFO" method="POST">
+                  <input id="reqID" name="reqID" type="hidden" value="<%= nextItems['item' + i].reqID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+            </tr>
+            <% } %>
+        </table>
+      </div>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Previous Warehouse Usage
+          <button id="btnView" class="btn btn-big btn-main">View</button>
+        </h2>
+        <table id="t2" class="board-table table" style="display: none;">
+          <thead class="thead-dark">
+            <tr>
+              <th>Req ID</th>
+              <th>Warehouse ID</th>
+              <th>Warehouse Name</th>
+              <th>Rental Period</th>
+              <th>Rental Area</th>
+              <th>Price</th>
+              <th>Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < Object.keys(preItems).length; i++) { %>
+            <tr class="table-danger">
+              <td id="reqID<%= i %>"><%= preItems['item' + i].reqID %></td>
+              <td id="warehouseID<%= i %>"><%= preItems['item' + i].warehouseID %></td>
+              <td id="warehouseName<%= i %>"><%= preItems['item' + i].warehouseName %></td>
+              <td id="Period<%= i %>"><%= preItems['item' + i].startDate %> ~ <%= preItems['item' + i].endDate %></td>
+              <td id="area<%= i %>"><%= preItems['item' + i].area %> m<sup>2</sup></td>
+              <td id="amount<%= i %>"><%= preItems['item' + i].amount %> $</td>
+              <td id="td-btn">
+                <form action="/Buyer/UsageHistory/INFO" method="POST">
+                  <input id="reqID" name="reqID" type="hidden" value="<%= preItems['item' + i].reqID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>
+            </tr>
+            <% } %>
+        </table>
+      </div>
+    </section>
+    <footer>
+      <%- include('../../footer') %>
+    </footer>
+  </div>
+</body>
+
+<script>
+  $(document).ready(function () {
+    $("#t2").hide();
+    $("#btnView").click(function () {
+      if ($("#btnView").html() == 'View') {
+        $("#btnView").html('Close');
+        $("#t2").fadeIn();
+      } else {
+        $("#btnView").html('View');
+        $("#t2").fadeOut();
+      }
+    });
+  });
+</script>
+
+</html>

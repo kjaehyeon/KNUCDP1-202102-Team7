@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../../head') %>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('../../nav_Bar') %>
+        <div class="page-header page-header-small">
+          <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');">
+          </div>
+        </div>
+    </header>
+    <section>
+      <div class="container">
+        <h2 class="mt-5 mb-3">Warehouse Register Request List</h2>
+        <table class="board-table table ">
+          <thead class="thead-dark">
+              <th>Warehouse ID</th>
+              <th>Warehouse Name</th>
+              <th>Provider ID</th>
+              <th>State</th>              
+              <th>Info</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < Object.keys(items).length; i++) { %>
+            <% if(items['item' + i].reqType == "ReqEnrollPV"){ %>
+            <tr class="table-warning">
+              <td id="whID<%= i %>"><%= items['item' + i].warehouseID %></td>    
+              <td id="name<%= i %>"><%= items['item' + i].warehouseName %></td>          
+              <td id="providerID<%= i %>"><%= items['item' + i].providerID %></td>
+              <td id="reqType<%= i %>">Pending Approval</td>     
+              <td id="td-btn">
+                <form action="/Admin/EnrollWHInfo" method="POST">
+                  <input id="warehouseID" name="warehouseID" type="hidden" value="<%= items['item' + i].warehouseID %>">
+                  <input id="providerID" name="providerID" type="hidden" value="<%= items['item' + i].providerID %>">
+                  <button class="btn btn-td btn-info">INFO</button>
+                </form>
+              </td>         
+              <td id="td-btn">
+                <button type="button" class="btn btn-td btn-success" onclick="adClick(<%= i %>, 1)">Approve</button>
+                <button type="button" class="btn btn-td btn-danger" onclick="adClick(<%= i %>, 0)">Reject</button>
+              </td>
+              <p id="reqID<%= i %>" style="display: none"><%= items['item' + i].reqID %></p>
+            </tr>
+
+            <% } else if (items['item' + i].reqType == "CnlByPv") { %>
+              <tr class="table-danger">
+                <td id="whID<%= i %>"><%= items['item' + i].warehouseID %></td>    
+                <td id="name<%= i %>"><%= items['item' + i].warehouseName %></td>          
+                <td id="providerID<%= i %>"><%= items['item' + i].providerID %></td>
+                <td id="reqType<%= i %>">Canceled by Provider</td>
+                <td id="td-btn">
+                  <form action="/Admin/EnrollWHInfo" method="POST">
+                    <input id="warehouseID" name="warehouseID" type="hidden" value="<%= items['item' + i].warehouseID %>">
+                    <input id="providerID" name="providerID" type="hidden" value="<%= items['item' + i].providerID %>">
+                    <button class="btn btn-td btn-info">INFO</button>
+                  </form>
+                </td>
+                <td id="td-btn">
+                  <button type="button" class="btn btn-td btn-info" onclick="adClick(<%= i %>, 2)">View</button>
+                </td>
+                <p id="reqID<%= i %>" style="display: none"><%= items['item' + i].reqID %></p>
+                <p id="rejectCmt<%= i %>" style="display: none"><%= items['item' + i].rejectCmt %></p>
+              </tr>
+            <% } %>
+            <% } %>
+            
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <footer>
+      <%- include('../../footer') %>
+    </footer>
+  </div>
+</body>
+
+<script src="/JS/alerts.js"></script>
+<script src="/JS/ad_RequestEnroll.js"></script>
+
+</html>

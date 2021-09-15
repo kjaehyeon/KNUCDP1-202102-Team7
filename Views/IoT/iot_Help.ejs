@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <%- include('../head') %>
+  <meta charset="utf-8">
+  <title>Product Registration</title>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <%- include('iot_Nav') %>
+    </header>
+    <section id="iot">
+      <div class="container">
+        <div class="container mb-3">
+          <h2>How to use AUTOINIoT</h2>
+        </div>
+        <div id="help" class="container">
+          <ul id="help-list" class="list-feature">
+            <li>
+              <a data-toggle="collapse" class="collapsed" href="#help1">Regist Item <i
+                  class="ion-android-remove"></i></a>
+              <div id="help1" class="collapse" data-parent="#help-list">
+                <p>After attaching the RFID label, input the tag name, select the logistics name and quantity of
+                  goods.<br>
+                  When the goods are received, the stock status changes to 'received complete', and you can check the
+                  photos of the stocked goods.<br>
+                  Click the Register button to register the product, and click the Cancel button to cancel the product
+                  registration.<br>
+                  Once registered, the RFID number cannot be duplicated and cannot be changed.</p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" class="collapsed" href="#help2">Edit Item <i class="ion-android-remove"></i></a>
+              <div id="help2" class="collapse" data-parent="#help-list">
+                <p>It is possible to edit the registered goods, by using the "Edit" button on the right side of the
+                  registered goods.<br>
+                  You can change the name and quantity, but it must be filled in.</p>
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help3" class="collapsed">Check warehouse status - temperature/humidity <i
+                  class="ion-android-remove"></i></a>
+              <div id="help3" class="collapse" data-parent="#help-list">
+                <p>It displays the temperature/humidity recognized by the sensor in the current warehouse in real
+                  time. Temperature is in degrees Celsius.<br>
+                  When the threshold value set by the user is exceeded, an alarm is generated.</p>
+                <img src="/Image/iot_help1.PNG" alt="help1" style="width: 600px;">
+              </div>
+            </li>
+            <li>
+              <a data-toggle="collapse" href="#help4" class="collapsed">Check Warehouse Status - Flame/Gas <i
+                  class="ion-android-remove"></i></a>
+              <div id="help4" class="collapse" data-parent="#help-list">
+                <p>It indicates in real time whether a fire/smoke has occurred in the current warehouse.<br>
+                  When a flame or smoke is detected, it turns red and an alarm is generated.</p>
+                <img src="/Image/iot_help2.PNG" alt="help2" style="width: 600px;">
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <%- include('../footer') %>
+    </footer>
+  </div>
+</body>
+
+</html>
