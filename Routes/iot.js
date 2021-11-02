@@ -9,6 +9,8 @@ module.exports = function (app, db) {
     const iot_EditItem = require('./iot_EditItem');
     const iot_Help = require('./iot_Help');
     const iot_RFID = require('./iot_RFID');
+    //new
+    //const iot_Statistic = require('./iot_Statistic');
 
     var check = (req, res, next) => {
         var id = req.session['memberID'];
@@ -79,6 +81,10 @@ module.exports = function (app, db) {
     router.post('/RFID', (req, res, next) => {
         iot_RFID.receive(req, res, db)
     });
+
+    router.get('/Statistic', (req, res, next) =>{
+        res.render('IoT/iot_Statistic');
+    })
 
     return router;
 };

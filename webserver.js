@@ -76,7 +76,9 @@ app.get('/Public/Upload/:filename', function (req, res) {
         res.write(data);
     })
 });
-
+app.get('/Statistic', (req, res, next) =>{
+    res.render('IoT/iot_Statistic');
+})
 // 없는 페이지 alert 띄우기
 app.use((req, res, next) => {
     console.log(`${req.path}: not found`);
