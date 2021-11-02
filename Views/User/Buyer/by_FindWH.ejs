@@ -3,6 +3,7 @@
 
 <head>
   <%- include('../../head') %>
+  <link rel="stylesheet" href="/CSS/by_FindWH.css">
 </head>
 
 <body>
@@ -16,7 +17,43 @@
     <section>
       <div class="container mt-4">
         <div class="container pt-3 mb-3" style="width:50%; float:left;">
+          <div class="pac-card" id="pac-card">
+            <div>
+              <div id="title">WareHouse Search</div>
+              <div id="type-selector" class="pac-controls">
+                <input type="radio" name="type" id="changetype-all" checked="checked"/>
+                <label for="changetype-all">All</label>
+      
+                <input type="radio" name="type" id="changetype-address" />
+                <label for="changetype-address">address</label>
+      
+                <input type="radio" name="type" id="changetype-geocode" />
+                <label for="changetype-geocode">geocode</label>
+      
+                <input type="radio" name="type" id="changetype-cities" />
+                <label for="changetype-cities">(cities)</label>
+      
+                <input type="radio" name="type" id="changetype-regions" />
+                <label for="changetype-regions">(regions)</label>
+              </div>
+              <br />
+              <div id="strict-bounds-selector" class="pac-controls">
+                <input type="checkbox" id="use-location-bias" value="" checked />
+                <label for="use-location-bias">Bias to map viewport</label>
+      
+                <input type="checkbox" id="use-strict-bounds" value="" />
+                <label for="use-strict-bounds">Strict bounds</label>
+              </div>
+            </div>
+            <div id="pac-container">
+              <input id="pac-input" type="text" placeholder="Enter a location" />
+            </div>
+          </div>
           <div id="map" style="width:100%; height:80vh;"></div>
+          <div id="infowindow-content">
+            <span id="place-name" class="title"></span><br />
+            <span id="place-address"></span>
+          </div>
         </div>
         <div class="container pt-3 mb-3" style="width:50%; float:right; overflow:auto;">
           <table class="table table-bordered">
@@ -130,7 +167,8 @@
 </body>
 
 <script type="text/javascript" src="/JS/findWH.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_MAP_JAVASCRIPT_KEY %>&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_MAP_JAVASCRIPT_KEY %>&callback=initMap&libraries=places"></script>
+<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=MyKey&callback=initMap&libraries=places"></script> -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js">
 </script>
