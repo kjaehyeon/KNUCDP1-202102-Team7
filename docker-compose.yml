@@ -14,6 +14,9 @@ services:
       - "3307:3306"
     env_file:
       - .env
+    volumes:
+      - mysql-data:/var/lib/mysql
+
   nodejs:
     environment:
       MYSQL_HOST_IP: mysql # the name of mysql service in your docker-compose, which will get resolved to the internal IP of the mysql container
@@ -21,7 +24,7 @@ services:
       - app-tier
     build:
       context: .
- #     dockerfile: ./dockerfile
+#     dockerfile: ./dockerfile
     restart: always
     ports:
       - "5000:5000"
@@ -30,5 +33,8 @@ services:
     depends_on:
       - mysql
     container_name: autoinven
-#    volumes:
-#      - ./:/usr/src/app
+    volumes:
+      - ./:/usr/src/app
+
+volumes:
+  mysql-data:

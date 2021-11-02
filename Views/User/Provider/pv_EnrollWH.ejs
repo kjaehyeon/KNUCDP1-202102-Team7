@@ -137,6 +137,7 @@
   });
 
   function sample4_execDaumPostcode() {
+    console.log("clicked")
     new daum.Postcode({
       oncomplete: function (data) {
         var roadAddr = data.roadAddress;
@@ -148,6 +149,7 @@
           url: baseAPIUrl,
           type: "GET",
           success: function (data) {
+            console.log(baseAPIUrl)
             document.getElementById("lat").value = data.results[0].geometry.location.lat;
             document.getElementById("lng").value = data.results[0].geometry.location.lng;
           }

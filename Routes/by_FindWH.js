@@ -2,11 +2,19 @@ exports.searchWH = function (req, res, app, db) {
     var items = {};
     const results1 = db.query(`SELECT * from PublicWarehouse`);
     const results2 = db.query(`SELECT * from Warehouse where enroll='Y'`);
+
     const results = results1.concat(results2);
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
+            let wid;
+            if (results1.length <= step){
+                wid = results[step].warehouseID + 10000;
+            }
+            else {
+                wid = results[step].warehouseID
+            }
             items[`item${step}`] = {
-                warehouseID: results[step].warehouseID,
+                warehouseID: wid,
                 warehouseName: results[step].warehouseName,
                 warehouseEmail: results[step].warehouseEmail,
                 warehouseTel: results[step].warehouseTEL,
