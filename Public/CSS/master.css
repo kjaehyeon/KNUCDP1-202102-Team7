@@ -1380,7 +1380,7 @@ h6,
   color: black;
 }
 
-.sensor {
+/*.sensor {
   display: inline-block;
   margin: 30px;
   padding: 40px 40px;
@@ -1394,7 +1394,7 @@ h6,
   border-color: #7b68ee;
   transform: translateY(-5px);
   box-shadow: 5px 5px 11px 2px rgba(27, 35, 80, 0.12);
-}
+}*/
 
 .select {
   display: inline-block;
