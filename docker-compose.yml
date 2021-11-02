@@ -24,7 +24,7 @@ services:
       - app-tier
     build:
       context: .
- #     dockerfile: ./dockerfile
+#     dockerfile: ./dockerfile
     restart: always
     ports:
       - "5000:5000"
