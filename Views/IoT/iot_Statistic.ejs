@@ -4,6 +4,9 @@
     <%- include('../monitoring_head') %>
     <link rel='stylesheet' href='/CSS/nav.css'/>
     <link rel='stylesheet' href='/CSS/dashboard.css'/>
+    <link rel='stylesheet' href='/CSS/iot_statistic.css'/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/JS/iot_statistic.js"></script>
 </head>
 <body>
     <div class='dashboard__container'>
@@ -16,12 +19,133 @@
                 <div class='user'>JH KIM</div>
             </div>
             <div class='dashboard-main'>
-                <div class="graph_temp"></div>
-                <div class="graph_humidity"></div>
-                <div class="graph_co"></div>
-                <div class="graph_propane"></div>
+                <div class='chartbox'>
+                    <div class="colflex">
+                        <div class="chartInfo">
+                            <div class="rowflex">
+                                <span>WareHouse Analytics</span>
+                                <div>
+                                    <!-- <div class="date" name="date"></div> 여기에 날짜 넣기 -->
+                                    <form>
+                                        <button type="button" name="left"><</button>
+                                        <input type='date' id='currentDate'/>
+                                        <button type="button" name="right">></button>
+                                    </form>
+                                </div>
+                                <div class="rowflex DatePick">
+                                    <div id="dayButton">DAILY</div>
+                                    <div id="monthButton">MONTHLY</div>
+                                    <div id="yearButton">YEARLY</div>
+                                    <!-- <button type="button" name="right"></button>
+                                    <button type="button" name="right">MONTH</button>
+                                    <button type="button" name="right">YEAR</button> -->
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        <hr id="stat_line"/>
+                        <!-- <hr style="border: solid 10px red;"> -->
+                        <div class="rowflex">
+                            <div class="main_chart">
+                                <div class="chart_row">
+                                    <div class="graph_temp">
+                                        <canvas id="chart_temp" width="350" height="350"></canvas>
+                                    </div>
+                                    <div class="graph_humidity">
+                                        <canvas id="chart_humi" width="350" height="350"></canvas>
+                                    </div>
+                                </div>
+                                <div class="chart_row">
+                                    <div class="graph_co">
+                                        <canvas id="chart_co" width="350" height="350"></canvas>
+                                    </div>
+                                    <div class="graph_propane">
+                                        <canvas id="chart_pro" width="350" height="350"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="summary colflex">
+                                <div class="s_temp colflex">
+                                    <div class="rowflex">
+                                        <h3><img src="Image/temp.png">Temperature</h3>
+                                    </div>
+                                    <div class="rowflex">
+                                        <span>MAX</span>
+                                        <span>MIN</span>
+                                        <span>AVG</span>
+                                    </div>
+                                    <div class="rowflex realdata">
+                                        <span>39.6</span>
+                                        <span>21.7</span>
+                                        <span>30.5</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <hr class="chartinfoHR">
+                                </div>
+                                <div class="s_humi colflex">
+                                    <div class="rowflex">
+                                        <h3><img src="Image/humi.png">Humidity</h3>
+                                    </div>
+                                    <div class="rowflex">
+                                        <span>MAX</span>
+                                        <span>MIN</span>
+                                        <span>AVG</span>
+                                    </div>
+                                    <div class="rowflex realdata">
+                                        <span>39.6</span>
+                                        <span>21.7</span>
+                                        <span>30.5</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <hr class="chartinfoHR">
+                                </div>
+                                <div class="s_co colflex">
+                                    <div class="rowflex">
+                                        <h3><img src="Image/co.png">CO</h3>
+                                    </div>
+                                    <div class="rowflex">
+                                        <span>MAX</span>
+                                        <span>MIN</span>
+                                        <span>AVG</span>
+                                    </div>
+                                    <div class="rowflex realdata">
+                                        <span>39.6</span>
+                                        <span>21.7</span>
+                                        <span>30.5</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <hr class="chartinfoHR">
+                                </div>
+                                <div class="s_pro colflex">
+                                    <div class="rowflex">
+                                        <h3><img src="Image/propane.png">Propane</h3>
+                                    </div>
+                                    <div class="rowflex">
+                                        <span>MAX</span>
+                                        <span>MIN</span>
+                                        <span>AVG</span>
+                                    </div>
+                                    <div class="rowflex realdata">
+                                        <span>39.6</span>
+                                        <span>21.7</span>
+                                        <span>30.5</span>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </body>
 </html>
+<script>
+    document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);
+    
+</script>

@@ -1,0 +1,87 @@
+.main_chart {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.chart_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.rowflex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.graph_temp {
+    flex:auto;
+    margin: 15px;
+}
+.graph_humidity {
+    flex:auto;
+    margin: 15px;
+}
+.graph_co {
+    flex:auto;
+    margin: 15px;
+}
+.graph_propane {
+    flex:auto;
+    margin: 15px;
+}
+.summary {
+    background-color: #e4e6e9;
+    width: 20%;
+    border-radius: 25px;
+}
+
+.colflex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.chartInfo {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.chartbox {
+    border-radius: 25px;
+    box-shadow: 1px 1px 5px #e4e6e9;
+}
+
+
+#stat_line {
+    width: 3px;
+    color: black;
+    flex: auto;
+    width: 80%;
+}
+
+#dayButton, #monthButton, #yearButton {
+    padding: 10px;
+    width: 100px;
+    text-align: center;
+    border-radius: 5px;
+}
+#dayButton {
+    background-color: #e4e6e9;
+}
+
+.chartinfoHR {
+    width: 3px;
+    color: black;
+    flex: auto;
+    width: 80%;
+}
+#dayButton:hover {
+    background-color: #e4e6e9;
+    cursor:pointer
+}
+#monthButton:hover {
+    background-color: #e4e6e9;
+    cursor:pointer
+}
+#yearButton:hover {
+    background-color: #e4e6e9;
+    cursor:pointer
+}
