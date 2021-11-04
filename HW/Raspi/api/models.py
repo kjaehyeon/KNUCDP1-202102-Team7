@@ -7,11 +7,12 @@ class SensorValue(models.Model):
     humidity = models.FloatField()
     co = models.FloatField()
     propane = models.FloatField()
-    flame = models.IntegerField(max_length=1)
+    flame = models.IntegerField()
     datetime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'[{self.pk}][{self.device_id}]'
+
 
 
     

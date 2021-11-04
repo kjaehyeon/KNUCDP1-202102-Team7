@@ -39,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+    'channels',
+    'socketio',
+    'djangochannelsrestframework',
+    'websockets',
+    'asyncio',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'autoin.wsgi.application'
+ASGI_APPLICATION = 'autoin.asgi.application'
 
 
 # Database
