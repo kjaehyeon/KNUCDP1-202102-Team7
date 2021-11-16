@@ -9,7 +9,7 @@
 }
 #logo-img {
     width: 60%;
-    height: 50px;
+    height: 40px;
     margin: 0 0 50px 20px;
 }
 ul{
@@ -23,7 +23,7 @@ ul{
 }
 .nav-bar .items-wrapper .item{
     display: flex;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: #fff;
     padding: 13px 0 13px 20px;
@@ -54,12 +54,12 @@ ul{
     position: relative;
     top: -30px;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
 }
 .nav-bar .bottom .contact-btn{
     color: #fff;
     background: #017EFA;
-    padding: 10px 20px;
+    padding: 5px 10px;
     margin-bottom: 20px;
     border-radius: 5px;
     cursor: pointer;
