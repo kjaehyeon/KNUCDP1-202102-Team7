@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang='en' dir='ltr'>
 <head>
     <%- include('../monitoring_head') %>
     <link rel='stylesheet' href='/CSS/nav.css'/>
     <link rel='stylesheet' href='/CSS/dashboard.css'/>
+    <link rel='stylesheet' href='/CSS/weather-icons.min.css'/>
+    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
 </head>
 <body>
     <div class='dashboard__container'>
@@ -12,17 +14,233 @@
         </div>
         <div class='dashboard'>
             <div class='dashboard-top'>
-                <div class='title'>Dashboard</div>
-                <div class='user'>JH KIM</div>
+                <%- include('iot_Top') %>
             </div>
             <div class='dashboard-main'>
                 <div class='weather card'></div>
-                <div class='graph card'></div>
-                <div class='sensor card'></div>
-                <div class='cctv card'></div>
-                <div class='capability card'></div>
+                <div class='graph card'>
+                    <div class='title'>
+                        <i class='fas fa-chart-line'></i>
+                        &nbsp;Realtime Graph
+                    </div>
+                    <div class='realtime-graph'>
+                        <canvas id='chart1' height='110%'></canvas>
+                    </div>
+                </div>
+                <div class='sensor card'>
+                    <div class='value-wrapper'>
+                        <i class='fas fa-thermometer-half sensor-icon1 temperature'></i>
+                        <div>Temperature</div>
+                        <div class='value'>36.5&#8451;</div>
+                    </div>
+                    <div class='value-wrapper'>
+                        <i class='fas fa-tint sensor-icon1 humidity'></i>
+                        <div>Humidity</div>
+                        <div class='value'>58%</div>
+                    </div>
+                    <div class='value-wrapper'>
+                        <i class='fas fa-burn sensor-icon1 gas'></i>
+                        <div>Gas</div>
+                        <div class='value'>100ppm</div>
+                    </div>
+                    <div class='value-wrapper'>
+                        <i class='fas fa-cloud sensor-icon1 smoke'></i>
+                        <div>Smoke</div>
+                        <div class='value'>35ppm</div>
+                    </div>
+                    <div class='value-wrapper fine'>
+                        <i class='fas fa-fire-alt sensor-icon2'></i>
+                        <div>Flame</div>
+                        <div class='value'>FINE</div>
+                    </div>
+                    <div class='value-wrapper bad'>
+                        <i class='fas fa-burn sensor-icon2'></i>
+                        <div>Gas</div>
+                        <div class='value'>BAD</div>
+                    </div>
+                    <div class='value-wrapper fine'>
+                        <i class='fas fa-water sensor-icon2'></i>
+                        <div>Vibration</div>
+                        <div class='value'>FINE</div>
+                    </div>
+                </div>
+                <div class='cctv card'>
+                    <div class='title'>
+                        <div>
+                            <i class='fas fa-video'></i>
+                            CCTV
+                        </div>
+                        <div class='wd-screen'>Wide Screen</div>
+                    </div>
+                    <div class='content'>
+                        <i class='fas fa-chevron-left'></i>
+                        <iframe src='http://192.168.22.128/mjpeg/1' frameborder='0' scrolling='no'></iframe>
+                        <i class='fas fa-chevron-right'></i>
+                    </div>
+                </div>
+                <div class='capability card'>
+                    <div class='title'>
+                        <i class='fas fa-chart-pie'></i>
+                        Warehouse Capability
+                    </div>
+                    <div class='capability-graph'>
+                        <canvas id='chart2'></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <script>
+        $('.wd-screen').click(() => {
+            window.open('http://192.168.22.128/mjpeg/1');
+        });
+        const icon_name = {
+            '01d': 'wi-day-sunny',
+            '01n': 'wi-night-clear',
+            '02d': 'wi-day-cloudy',
+            '02n': 'wi-night-cloudy',
+            '03d': 'wi-cloud',
+            '03n': 'wi-cloud',
+            '04d': 'wi-cloudy',
+            '04n': 'wi-cloudy',
+            '09d': 'wi-day-showers',
+            '09n': 'wi-night-showers',
+            '10d': 'wi-day-rain',
+            '10n': 'wi-night-rain',
+            '11d': 'wi-day-thunderstorm',
+            '11n': 'wi-night-thunderstorm',
+            '13d': 'wi-snowflake-cold',
+            '13n': 'wi-snowflake-cold',
+            '50d': 'wi-fog',
+            '50n': 'wi-fog'
+        };
+        $.ajax({
+            url: 'https://api.openweathermap.org/data/2.5/weather?lat=35.8219&lon=128.526&appid=c93ce0a8d46208ba777030a7b68f4947&units=metric',
+            type: 'GET',
+            accepts: 'application/json',
+            dataType: 'json',
+            success: function(data){
+                const {
+                    weather,
+                    name,
+                    main: {temp, humidity},
+                    wind: {speed},
+                    clouds: {all : cloud},
+                    sys: {country}
+                } = data;
+                const description = weather[0].description;
+                const icon = weather[0].icon;
+
+                const element = `<div class='top'>
+                                    <div class='icon-wrapper'>
+                                        <i class='wi ${icon_name[icon]}'></i>
+                                    </div>
+                                    <div class='info'>
+                                        <div>${Math.round(temp)}&#8451;</div>
+                                        <div>${description}</div>
+                                        <div>${name}, ${country}</div>
+                                    </div>
+                                </div>
+                                <div class='bottom'>
+                                    <div class='info'>
+                                        <i class='wi wi-strong-wind'></i>
+                                        <div>${speed}m/s</div>
+                                    </div>
+                                    <div class='info'>
+                                        <i class='wi wi-humidity'></i>
+                                        <div>${humidity}%</div>
+                                    </div>
+                                    <div class='info'>
+                                        <i class='wi wi-cloud'></i>
+                                        <div>${cloud}%</div>
+                                    </div>
+                                </div>`
+                $('.weather').append(element);
+            },
+            error: function(request, status, error){
+                Swal.fire({
+                    title: 'Error',
+                    html: `code: ${request.status}<br>message: ${request.responseText}<br>error: ${error}`,
+                    icon: 'error'
+                })
+            },
+            JSON: true
+        })
+
+        const ctx1 = $('#chart1')
+        const chart1 = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: '#017EFA',
+                    borderColor: '#017EFA',
+                    borderWidth: 1,
+                }],
+                
+            },
+            options: {
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 40
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                    },
+                }
+        });
+        const useableArea = '<%=warehouseArea.useableArea%>';
+        const usedArea = '<%=warehouseArea.usedArea%>';
+
+        const counter = {
+            id: 'counter',
+            beforeDraw(chart, args, options){
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+                ctx.save();
+
+                ctx.font = '600 24px sans-serif';
+                ctx.fontWeight = '600';
+                ctx.fillStyle = '#2ED47A';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${((useableArea - usedArea)/useableArea)*100}%`, width / 2, top + (height / 2));
+            }
+        };
+
+        const ctx2 = $('#chart2');
+        const chart2 = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['Useable', 'Used'],
+                datasets: [{
+                    data: [useableArea, usedArea],
+                    backgroundColor: [
+                        '#2ED47A',
+                        '#F7685B',
+                    ],
+                    cutout: '70%',
+                }],    
+            },
+            options: {
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        },
+                    },
+                    aspectRatio: 2,
+                    yAxes: [{
+                        gridLines: {
+                            display: false,
+                            drawBorder: false,
+                        },
+                    }],
+                },
+            plugins: [counter],
+        });
+    </script>
 </body>
 </html>
