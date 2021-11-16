@@ -2,8 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns =[
-    #path('monitoring/', views.category_page),
-    #path('stat/', views.tag_page),
-    path('sensorval/', views.SensorValueList.as_view()),
-    path('initial/', views.SensorInitial),
+    path('stat/day', views.DayStat.as_view()),
+    path('stat/month', views.MonthStat.as_view()),
+    path('stat/year', views.YearStat.as_view()),
 ]

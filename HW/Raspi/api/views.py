@@ -1,33 +1,37 @@
-from django.shortcuts import render
-from .serializers import SensorValueSerializer
-from .models import SensorValue
-from rest_framework import generics, mixins, status
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from .serializers import DayStatSerializer, MonthStatSerializer, SensorValueSerializer
+from .models import DayStatValue, MonthStatValue, SensorValue
+from rest_framework import generics, mixins
+from datetime import datetime
 
-
-class SensorValueList(generics.GenericAPIView, mixins.ListModelMixin):
+class DayStat(generics.GenericAPIView, mixins.ListModelMixin):
     serializer_class = SensorValueSerializer
-
-    def perfrom_create(self, serializers):
-        serializers.save(self, serializers)
-
-    def post(self, request, *args, **kwargs):
-        return self.create_response(request, *args, **kwargs)
-
-def visitor_ip_address(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
-
-@api_view(['GET'])
-def SensorInitial(request):
-    global websoc_svr
-    if request.method == 'GET':
-        return Response(status=200)
+    
+    def get_queryset(self):
+        tmp : datetime = datetime.strptime(self.request.GET['datetime'],"%Y-%m-%d")
+        return SensorValue.objects.filter(datetime__year = tmp.year, 
+                                           datetime__month = tmp.month,
+                                           datetime__day = tmp.day)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 
-
+class MonthStat(generics.GenericAPIView, mixins.ListModelMixin):
+    serializer_class = DayStatSerializer
+    
+    def get_queryset(self):
+        tmp : datetime = datetime.strptime(self.request.GET['datetime'],"%Y-%m")
+        
+        return DayStatValue.objects.filter(datetime__year = tmp.year, 
+                                           datetime__month = tmp.month)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+    
+class YearStat(generics.GenericAPIView, mixins.ListModelMixin):
+    serializer_class = MonthStatSerializer
+    
+    def get_queryset(self):
+        tmp : datetime = datetime.strptime(self.request.GET['datetime'],"%Y")
+        
+        return MonthStatValue.objects.filter(datetime__year = tmp.year)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
