@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&^o3jf*^f_$wvk87@k$7j0=$9atbrdz^@do)&96@yfkfp#6@vy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.22.47','127.0.0.1']
+ALLOWED_HOSTS = ['192.168.22.47','127.0.0.1','172.20.28.28','192.168.137.80']
 
 
 # Application definition
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'socketio',
-    'djangochannelsrestframework',
     'monitoring',
     'corsheaders',
 ]
