@@ -2,7 +2,6 @@
 <html lang="en" dir="ltr">
 
 <head>
-    <%- include('../monitoring_head') %>
     <link rel='stylesheet' href='/CSS/nav.css'>
 </head>
 
@@ -13,15 +12,15 @@
             <div class='items-wrapper'>
                 <div class='item-category'>Main Menu</div>
                 <ul>
-                    <li class='item'>
+                    <li class='item dashboard'>
                         <img class='icon-img' src='/Image/Chart_fill.png' alt="chart_fill">
                         <div>Dashboard</div>
                     </li>
-                    <li class='item'>
+                    <li class='item my-warehouse'>
                         <img class='icon-img' src='/Image/User_box.png' alt="user_box">
                         <div>My WareHouse</div>
                     </li>
-                    <li class='item'>
+                    <li class='item analytics'>
                         <img class='icon-img' src='/Image/Chart_alt.png' alt="chart_alt">   
                         <div>Analytics</div>
                     </li>
@@ -34,6 +33,17 @@
             <div class='contact-btn'>Contact Us</div>
         </div>
     </nav>
+    <script>
+        $('.dashboard').click(()=>{
+            window.open("https://www.naver.com");
+        })
+        $('.my-warehouse').click(()=>{
+            window.open("https://www.naver.com");
+        })
+        $('.analytics').click(()=>{
+            window.open("https://www.naver.com");
+        })
+    </script>
 </body>
 
 </html>
