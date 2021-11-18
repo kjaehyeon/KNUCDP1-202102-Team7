@@ -14,7 +14,7 @@
             socket.on('disconnect', function() {
                 $('#log').append('<br>Disconnected');
             });
-            socket.on('my_response', function(msg) {
+            socket.on('response', function(msg) {
                 $('#log').append('<br>Received: ' + msg.data);
             });
 
