@@ -65,27 +65,24 @@
 .dashboard__container .dashboard .dashboard-main .sensor{
     grid-column: 1/8;
     display: flex;
-    flex-wrap: nowrap;
     flex-direction: row;
-    justify-content: space-around;
     align-items: center;
-    padding: 10px 0;
 }
 .dashboard__container .dashboard .dashboard-main .sensor .value-wrapper{
+    flex: 1;
     text-align: center;
+    margin: 0 30px;
 }
 .dashboard__container .dashboard .dashboard-main .sensor .value-wrapper.fine{
     background: #CDF2CA;
     border-radius: 10px;
-    padding: 0 40px;
 }
 .dashboard__container .dashboard .dashboard-main .sensor .value-wrapper.bad{
     background: #F6A9A9;
     border-radius: 10px;
-    padding: 0 40px;
 }
 .dashboard__container .dashboard .dashboard-main .sensor .value-wrapper .value{
-    font-size: 20px;
+    font-size: 24px;
 }
 .dashboard__container .dashboard .dashboard-main .sensor .value-wrapper .sensor-icon1{
     font-size: 48px;
