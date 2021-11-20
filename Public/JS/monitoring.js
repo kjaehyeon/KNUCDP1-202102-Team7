@@ -1,9 +1,15 @@
-const initMonitoringDashboard = (api_key, warehouse_info) => {
-    $('.wd-screen').click(() => {
-        window.open(warehouse_info.cctvServer);
-    });
-    const latitude = warehouse_info.latitude;
-    const longitude = warehouse_info.longitude;
+let chart1 = null;
+let graph = 'temperature';
+const temperature_array = new Array(10).fill(0);
+const temperature_yaxis = [0, 100];
+const humidity_array = new Array(10).fill(0);
+const humidity_yaxis = [0, 100];
+const co_array = new Array(10).fill(0);
+const co_yaxis = [0, 100];
+const propane_array = new Array(10).fill(0);
+const propane_yaxis = [0, 100];
+
+const setWeatherInfo = (api_key, latitude, longitude) => {
     const icon_name = {
         '01d': 'wi-day-sunny',
         '01n': 'wi-night-clear',
@@ -77,18 +83,11 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
         JSON: true
     })
 
-    let graph = 'temperature';
-    const temperature_array = new Array(10).fill(0);
-    const temperature_yaxis = [0, 100];
-    const humidity_array = new Array(10).fill(0);
-    const humidity_yaxis = [0, 100];
-    const co_array = new Array(10).fill(0);
-    const co_yaxis = [0, 100];
-    const propane_array = new Array(10).fill(0);
-    const propane_yaxis = [0, 100];
+}
 
+const generateRealtimeGraph = () => {
     const ctx1 = $('#chart1')
-    const chart1 = new Chart(ctx1, {
+    chart1 = new Chart(ctx1, {
         type: 'line',
         data: {
             labels: ['', '', '', '', '', '', '', '', '', ''],
@@ -114,7 +113,12 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
                 },
             }
     });
-    
+}
+
+const addClickListener = () => {
+    $('.wd-screen').click(() => {
+        window.open(warehouse_info.cctvServer);
+    });
     $('.temperature').click(()=>{
         chart1.data.datasets[0].data = temperature_array;
         chart1.data.datasets[0].backgroundColor = '#36a2eb';
@@ -155,6 +159,9 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
         graph = 'propane';
         chart1.update();
     })
+}
+
+const setSocketConnection = (warehouse_info) => {
     const socket = io(warehouse_info.iotServer);
     
     socket.on('connect',()=>{
@@ -258,6 +265,9 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
             })
         }
     })
+}
+
+const generateWarehouseCapabilityChart = (warehouse_info) => {
     const useableArea = warehouse_info.useableArea;
     const usedArea = warehouse_info.usedArea;
     
@@ -275,7 +285,7 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
         }
     };
     const ctx2 = $('#chart2');
-    const chart2 = new Chart(ctx2, {
+    new Chart(ctx2, {
         type: 'doughnut',
         data: {
             labels: ['Useable', 'Used'],
@@ -304,4 +314,11 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
             },
         plugins: [counter],
     });
+}
+const initMonitoringDashboard = (api_key, warehouse_info) => {
+    setWeatherInfo(api_key, warehouse_info.latitude, warehouse_info.longitude);
+    generateRealtimeGraph();
+    addClickListener();
+    setSocketConnection(warehouse_info);
+    generateWarehouseCapabilityChart(warehouse_info);
 };
