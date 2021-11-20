@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <%- include('../monitoring_head') %>
-    <link rel='stylesheet' href='/CSS/nav.css'/>
-    <link rel='stylesheet' href='/CSS/dashboard.css'/>
-    <link rel='stylesheet' href='/CSS/iot_statistic.css'/>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/JS/iot_statistic.js"></script>
+        <link rel='stylesheet' href='/CSS/nav.css' />
+        <link rel='stylesheet' href='/CSS/dashboard.css' />
+        <link rel='stylesheet' href='/CSS/iot_statistic.css' />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="/JS/iot_statistic.js"></script>
+        <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script> -->
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+        <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css"> -->
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script> -->
+        <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet"> -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous"
+            referrerpolicy="no-referrer" />
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js" integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ==" crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>-->
+
 </head>
+
 <body>
     <div class='dashboard__container'>
         <div class='nav-wrapper'>
@@ -23,14 +37,15 @@
                     <div class="colflex">
                         <div class="chartInfo">
                             <div class="rowflex">
-                                <span>WareHouse Analytics</span>
+                                <span id="titleAnalysis">WareHouse Analytics</span>
                                 <div>
                                     <!-- <div class="date" name="date"></div> 여기에 날짜 넣기 -->
-                                    <form>
-                                        <button type="button" name="left"><</button>
-                                        <input type='date' id='currentDate'/>
-                                        <button type="button" name="right">></button>
-                                    </form>
+
+                                    <button type="button" class="btn btn-secondary" name="left" id="datePrev"><</button>
+                                    <input type='date' id='currentDate' style='width:130px;' />
+                                    <input type='text' class='datepicker' id='currentYear' style='display:none; width:130px;' />
+                                    <button type="button" class="btn btn-secondary" name="right" id="dateNext">></button>
+
                                 </div>
                                 <div class="rowflex DatePick">
                                     <div id="dayButton">DAILY</div>
@@ -40,11 +55,11 @@
                                     <button type="button" name="right">MONTH</button>
                                     <button type="button" name="right">YEAR</button> -->
                                 </div>
-                                
+
                             </div>
-                            
+
                         </div>
-                        <hr id="stat_line"/>
+                        <hr id="stat_line" />
                         <!-- <hr style="border: solid 10px red;"> -->
                         <div class="rowflex">
                             <div class="main_chart">
@@ -68,7 +83,7 @@
                             <div class="summary colflex">
                                 <div class="s_temp colflex">
                                     <div class="rowflex">
-                                        <h3><img src="Image/temp.png">Temperature</h3>
+                                        <h3 class="summaryName" style="color:#36a2eb"><img src="Image/temp.png">Temperature</h3>
                                     </div>
                                     <div class="rowflex">
                                         <span>MAX</span>
@@ -76,9 +91,9 @@
                                         <span>AVG</span>
                                     </div>
                                     <div class="rowflex realdata">
-                                        <span>39.6</span>
-                                        <span>21.7</span>
-                                        <span>30.5</span>
+                                        <span id="maxTemp">0.0</span>
+                                        <span id="minTemp">0.0</span>
+                                        <span id="avgTemp">0.0</span>
                                     </div>
                                 </div>
                                 <div>
@@ -86,7 +101,7 @@
                                 </div>
                                 <div class="s_humi colflex">
                                     <div class="rowflex">
-                                        <h3><img src="Image/humi.png">Humidity</h3>
+                                        <h3 class="summaryName" style="color:#8fbe96"><img src="Image/humi.png">Humidity</h3>
                                     </div>
                                     <div class="rowflex">
                                         <span>MAX</span>
@@ -94,9 +109,9 @@
                                         <span>AVG</span>
                                     </div>
                                     <div class="rowflex realdata">
-                                        <span>39.6</span>
-                                        <span>21.7</span>
-                                        <span>30.5</span>
+                                        <span id="maxHumi">0.0</span>
+                                        <span id="minHumi">0.0</span>
+                                        <span id="avgHumi">0.0</span>
                                     </div>
                                 </div>
                                 <div>
@@ -104,7 +119,7 @@
                                 </div>
                                 <div class="s_co colflex">
                                     <div class="rowflex">
-                                        <h3><img src="Image/co.png">CO</h3>
+                                        <h3 class="summaryName" style="color:#e0470f"><img src="Image/co.png">CO</h3>
                                     </div>
                                     <div class="rowflex">
                                         <span>MAX</span>
@@ -112,9 +127,9 @@
                                         <span>AVG</span>
                                     </div>
                                     <div class="rowflex realdata">
-                                        <span>39.6</span>
-                                        <span>21.7</span>
-                                        <span>30.5</span>
+                                        <span id="maxCo">0.0</span>
+                                        <span id="minCo">0.0</span>
+                                        <span id="avgCo">0.0</span>
                                     </div>
                                 </div>
                                 <div>
@@ -122,7 +137,7 @@
                                 </div>
                                 <div class="s_pro colflex">
                                     <div class="rowflex">
-                                        <h3><img src="Image/propane.png">Propane</h3>
+                                        <h3 class="summaryName" style="color:#fc434a"><img src="Image/propane.png">Propane</h3>
                                     </div>
                                     <div class="rowflex">
                                         <span>MAX</span>
@@ -130,9 +145,9 @@
                                         <span>AVG</span>
                                     </div>
                                     <div class="rowflex realdata">
-                                        <span>39.6</span>
-                                        <span>21.7</span>
-                                        <span>30.5</span>
+                                        <span id="maxPro">0.0</span>
+                                        <span id="minPro">0.0</span>
+                                        <span id="avgPro">0.0</span>
                                     </div>
                                 </div>
                                 <br>
@@ -144,8 +159,103 @@
         </div>
     </div>
 </body>
+
 </html>
 <script>
+    let type = 1 //day, 2: month, 3:year
+    $(dayButton).css("background-color", "#ECEFF6");
+    const today = new Date();
+    today.setDate(today.getDate() + 1);
+
+    function clearCanvas() {
+        charts["charts"][0].destroy();
+        charts["charts"][1].destroy();
+        charts["charts"][2].destroy();
+        charts["charts"][3].destroy();
+    };
     document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);
-    
+    $('.datepicker').datepicker({
+        format: "yyyy",
+        viewMode: "years",
+        minViewMode: "years",
+        autoclose: "true",
+        showAnim: "drop",
+        showOptions: {
+            direction: "up"
+        },
+        endDate: today
+            /* ko 파일 */
+            /*
+            days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+            daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+            daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+            months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+            monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+            today: "오늘",
+            clear: "삭제",
+            titleFormat: "yyyy년",
+            weekStart: 0,
+            */
+    }).on("changeDate", async function(e) {
+        //alert("Working", e);
+        clearCanvas();
+        charts = await getSensorData(type);
+    });
+    let charts = undefined;
+    (async function() {
+        charts = await getSensorData(type);
+        console.log(charts);
+    })();
+
+    $(currentDate).on("change", async function() {
+        //alert("date working")
+        clearCanvas();
+        charts = await getSensorData(type);
+    });
+
+    $(dayButton).on('click', async function() {
+        if (type != 1) {
+            $(currentDate).prop("type", "date");
+            document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);
+            $(dayButton).css("background-color", "#ECEFF6");
+            $(monthButton).css("background-color", "");
+            $(yearButton).css("background-color", "");
+
+            if (type == 3) {
+                $(currentDate).css('display', "");
+                $(currentYear).css('display', "none");
+
+            }
+            type = 1;
+            clearCanvas();
+            charts = await getSensorData(type);
+        }
+    });
+    $(monthButton).on('click', async function() {
+        if (type != 2) {
+            $(currentDate).prop("type", "month");
+            document.getElementById('currentDate').value = new Date().toISOString().slice(0, 7);
+            $(dayButton).css("background-color", "");
+            $(monthButton).css("background-color", "#ECEFF6");
+            $(yearButton).css("background-color", "");
+            if (type == 3) {
+                $(currentDate).css('display', "");
+                $(currentYear).css('display', "none");
+            }
+            type = 2;
+            clearCanvas();
+            charts = await getSensorData(type);
+        }
+    });
+    $(yearButton).on('click', async function() {
+        if (type != 3) {
+            $(currentDate).css('display', "none");
+            $(currentYear).css('display', "");
+            $(dayButton).css("background-color", "");
+            $(monthButton).css("background-color", "");
+            $(yearButton).css("background-color", "#ECEFF6");
+            type = 3;
+            $(".datepicker").datepicker("setDate", new Date());
+        }
+    });
 </script>

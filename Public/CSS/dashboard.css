@@ -1,21 +1,25 @@
-.dashboard__container{
-    display:flex;
+.dashboard__container {
+    display: flex;
     background: #F8F9FF;
     height: 1200px;
 }
-.dashboard__container .nav-wrapper{
+
+.dashboard__container .nav-wrapper {
     flex: 1;
 }
-.dashboard__container .dashboard{
+
+.dashboard__container .dashboard {
     flex: 4.5;
     margin: 20px 30px;
 }
-.dashboard__container .dashboard .dashboard-top{
+
+.dashboard__container .dashboard .dashboard-top {
     display: flex;
     justify-content: space-between;
     height: 5%;
 }
-.dashboard__container .dashboard-main{
+
+.dashboard__container .dashboard-main {
     display: grid;
     grid-template-rows: repeat(6, 1fr);
     grid-template-rows: 1.2fr 1fr 1.5fr;
@@ -23,22 +27,27 @@
     height: 95%;
 }
 
-.dashboard__container .dashboard-main .weather{
+.dashboard__container .dashboard-main .weather {
     grid-column: 1/4;
 }
-.dashboard__container .dashboard-main .graph{
+
+.dashboard__container .dashboard-main .graph {
     grid-column: 4/7;
 }
-.dashboard__container .dashboard .dashboard-main .sensor{
+
+.dashboard__container .dashboard .dashboard-main .sensor {
     grid-column: 1/7;
 }
-.dashboard__container .dashboard-main .cctv{
+
+.dashboard__container .dashboard-main .cctv {
     grid-column: 1/5;
 }
-.dashboard__container .dashboard-main .capability{
+
+.dashboard__container .dashboard-main .capability {
     grid-column: 5/7;
 }
-.dashboard__container .dashboard .dashboard-main .card{
+
+.dashboard__container .dashboard .dashboard-main .card {
     border-radius: 10px;
     margin: 0;
     box-shadow: 1px 1px 5px #6C757D;

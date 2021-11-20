@@ -1,54 +1,128 @@
-$(function () {
+async function getSensorData(type) {
+    //const { request } = require("request");
     String.prototype.format = function() {
         var formatted = this;
-        for( var arg in arguments ) {
+        for (var arg in arguments) {
             formatted = formatted.replace("{" + arg + "}", arguments[arg]);
         }
         return formatted;
     };
     // chart type => 'Year', 'Month', 'Day' of one
-    var type = $('#type');
-    var value = $('');
-    let defaultDate = new Date();
-    
+    //var type = $('#type');
+    let getDate = document.querySelector("#currentDate").value;
+    IpAdd = "http://192.168.22.47:9000";
+    // TO-DO : 라즈베리파이 IP주소 DB에 저장해야 함
+    // request Data
+    //console.log(type);
+    let options = undefined;
+    if (type == 1) {
+        options = {
+            uri: IpAdd + "/api/stat/day",
+            qs: {
+                datetime: getDate,
+            }
+        };
+    } else if (type == 2) {
+        options = {
+            uri: IpAdd + "/api/stat/month",
+            qs: {
+                datetime: getDate,
+            }
+        };
+    } else if (type == 3) {
+        console.log($(".datepicker").val());
+        options = {
+            uri: IpAdd + "/api/stat/year",
+            qs: {
+                datetime: $(".datepicker").val(),
+            }
+        };
+    }
+    //console.log(options);
+    /*await request(options, function(error, response, body) {
+        //callback
+        if (!error && response.statusCode == 200)
+            console.log(body);
+    })*/
+    let returnValue = undefined;
+    await $.ajax({
+        url: options.uri,
+        type: 'GET',
+        data: {
+            datetime: options.qs.datetime,
+        },
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).done(function(response) {
+        returnValue = response;
+    }).fail(function(error) {
+        console.log(error)
+    })
 
     // canvas
     var ctx1 = $('#chart_temp');
     var ctx2 = $('#chart_humi');
     var ctx3 = $('#chart_co');
     var ctx4 = $('#chart_pro');
-    // To-Do : 라즈베리파이에서 초기에 설정 시 
-    // IpAdd = "디비에서 가져오기"
-    // // request Data
-    // const options = {
-    //     uri: IpAdd + "/api/stat",
-    //     qs:{
-    //         type : type,
-    //         value1 : value,
-    //     }
-    // };
-    // request(options,function(err,response,body){
-    //     //callback
-    //     if(!error&&response.statusCode==200)
-    //         console.log(body);
-    // })
-    const body = '{"value":[{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15}]}';
-    let returnValue = JSON.parse(body);
-    console.log(returnValue);
+    //const body = '{"value":[{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15}]}';
+    //let returnValue = JSON.parse(body);
     let step = 0;
     let temp = new Array();
     let humi = new Array();
     let co = new Array();
     let propane = new Array();
     let labels = new Array();
-    for (step = 0; step < returnValue['value'].length; step++) {
-        console.log(returnValue['value'][step]['temperature'], returnValue['value'][step]['humidity'], returnValue['value'][step]['co'],returnValue['value'][step]['propane']);
-        temp.push(returnValue['value'][step]['temperature']);
-        humi.push(returnValue['value'][step]['humidity']);
-        co.push(returnValue['value'][step]['co']);
-        propane.push(returnValue['value'][step]['propane']);
-        labels.push("{0}".format(step+1));
+    let date = undefined;
+    for (step = 0; step < returnValue.length; step++) {
+        //console.log(returnValue[step]['temperature'], returnValue[step]['humidity'], returnValue[step]['co'], returnValue[step]['propane']);
+        temp.push(returnValue[step]['temperature']);
+        humi.push(returnValue[step]['humidity']);
+        co.push(returnValue[step]['co']);
+        propane.push(returnValue[step]['propane']);
+        if (type === 1) {
+            date = new Date(returnValue[step]['datetime'])
+            let hours = ('0' + date.getHours()).slice(-2);
+            let minutes = ('0' + date.getMinutes()).slice(-2);
+            let timeString = hours + ':' + minutes;
+            labels.push("{0}".format(timeString));
+
+        } else if (type === 2) {
+            date = new Date(returnValue[step]['datetime'])
+            labels.push("{0}".format(date.getDate()));
+        } else if (type === 3) {
+            date = new Date(returnValue[step]['datetime'])
+            labels.push("{0}".format(date.getMonth() + 1));
+        }
     }
+
+    const average = arr => arr.reduce((p, c) => p + c, 0) / arr.length;
+    //temp 최대, 최소, 평균
+    maxTemp = Math.max(...temp).toFixed(2);
+    minTemp = Math.min(...temp).toFixed(2);
+    document.getElementById("maxTemp").innerHTML = maxTemp + "°C";
+    document.getElementById("minTemp").innerHTML = minTemp + "°C";
+    document.getElementById("avgTemp").innerHTML = average(temp).toFixed(2) + "°C";
+    //humi 최대, 최소, 평균
+    maxHumi = Math.max(...humi).toFixed(2);
+    minHumi = Math.min(...humi).toFixed(2);
+    document.getElementById("maxHumi").innerHTML = maxHumi + "%";
+    document.getElementById("minHumi").innerHTML = minHumi + "%";
+    document.getElementById("avgHumi").innerHTML = average(humi).toFixed(2) + "%";
+    //Co 최대, 최소, 평균
+    maxCo = Math.max(...co).toFixed(2);
+    minCo = Math.min(...co).toFixed(2);
+    document.getElementById("maxCo").innerHTML = maxCo + "ppm";
+    document.getElementById("minCo").innerHTML = minCo + "ppm";
+    document.getElementById("avgCo").innerHTML = average(co).toFixed(2) + "ppm";
+    //Propane 최대, 최소, 평균
+    maxPro = Math.max(...propane).toFixed(2);
+    minPro = Math.min(...propane).toFixed(2);
+    document.getElementById("maxPro").innerHTML = maxPro + "ppm";
+    document.getElementById("minPro").innerHTML = minPro + "ppm";
+    document.getElementById("avgPro").innerHTML = average(propane).toFixed(2) + "ppm";
+
     // 차트 데이터
     var config1 = {
         type: 'line',
@@ -58,15 +132,16 @@ $(function () {
                 label: 'Temperature',
                 data: temp,
                 fill: false,
-                borderColor: 'orange',
-                tension: 0.1
+                borderColor: '#36a2eb',
+                tension: 0.1,
+                //backgroundColor: '#36a2eb',
             }]
         },
         options: {
             scales: {
                 y: {
                     min: 0,
-                    max: 40
+                    max: 50
                 }
             },
             plugins: {
@@ -92,15 +167,17 @@ $(function () {
                 label: 'Humidity',
                 data: humi,
                 fill: false,
-                borderColor: 'blue',
-                tension: 0.1
+                borderColor: '#8fbe96',
+                tension: 0.1,
+                //borderWidth: 1,
+                //backgroundColor: '#8fbe96'
             }]
         },
         options: {
             scales: {
                 y: {
                     min: 0,
-                    max: 100
+                    max: maxHumi + 5
                 }
             },
             plugins: {
@@ -126,7 +203,7 @@ $(function () {
                 label: 'CO',
                 data: co,
                 fill: false,
-                borderColor: 'green',
+                borderColor: '#e04006',
                 tension: 0.1
             }]
         },
@@ -134,7 +211,7 @@ $(function () {
             scales: {
                 y: {
                     min: 0,
-                    max: 100
+                    max: maxCo + 5
                 }
             },
             plugins: {
@@ -168,7 +245,7 @@ $(function () {
             scales: {
                 y: {
                     min: 0,
-                    max: 100
+                    max: maxPro + 5
                 }
             },
             plugins: {
@@ -191,8 +268,9 @@ $(function () {
     var chart2 = new Chart(ctx2, config2);
     var chart3 = new Chart(ctx3, config3);
     var chart4 = new Chart(ctx4, config4);
-    
+
     // (function wait() {
     //     setTimeout(wait, 1000000);
     // })();
-});
+    return { charts: [chart1, chart2, chart3, chart4] };
+};
