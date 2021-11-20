@@ -1,4 +1,4 @@
-module.exports = function (app, db) {
+module.exports = function(app, db) {
 
     const express = require('express');
     const router = express.Router();
@@ -82,8 +82,8 @@ module.exports = function (app, db) {
         iot_RFID.receive(req, res, db)
     });
 
-    router.get('/Statistic', (req, res, next) =>{
-        res.render('IoT/iot_Statistic');
+    router.get('/Statistic', (req, res, next) => {
+        res.render('IoT/iot_Statistic', { iotIP: req.session['iotServer'], uname: req.session['username'] });
     })
 
     return router;

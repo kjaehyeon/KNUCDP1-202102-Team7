@@ -1,4 +1,4 @@
-async function getSensorData(type) {
+async function getSensorData(type, IpAdd) {
     //const { request } = require("request");
     String.prototype.format = function() {
         var formatted = this;
@@ -10,7 +10,10 @@ async function getSensorData(type) {
     // chart type => 'Year', 'Month', 'Day' of one
     //var type = $('#type');
     let getDate = document.querySelector("#currentDate").value;
-    IpAdd = "http://192.168.22.47:9000";
+    //IpAdd = ipAdd;
+    //"http://192.168.22.47:9000";
+    console.log(IpAdd);
+    //"http://192.168.22.47:9000";
     // TO-DO : 라즈베리파이 IP주소 DB에 저장해야 함
     // request Data
     //console.log(type);
