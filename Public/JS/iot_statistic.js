@@ -276,7 +276,7 @@ async function getSensorData(type) {
                 label: 'Propane',
                 data: propane,
                 fill: false,
-                borderColor: 'purple',
+                borderColor: '#f29d00',
                 tension: 0.1
             }]
         },
