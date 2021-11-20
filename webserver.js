@@ -25,24 +25,24 @@ app.engine('html', ejs.renderFile);
 // 3) Session 설정(생성)
 var session = require('express-session');
 // 4) 중첩된 객체허용 여부 결정
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 // 5) JSON 방식의 Content-Type 데이터를 받기
 app.use(bodyParser.json());
 // 6) 'Public' Directory에 정적 파일(사진, 이미지)을 위치시키기
 app.use(express.static('Public'));
 // 7) CORS 허용
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
     next();
 });
 app.use(fileUpload({
-    limits: {fileSize: 50 * 1024 * 1024}
+    limits: { fileSize: 50 * 1024 * 1024 }
 }));
 
 // apollo
 var server = http.createServer(app);
-apolloServer.applyMiddleware({app});
+apolloServer.applyMiddleware({ app });
 apolloServer.installSubscriptionHandlers(server);
 
 var MySQLStore = require('express-mysql-session')(session);
@@ -70,8 +70,8 @@ app.use('/Provider', require('./Routes/pv')(app, dbConnection));
 app.use('/Buyer', require('./Routes/by')(app, dbConnection));
 app.use('/Iot', require('./Routes/iot')(app, dbConnection));
 
-app.get('/Public/Upload/:filename', function (req, res) {
-    fs.readFile(__dirname + `/Public/Upload/${req.params.filename}`, function (err, data) {
+app.get('/Public/Upload/:filename', function(req, res) {
+    fs.readFile(__dirname + `/Public/Upload/${req.params.filename}`, function(err, data) {
         if (err) throw err;
         res.write(data);
     })
@@ -84,6 +84,6 @@ app.use((req, res, next) => {
 });
 
 // 11) 서버를 열 때 설정 함수
-server.listen(5000, function (req, res) {
+server.listen(5000, function(req, res) {
     console.log('connected!!');
 });
