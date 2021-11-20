@@ -8,18 +8,10 @@
         <link rel='stylesheet' href='/CSS/iot_statistic.css' />
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="/JS/iot_statistic.js"></script>
-        <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script> -->
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-        <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css"> -->
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script> -->
-        <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet"> -->
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous"
             referrerpolicy="no-referrer" />
-        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js" integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ==" crossorigin="anonymous"
-            referrerpolicy="no-referrer"></script>-->
-
 </head>
 
 <body>
@@ -39,28 +31,19 @@
                             <div class="rowflex">
                                 <span id="titleAnalysis">WareHouse Analytics</span>
                                 <div>
-                                    <!-- <div class="date" name="date"></div> 여기에 날짜 넣기 -->
-
-                                    <!-- <button type="button" class="btn btn-secondary" name="left" id="datePrev"><</button> -->
                                     <input type='date' id='currentDate' style='width:130px;' />
                                     <input type='text' class='datepicker' id='currentYear' style='display:none; width:130px;' />
-                                    <!-- <button type="button" class="btn btn-secondary" name="right" id="dateNext">></button> -->
-
                                 </div>
                                 <div class="rowflex DatePick">
                                     <div id="dayButton">DAILY</div>
                                     <div id="monthButton">MONTHLY</div>
                                     <div id="yearButton">YEARLY</div>
-                                    <!-- <button type="button" name="right"></button>
-                                    <button type="button" name="right">MONTH</button>
-                                    <button type="button" name="right">YEAR</button> -->
                                 </div>
 
                             </div>
 
                         </div>
                         <hr id="stat_line" />
-                        <!-- <hr style="border: solid 10px red;"> -->
                         <div class="rowflex">
                             <div class="main_chart">
                                 <div class="chart_row">
@@ -162,19 +145,25 @@
 
 </html>
 <script>
-    let type = 1 //day, 2: month, 3:year
+    let type = 1; //day, 2: month, 3:year
+    // render를 통해 받아온 iotIP 할당
     iotIPAd = "<%=iotIP%>";
     $(dayButton).css("background-color", "#ECEFF6");
-    const today = new Date();
+    const today = new Date(); //오늘 날짜 받기
+    //Years 선택 시 오늘 날짜는 입력이 안되는 문제 때문에 하루를 더해줌
     today.setDate(today.getDate() + 1);
-
+    // charts 객체를 전장하기 위한 변수
+    let charts = undefined;
+    // Canvas를 지워주는 함수
     function clearCanvas() {
         charts["charts"][0].destroy();
         charts["charts"][1].destroy();
         charts["charts"][2].destroy();
         charts["charts"][3].destroy();
     };
+    //currentDate input에 오늘 날짜 넣어주기(표준형태로)
     document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);
+    // year 선택 시 나타나게 되는 datepick 미리 설정
     $('.datepicker').datepicker({
         format: "yyyy",
         viewMode: "years",
@@ -185,23 +174,20 @@
             direction: "up"
         },
         endDate: today,
-    }).on("changeDate", async function(e) {
-        //alert("Working", e);
+    }).on("changeDate", async function(e) { //값이 변경되면 Canvas 초기화 후에 데이터를 다시 받아와 그래프 그림
         clearCanvas();
         charts = await getSensorData(type, iotIPAd);
     });
-    let charts = undefined;
+    // 비동기로 첫 센서 데이터 받아오기 실행
     (async function() {
         charts = await getSensorData(type, iotIPAd);
-        console.log(charts);
     })();
-
+    // 현재 날짜가 바뀌게 되면 Canvas 초기화 후에 데이터를 다시 받아와 그래프 그림
     $(currentDate).on("change", async function() {
-        //alert("date working")
         clearCanvas();
         charts = await getSensorData(type, iotIPAd);
     });
-
+    // dayButton이 클릭되면, 특정 날짜를 기준으로 데이터 가져옴
     $(dayButton).on('click', async function() {
         if (type != 1) {
             $(currentDate).prop("type", "date");
@@ -209,17 +195,16 @@
             $(dayButton).css("background-color", "#ECEFF6");
             $(monthButton).css("background-color", "");
             $(yearButton).css("background-color", "");
-
             if (type == 3) {
                 $(currentDate).css('display', "");
                 $(currentYear).css('display', "none");
-
             }
             type = 1;
             clearCanvas();
             charts = await getSensorData(type, iotIPAd);
         }
     });
+    // monthButton이 클릭되면, 특정 월을 기준으로 데이터 가져옴
     $(monthButton).on('click', async function() {
         if (type != 2) {
             $(currentDate).prop("type", "month");
@@ -236,6 +221,7 @@
             charts = await getSensorData(type, iotIPAd);
         }
     });
+    // yearButton이 클릭되면, 특정 년을 기준으로 데이터 가져옴
     $(yearButton).on('click', async function() {
         if (type != 3) {
             $(currentDate).css('display', "none");

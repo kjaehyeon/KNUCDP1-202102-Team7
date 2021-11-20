@@ -1,5 +1,4 @@
 async function getSensorData(type, IpAdd) {
-    //const { request } = require("request");
     String.prototype.format = function() {
         var formatted = this;
         for (var arg in arguments) {
@@ -7,16 +6,8 @@ async function getSensorData(type, IpAdd) {
         }
         return formatted;
     };
-    // chart type => 'Year', 'Month', 'Day' of one
-    //var type = $('#type');
     let getDate = document.querySelector("#currentDate").value;
-    //IpAdd = ipAdd;
-    //"http://192.168.22.47:9000";
-    console.log(IpAdd);
-    //"http://192.168.22.47:9000";
-    // TO-DO : 라즈베리파이 IP주소 DB에 저장해야 함
-    // request Data
-    //console.log(type);
+    //"http://192.168.22.47:9000"; //임시 주소
     let options = undefined;
     if (type == 1) {
         options = {
@@ -41,12 +32,6 @@ async function getSensorData(type, IpAdd) {
             }
         };
     }
-    //console.log(options);
-    /*await request(options, function(error, response, body) {
-        //callback
-        if (!error && response.statusCode == 200)
-            console.log(body);
-    })*/
     let returnValue = undefined;
     await $.ajax({
         url: options.uri,
