@@ -52,11 +52,11 @@
     font-size: 18px;
     font-weight: 600;
 }
-.dashboard__container .dashboard-main .graph{
+.dashboard__container .dashboard-main .realtime{
     grid-column: 4/8;
     padding: 10px 20px 0 20px;
 }
-.dashboard__container .dashboard-main .graph .title{
+.dashboard__container .dashboard-main .realtime .title{
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 10px;
@@ -72,6 +72,9 @@
     flex: 1;
     text-align: center;
     margin: 0 30px;
+}
+.dashboard__container .dashboard .dashboard-main .sensor .value-wrapper.numerical{
+    cursor: pointer;
 }
 .dashboard__container .dashboard .dashboard-main .sensor .value-wrapper.fine{
     background: #CDF2CA;
@@ -90,19 +93,19 @@
     border-radius: 10px;
     margin-bottom: 10px;
 }
-.dashboard__container .dashboard .dashboard-main .sensor .value-wrapper .temperature{
+.dashboard__container .dashboard .dashboard-main .sensor .value-wrapper.temperature .sensor-icon1{
     background: #E6F2FE;
     color: #017EFA;
 }
-.dashboard__container .dashboard .dashboard-main .sensor .value-wrapper .humidity{
+.dashboard__container .dashboard .dashboard-main .sensor .value-wrapper.humidity .sensor-icon1{
     background: #F2F6F5;
     color: #8FF97E;
 }
-.dashboard__container .dashboard .dashboard-main .sensor .value-wrapper .gas{
+.dashboard__container .dashboard .dashboard-main .sensor .value-wrapper.co .sensor-icon1{
     background: #FAEEE7;
     color: #DF2E2E;
 }
-.dashboard__container .dashboard .dashboard-main .sensor .value-wrapper .smoke{
+.dashboard__container .dashboard .dashboard-main .sensor .value-wrapper.propane .sensor-icon1{
     background: #F6F6F6;
     color: #9D9D9D;
 }
