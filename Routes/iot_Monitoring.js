@@ -2,7 +2,7 @@ exports.init = function (req, res, db) {
     if (req.headers.referer.includes('Admin/IoTTest')) {
         res.render('IoT/iot_Monitoring', {'iotServer': req.session['iotServer'], 'session': req.session});
     } else {
-        const warehouse_result = db.query('SELECT SUM(C.area) AS usedArea, W.useableArea,'
+        const warehouse_result = db.query('SELECT IFNULL(SUM(C.area), 0) AS usedArea, W.useableArea,'
                         + ' W.latitude, W.longitude, W.iotServer, W.cctvServer'
                         + ' FROM Contract C, Warehouse W'
                         + ' WHERE C.warehouseID = W.warehouseID'
