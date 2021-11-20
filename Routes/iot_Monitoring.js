@@ -2,15 +2,20 @@ exports.init = function (req, res, db) {
     if (req.headers.referer.includes('Admin/IoTTest')) {
         res.render('IoT/iot_Monitoring', {'iotServer': req.session['iotServer'], 'session': req.session});
     } else {
-        const warehouse_result = db.query('SELECT SUM(C.area) AS usedArea, W.useableArea,'
-                        + ' W.latitude, W.longitude, W.iotServer, W.cctvServer'
-                        + ' FROM Contract C, Warehouse W'
-                        + ' WHERE C.warehouseID = W.warehouseID'
-                        + ' AND W.warehouseID = ?', [req.session['warehouseID']]);
+        let usedArea = db.query('SELECT SUM(C.area) AS usedArea'
+                                + ' FROM Contract C, Warehouse W'
+                                + ' WHERE C.warehouseID = W.warehouseID'
+                                + ' AND W.warehouseID = ?', [req.session['warehouseID']])[0].usedArea;
+        if(!usedArea) usedArea = 0;
+        const warehouse_result = db.query('SELECT useableArea, latitude, longitude,'
+                                + ' iotServer, cctvServer'
+                                + ' FROM Warehouse'
+                                + ' WHERE warehouseID = ?', [req.session['warehouseID']]);
         res.render('IoT/iot_Monitoring', {
             user_type: req.session['type'],
             user_name: req.session['username'], 
             warehouse_info: {
+                usedArea,
                 warehouse_id: req.session['warehouseID'],
                 ...warehouse_result[0]
             }
