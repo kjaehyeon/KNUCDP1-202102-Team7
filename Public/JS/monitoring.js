@@ -79,9 +79,13 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
 
     let graph = 'temperature';
     const temperature_array = new Array(10).fill(0);
+    const temperature_yaxis = [0, 100];
     const humidity_array = new Array(10).fill(0);
+    const humidity_yaxis = [0, 100];
     const co_array = new Array(10).fill(0);
+    const co_yaxis = [0, 100];
     const propane_array = new Array(10).fill(0);
+    const propane_yaxis = [0, 100];
 
     const ctx1 = $('#chart1')
     const chart1 = new Chart(ctx1, {
@@ -100,7 +104,7 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
                 scales: {
                     y: {
                         min: 0,
-                        max: 40
+                        max: 100
                     }
                 },
                 plugins: {
@@ -111,11 +115,12 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
             }
     });
     
-    
     $('.temperature').click(()=>{
         chart1.data.datasets[0].data = temperature_array;
         chart1.data.datasets[0].backgroundColor = '#36a2eb';
         chart1.data.datasets[0].borderColor = '#36a2eb';
+        chart1.options.scales.y.min = temperature_yaxis[0];
+        chart1.options.scales.y.max = temperature_yaxis[1];
         graph = 'temperature';
         $('.realtime .title span').html('&nbsp;Realtime Temperature');
         chart1.update();
@@ -124,6 +129,8 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
         chart1.data.datasets[0].data = humidity_array;
         chart1.data.datasets[0].backgroundColor = '#8fbe96';
         chart1.data.datasets[0].borderColor = '#8fbe96';
+        chart1.options.scales.y.min = humidity_yaxis[0];
+        chart1.options.scales.y.max = humidity_yaxis[1];
         graph = 'humidity';
         $('.realtime .title span').html('&nbsp;Realtime Humidity');
         chart1.update();
@@ -132,6 +139,8 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
         chart1.data.datasets[0].data = co_array;
         chart1.data.datasets[0].backgroundColor = '#e04006';
         chart1.data.datasets[0].borderColor = '#e04006';
+        chart1.options.scales.y.min = co_yaxis[0];
+        chart1.options.scales.y.max = co_yaxis[1];
         graph = 'co';
         $('.realtime .title span').html('&nbsp;Realtime Co');
         chart1.update();
@@ -140,6 +149,8 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
         chart1.data.datasets[0].data = propane_array;
         chart1.data.datasets[0].backgroundColor = '#f29d00';
         chart1.data.datasets[0].borderColor = '#f29d00';
+        chart1.options.scales.y.min = propane_yaxis[0];
+        chart1.options.scales.y.max = propane_yaxis[1];
         $('.realtime .title span').html('&nbsp;Realtime Propane');
         graph = 'propane';
         chart1.update();
@@ -170,19 +181,52 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
                 co_array.pop();
                 propane_array.unshift(propane);
                 propane_array.pop();
+
+                if(Math.min(...temperature_array) < temperature_yaxis[0]){
+                    temperature_yaxis[0] = Math.min(...temperature_array) - 10;
+                }
+                if(Math.max(...temperature_array) > temperature_yaxis[1]){
+                    temperature_yaxis[1] = Math.min(...temperature_array) + 10;
+                }
+                if(Math.min(...humidity_array) < humidity_yaxis[0]){
+                    humididty_yaxis[0] = Math.min(...humidity_array) - 10;
+                }
+                if(Math.max(...humidity_array) > humidity_yaxis[1]){
+                    humididty_yaxis[1] = Math.min(...humidity_array) + 10;
+                }
+                if(Math.min(...co_array) < co_yaxis[0]){
+                    co_yaxis[0] = Math.min(...co_array) - 10;
+                }
+                if(Math.max(...co_array) > co_yaxis[1]){
+                    co_yaxis[1] = Math.min(...co_array) + 10;
+                }
+                if(Math.min(...propane_array) < propane_yaxis[0]){
+                    propane_yaxis[0] = Math.min(...propane_array) - 10;
+                }
+                if(Math.max(...propane_array) > propane_yaxis[1]){
+                    propane_yaxis[1] = Math.min(...propane_array) + 10;
+                }
                 
                 switch (graph) {
                     case 'temperature':
                         data = temperature_array;
+                        chart1.options.scales.y.min = temperature_yaxis[0];
+                        chart1.options.scales.y.max = temperature_yaxis[1];
                         break;
                     case 'humidity':
                         data = humidity_array;
+                        chart1.options.scales.y.min = humidity_yaxis[0];
+                        chart1.options.scales.y.max = humidity_yaxis[1];
                         break;
-                        case 'co':
+                    case 'co':
                         data = co_array;
+                        chart1.options.scales.y.min = co_yaxis[0];
+                        chart1.options.scales.y.max = co_yaxis[1];
                         break;
                     case 'propane':
                         data = propane_array;
+                        chart1.options.scales.y.min = propane_yaxis[0];
+                        chart1.options.scales.y.max = propane_yaxis[1];
                         break;
                 }
                 chart1.update();
@@ -220,7 +264,7 @@ const initMonitoringDashboard = (api_key, warehouse_info) => {
     const counter = {
         id: 'counter',
         beforeDraw(chart, args, options){
-            const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+            const {ctx, chartArea: {top, width, height}} = chart;
             ctx.save();
 
             ctx.font = '600 24px sans-serif';
