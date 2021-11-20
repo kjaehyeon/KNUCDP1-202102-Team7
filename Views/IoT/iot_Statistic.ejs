@@ -34,17 +34,17 @@
             </div>
             <div class='dashboard-main'>
                 <div class='chartbox'>
-                    <div class="colflex">
+                    <div class="colflex" id="dashChart">
                         <div class="chartInfo">
                             <div class="rowflex">
                                 <span id="titleAnalysis">WareHouse Analytics</span>
                                 <div>
                                     <!-- <div class="date" name="date"></div> 여기에 날짜 넣기 -->
 
-                                    <button type="button" class="btn btn-secondary" name="left" id="datePrev"><</button>
+                                    <!-- <button type="button" class="btn btn-secondary" name="left" id="datePrev"><</button> -->
                                     <input type='date' id='currentDate' style='width:130px;' />
                                     <input type='text' class='datepicker' id='currentYear' style='display:none; width:130px;' />
-                                    <button type="button" class="btn btn-secondary" name="right" id="dateNext">></button>
+                                    <!-- <button type="button" class="btn btn-secondary" name="right" id="dateNext">></button> -->
 
                                 </div>
                                 <div class="rowflex DatePick">
@@ -96,9 +96,9 @@
                                         <span id="avgTemp">0.0</span>
                                     </div>
                                 </div>
-                                <div>
-                                    <hr class="chartinfoHR">
-                                </div>
+
+                                <hr class="chartinfoHR">
+
                                 <div class="s_humi colflex">
                                     <div class="rowflex">
                                         <h3 class="summaryName" style="color:#8fbe96"><img src="Image/humi.png">Humidity</h3>
@@ -114,9 +114,9 @@
                                         <span id="avgHumi">0.0</span>
                                     </div>
                                 </div>
-                                <div>
-                                    <hr class="chartinfoHR">
-                                </div>
+
+                                <hr class="chartinfoHR">
+
                                 <div class="s_co colflex">
                                     <div class="rowflex">
                                         <h3 class="summaryName" style="color:#e0470f"><img src="Image/co.png">CO</h3>
@@ -132,9 +132,9 @@
                                         <span id="avgCo">0.0</span>
                                     </div>
                                 </div>
-                                <div>
-                                    <hr class="chartinfoHR">
-                                </div>
+
+                                <hr class="chartinfoHR">
+
                                 <div class="s_pro colflex">
                                     <div class="rowflex">
                                         <h3 class="summaryName" style="color:#fc434a"><img src="Image/propane.png">Propane</h3>

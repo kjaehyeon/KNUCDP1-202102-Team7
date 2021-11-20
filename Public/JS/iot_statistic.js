@@ -60,8 +60,6 @@ async function getSensorData(type) {
     }).fail(function(error) {
         console.log(error)
     })
-
-    // canvas
     var ctx1 = $('#chart_temp');
     var ctx2 = $('#chart_humi');
     var ctx3 = $('#chart_co');
@@ -75,54 +73,95 @@ async function getSensorData(type) {
     let propane = new Array();
     let labels = new Array();
     let date = undefined;
-    for (step = 0; step < returnValue.length; step++) {
-        //console.log(returnValue[step]['temperature'], returnValue[step]['humidity'], returnValue[step]['co'], returnValue[step]['propane']);
-        temp.push(returnValue[step]['temperature']);
-        humi.push(returnValue[step]['humidity']);
-        co.push(returnValue[step]['co']);
-        propane.push(returnValue[step]['propane']);
-        if (type === 1) {
-            date = new Date(returnValue[step]['datetime'])
-            let hours = ('0' + date.getHours()).slice(-2);
-            let minutes = ('0' + date.getMinutes()).slice(-2);
-            let timeString = hours + ':' + minutes;
-            labels.push("{0}".format(timeString));
+    if (returnValue.length != 0) {
+        // canvas
 
-        } else if (type === 2) {
-            date = new Date(returnValue[step]['datetime'])
-            labels.push("{0}".format(date.getDate()));
-        } else if (type === 3) {
-            date = new Date(returnValue[step]['datetime'])
-            labels.push("{0}".format(date.getMonth() + 1));
+        for (step = 0; step < returnValue.length; step++) {
+            //console.log(returnValue[step]['temperature'], returnValue[step]['humidity'], returnValue[step]['co'], returnValue[step]['propane']);
+            temp.push(returnValue[step]['temperature']);
+            humi.push(returnValue[step]['humidity']);
+            co.push(returnValue[step]['co']);
+            propane.push(returnValue[step]['propane']);
+            if (type === 1) {
+                date = new Date(returnValue[step]['datetime'])
+                let hours = ('0' + date.getHours()).slice(-2);
+                let minutes = ('0' + date.getMinutes()).slice(-2);
+                let timeString = hours + ':' + minutes;
+                labels.push("{0}".format(timeString));
+
+            } else if (type === 2) {
+                date = new Date(returnValue[step]['datetime'])
+                labels.push("{0}".format(date.getDate()));
+            } else if (type === 3) {
+                date = new Date(returnValue[step]['datetime'])
+                labels.push("{0}".format(date.getMonth() + 1));
+            }
         }
+
+        const average = arr => arr.reduce((p, c) => p + c, 0) / arr.length;
+        //temp 최대, 최소, 평균
+        maxTemp = Math.max(...temp).toFixed(2);
+        minTemp = Math.min(...temp).toFixed(2);
+        document.getElementById("maxTemp").innerHTML = maxTemp + "°C";
+        document.getElementById("minTemp").innerHTML = minTemp + "°C";
+        document.getElementById("avgTemp").innerHTML = average(temp).toFixed(2) + "°C";
+        chartMaxTemp = Math.max(...temp) + 5;
+        if (Math.min(...temp) <= 0) {
+            chartMinTemp = Math.min(...temp) - 5;
+        } else {
+            chartMinTemp = 0
+        }
+        //humi 최대, 최소, 평균
+        maxHumi = Math.max(...humi).toFixed(2);
+        minHumi = Math.min(...humi).toFixed(2);
+        document.getElementById("maxHumi").innerHTML = maxHumi + "%";
+        document.getElementById("minHumi").innerHTML = minHumi + "%";
+        document.getElementById("avgHumi").innerHTML = average(humi).toFixed(2) + "%";
+        chartMaxHumi = Math.max(...humi) + 5;
+        if (Math.min(...temp) <= 0) {
+            chartMinHumi = Math.min(...humi) - 5;
+        } else {
+            chartMinHumi = 0
+        }
+        //Co 최대, 최소, 평균
+        maxCo = Math.round(Math.max(...co));
+        minCo = Math.round(Math.min(...co));
+        document.getElementById("maxCo").innerHTML = maxCo + "ppm";
+        document.getElementById("minCo").innerHTML = minCo + "ppm";
+        document.getElementById("avgCo").innerHTML = Math.round(average(co)) + "ppm";
+        chartMaxCo = Math.max(...co) + 20;
+        if (Math.min(...temp) <= 0) {
+            chartMinCo = Math.min(...co) - 20;
+        } else {
+            chartMinCo = 0
+        }
+        //Propane 최대, 최소, 평균
+        maxPro = Math.round(Math.max(...propane));
+        minPro = Math.round(Math.min(...propane));
+        document.getElementById("maxPro").innerHTML = maxPro + "ppm";
+        document.getElementById("minPro").innerHTML = minPro + "ppm";
+        document.getElementById("avgPro").innerHTML = Math.round(average(propane)) + "ppm";
+        chartMaxPro = Math.max(...propane) + 20;
+        if (Math.min(...temp) <= 0) {
+            chartMinPro = Math.min(...propane) - 20;
+        } else {
+            chartMinPro = 0
+        }
+    } else {
+        Swal.fire({
+            title: 'Not Exists',
+            html: `해당 날짜에는 데이터가 없습니다<br>`,
+            icon: 'error'
+        })
+        chartMaxTemp = 100;
+        chartMinTemp = -50;
+        chartMaxHumi = 100;
+        chartMinHumi = 0;
+        chartMaxCo = 1000;
+        chartMinCo = -500;
+        chartMaxPro = 1000;
+        chartMinPro = -500;
     }
-
-    const average = arr => arr.reduce((p, c) => p + c, 0) / arr.length;
-    //temp 최대, 최소, 평균
-    maxTemp = Math.max(...temp).toFixed(2);
-    minTemp = Math.min(...temp).toFixed(2);
-    document.getElementById("maxTemp").innerHTML = maxTemp + "°C";
-    document.getElementById("minTemp").innerHTML = minTemp + "°C";
-    document.getElementById("avgTemp").innerHTML = average(temp).toFixed(2) + "°C";
-    //humi 최대, 최소, 평균
-    maxHumi = Math.max(...humi).toFixed(2);
-    minHumi = Math.min(...humi).toFixed(2);
-    document.getElementById("maxHumi").innerHTML = maxHumi + "%";
-    document.getElementById("minHumi").innerHTML = minHumi + "%";
-    document.getElementById("avgHumi").innerHTML = average(humi).toFixed(2) + "%";
-    //Co 최대, 최소, 평균
-    maxCo = Math.max(...co).toFixed(2);
-    minCo = Math.min(...co).toFixed(2);
-    document.getElementById("maxCo").innerHTML = maxCo + "ppm";
-    document.getElementById("minCo").innerHTML = minCo + "ppm";
-    document.getElementById("avgCo").innerHTML = average(co).toFixed(2) + "ppm";
-    //Propane 최대, 최소, 평균
-    maxPro = Math.max(...propane).toFixed(2);
-    minPro = Math.min(...propane).toFixed(2);
-    document.getElementById("maxPro").innerHTML = maxPro + "ppm";
-    document.getElementById("minPro").innerHTML = minPro + "ppm";
-    document.getElementById("avgPro").innerHTML = average(propane).toFixed(2) + "ppm";
-
     // 차트 데이터
     var config1 = {
         type: 'line',
@@ -140,8 +179,8 @@ async function getSensorData(type) {
         options: {
             scales: {
                 y: {
-                    min: 0,
-                    max: 50
+                    min: chartMinTemp,
+                    max: chartMaxTemp
                 }
             },
             plugins: {
@@ -176,8 +215,8 @@ async function getSensorData(type) {
         options: {
             scales: {
                 y: {
-                    min: 0,
-                    max: maxHumi + 5
+                    min: chartMinHumi,
+                    max: chartMaxHumi
                 }
             },
             plugins: {
@@ -210,8 +249,8 @@ async function getSensorData(type) {
         options: {
             scales: {
                 y: {
-                    min: 0,
-                    max: maxCo + 5
+                    min: chartMinCo,
+                    max: chartMaxCo
                 }
             },
             plugins: {
@@ -244,8 +283,8 @@ async function getSensorData(type) {
         options: {
             scales: {
                 y: {
-                    min: 0,
-                    max: maxPro + 5
+                    min: chartMinPro,
+                    max: chartMaxPro
                 }
             },
             plugins: {
@@ -273,4 +312,5 @@ async function getSensorData(type) {
     //     setTimeout(wait, 1000000);
     // })();
     return { charts: [chart1, chart2, chart3, chart4] };
+
 };
