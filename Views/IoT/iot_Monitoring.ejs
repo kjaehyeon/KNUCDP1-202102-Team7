@@ -1,39 +1,97 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-
+<html lang='en' dir='ltr'>
 <head>
-  <%- include('../head') %>
-  <title>Monitoring</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="/JS/monitoring.js"></script>
+    <%- include('../monitoring_head') %>
+    <link rel='stylesheet' href='/CSS/nav.css'/>
+    <link rel='stylesheet' href='/CSS/dashboard.css'/>
+    <link rel='stylesheet' href='/CSS/weather-icons.min.css'/>
+    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.js"></script>
 </head>
-
 <body>
-  <div class="wrap">
-    <header>
-      <%- include('iot_Nav') %>
-    </header>
-    <section id="iot">
-      <div class="container">
-        <div class="sensor">
-          <canvas id="chart1" width="350" height="350"></canvas>
+    <div class='dashboard__container'>
+        <div class='nav-wrapper'>
+            <%- include('iot_Nav') %>
         </div>
-        <div class="sensor">
-          <canvas id="chart2" width="350" height="350"></canvas>
+        <div class='dashboard'>
+            <div class='dashboard-top'>
+                <%- include('iot_Top') %>
+            </div>
+            <div class='dashboard-main'>
+                <div class='weather card'></div>
+                <div class='realtime card'>
+                    <div class='title'>
+                        <i class='fas fa-chart-line'></i>
+                        <span>&nbsp;Realtime Temperature</span>
+                    </div>
+                    <div class='realtime-graph'>
+                        <canvas id='chart1' height='120%'></canvas>
+                    </div>
+                </div>
+                <div class='sensor card'>
+                    <div class='value-wrapper temperature numerical'>
+                        <i class='fas fa-thermometer-half sensor-icon1'></i>
+                        <div>Temperature</div>
+                        <div class='value'>36.5&#8451;</div>
+                    </div>
+                    <div class='value-wrapper humidity numerical'>
+                        <i class='fas fa-tint sensor-icon1'></i>
+                        <div>Humidity</div>
+                        <div class='value'>58%</div>
+                    </div>
+                    <div class='value-wrapper co numerical'>
+                        <i class='fas fa-burn sensor-icon1'></i>
+                        <div>Co</div>
+                        <div class='value'>100ppm</div>
+                    </div>
+                    <div class='value-wrapper propane numerical'>
+                        <img src='/Image/propane.png' 
+                            class='sensor-icon1'
+                            style='width:76px; height: 68px;'
+                            />
+                        <div>Propane</div>
+                        <div class='value'>35ppm</div>
+                    </div>
+                    <div class='value-wrapper fine'>
+                        <i class='fas fa-fire-alt sensor-icon2'></i>
+                        <div>Flame</div>
+                        <div class='value'>FINE</div>
+                    </div>
+                    <div class='value-wrapper fine'>
+                        <i class='fas fa-water sensor-icon2'></i>
+                        <div>Vibration</div>
+                        <div class='value'>FINE</div>
+                    </div>
+                </div>
+                <div class='cctv card'>
+                    <div class='title'>
+                        <div>
+                            <i class='fas fa-video'></i>
+                            CCTV
+                        </div>
+                        <div class='wd-screen'>Wide Screen</div>
+                    </div>
+                    <div class='content'>
+                        <i class='fas fa-chevron-left left'></i>
+                        <iframe src='<%=warehouse_info.cctvServer%>' frameborder='0' scrolling='no'></iframe>
+                        <i class='fas fa-chevron-right right'></i>
+                    </div>
+                </div>
+                <div class='capability card'>
+                    <div class='title'>
+                        <i class='fas fa-chart-pie'></i>
+                        Warehouse Capability
+                    </div>
+                    <div class='capability-graph'>
+                        <canvas id='chart2'></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="sensor">
-          <canvas id="chart3" width="350" height="350"></canvas>
-        </div>
-        <div class="sensor">
-          <canvas id="chart4" width="350" height="350"></canvas>
-        </div>
-      </div>
-      <input type="hidden" id="ws" value="<%= iotServer %>" />
-    </section>
-    <footer>
-      <%- include('../footer') %>
-    </footer>
-  </div>
+    </div>
+    <script src='/JS/monitoring.js'></script>
+    <script>
+        initMonitoringDashboard('<%=process.env.WEATHER_API_KEY%>', '<%=warehouse_info%>');
+    </script>
 </body>
-
 </html>

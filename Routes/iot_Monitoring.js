@@ -2,10 +2,19 @@ exports.init = function (req, res, db) {
     if (req.headers.referer.includes('Admin/IoTTest')) {
         res.render('IoT/iot_Monitoring', {'iotServer': req.session['iotServer'], 'session': req.session});
     } else {
-        var wid = req.session['warehouseID'];
-        var row = db.query("SELECT iotServer FROM Warehouse WHERE warehouseID = ?;", [wid]);
-        if (!row) res.render('Alert/cannotAccess');
-        else res.render('IoT/iot_Monitoring', {'iotServer': row[0].iotServer, 'session': req.session});
+        const warehouse_result = db.query('SELECT SUM(C.area) AS usedArea, W.useableArea,'
+                        + ' W.latitude, W.longitude, W.iotServer, W.cctvServer'
+                        + ' FROM Contract C, Warehouse W'
+                        + ' WHERE C.warehouseID = W.warehouseID'
+                        + ' AND W.warehouseID = ?', [req.session['warehouseID']]);
+        res.render('IoT/iot_Monitoring', {
+            user_type: req.session['type'],
+            user_name: req.session['username'], 
+            warehouse_info: {
+                warehouse_id: req.session['warehouseID'],
+                ...warehouse_result[0]
+            }
+        });
     }
 }
 
