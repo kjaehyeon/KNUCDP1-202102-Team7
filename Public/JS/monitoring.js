@@ -166,10 +166,10 @@ const setSocketConnection = (warehouse_info) => {
     socket.on('connect', () => {
         if (socket.connected) {
             $('.left').click(() => {
-                socket.emit('my_broadcast_event', { data: 'left' });
+                socket.emit('camera_move', { data: 'l' });
             });
             $('.right').click(() => {
-                socket.emit('my_broadcast_event', { data: 'right' });
+                socket.emit('camera_move', { data: 'r' });
             });
             socket.on('response', (sensor) => {
                 let data = chart1.data.datasets[0].data;
@@ -250,7 +250,7 @@ const setSocketConnection = (warehouse_info) => {
                     $('.value')[4].innerHTML = 'BAD';
                 }
                 $('.value-wrapper')[5].classList.remove('fine', 'bad');
-                if (sensor_val.vibration == 1) {
+                if (sensor_val.vibration == 0) {
                     $('.value-wrapper')[5].classList.add('fine');
                     $('.value')[5].innerHTML = 'FINE';
                 } else {
