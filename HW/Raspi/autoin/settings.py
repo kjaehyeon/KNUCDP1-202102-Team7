@@ -25,9 +25,10 @@ SECRET_KEY = 'django-insecure-&^o3jf*^f_$wvk87@k$7j0=$9atbrdz^@do)&96@yfkfp#6@vy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.22.47','127.0.0.1','172.20.28.28','192.168.137.80']
 
-
+ALLOWED_HOSTS = ['192.168.22.47','127.0.0.1','172.20.28.28'
+                 ,'192.168.219.103','172.20.10.3','192.168.137.80','192.168.50.1',
+                 '192.168.0.19','221.166.128.96']
 
 # Application definition
 
@@ -117,13 +118,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
+#TIME_ZONE = 'UTC'
+USE_TZ=False
+#USE_TZ = True
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)

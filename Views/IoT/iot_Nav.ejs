@@ -1,29 +1,74 @@
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color: rgb(18, 20, 22);">
-  <div class="container">
-    <a id="home_title" class="navbar-brand js-scroll-trigger" href="/" style="margin-left:7%">
-      <img src="/Image/inven_logo.png" alt="" /></a>
-    <div class="navbar-nav">
-      <a class="nav-item" id="warehouse-name">
-        <%= session.warehouseName %>
-      </a>
-    </div>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-      aria-label="Toggle navigation">
-      <i class="fas fa-bars ml-1"></i>
-    </button>
-    <div class="collapse navbar-collapse" data-hover="dropdown" id="navbarResponsive">
-      <ul class="navbar-nav text-uppercase ml-auto">
-        <ul class="navbar-nav">
-          <li class="nav-item js-scroll-trigger"><a href="/IoT/Monitoring"
-              class="nav-link js-scroll-trigger">Monitoring</a></li>
-          <li class="nav-item js-scroll-trigger"><a href="/IoT/Warehousing"
-              class="nav-link js-scroll-trigger">Registration</a></li>
-          <li class="nav-item js-scroll-trigger"><a href="/IoT/Help" class="nav-link js-scroll-trigger">Help</a></li>
-          <li class="nav-item js-scroll-trigger"><a href="/User/Logout" class="nav-link js-scroll-trigger"
-              style="color: lightsalmon;">Logout</a></li>
-        </ul>
-      </ul>
-    </div>
-  </div>
-</nav>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <link rel='stylesheet' href='/CSS/nav.css'>
+</head>
+
+<body>
+    <nav class='nav-bar'>
+        <div class='top'>
+            <img id='logo-img' src='/Image/inven_logo.png' alt='logo' />
+            <div class='items-wrapper'>
+                <div class='item-category'>Main Menu</div>
+                <ul>
+                    <li class='item dashboard'>
+                        <img class='icon-img' src='/Image/Chart_fill.png' alt="chart_fill">
+                        <div>Dashboard</div>
+                    </li>
+                    <li class='item my-warehouse'>
+                        <img class='icon-img' src='/Image/User_box.png' alt="user_box">
+                        <div>My WareHouse</div>
+                    </li>
+                    <li class='item analytics'>
+                        <img class='icon-img' src='/Image/Chart_alt.png' alt="chart_alt">
+                        <div>Analytics</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class='bottom'>
+            <img id='help-img' src='/Image/help_logo.png' alt='help' />
+            <div class='help'>Need Help with AutoIN</div>
+            <div class='contact-btn'>Contact Us</div>
+        </div>
+    </nav>
+    <script>
+        $('#logo-img').click(() => {
+            location.href = '/';
+        })
+        $('.dashboard').click(() => {
+            location.href = '/Iot/Monitoring';
+        })
+        $('.my-warehouse').click(() => {
+            let url = null;
+            switch ('<%=user_type%>') {
+                case 'buyer':
+                    url = '/Buyer/RequestStatus';
+                    break;
+                case 'provider':
+                    url = '/Provider/MyWarehouse';
+                    break;
+                case 'admin':
+                    url = '/Admin/WarehouseList';
+                    break;
+            }
+            location.href = url;
+        })
+        $('.analytics').click(() => {
+            location.href = '/Iot/Statistic';
+        })
+    </script>
+</body>
+
+</html>
+<script>
+    $('.contact-btn').click(function() {
+        Swal.fire({
+            title: 'Contact Us',
+            html: `You can <b>Contact to AutoIN Group</b>., ` +
+                '<br>Click this <a href="http://autoingroup.com/contact/">Links</a>.',
+            icon: 'info'
+        })
+    })
+</script>

@@ -19,8 +19,6 @@ class DayStatValue(models.Model):
     humidity = models.FloatField()
     co = models.FloatField()
     propane = models.FloatField()
-    flame = models.IntegerField()
-    vibration = models.IntegerField()
     datetime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -32,8 +30,6 @@ class MonthStatValue(models.Model):
     humidity = models.FloatField()
     co = models.FloatField()
     propane = models.FloatField()
-    flame = models.IntegerField()
-    vibration = models.IntegerField()
     datetime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

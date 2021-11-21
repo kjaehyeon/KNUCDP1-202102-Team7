@@ -1,10 +1,10 @@
 function adClick(val, i) {
     var iotServer = $('#iotServer').val();
+    var cctvServer = $('#cctvServer').val();
     var wid = $('#wid').val();
     if (val === 'Test') {
-        $.redirect('/iot', {'iotServer': iotServer, 'wid': wid});
-    }
-    else if (val === 'Approve') {
+        $.redirect('/iot', { 'iotServer': iotServer, 'cctvServer': cctvServer, 'wid': wid });
+    } else if (val === 'Approve') {
         reAlert(`<b>IoT Server:</b><br>${iotServer}`, () => {
             $.ajax({
                 url: '/Admin/RequestIoT',
@@ -12,16 +12,16 @@ function adClick(val, i) {
                 type: 'POST',
                 data: {
                     answer: "Approve",
-                    iotServer: iotServer
+                    iotServer: iotServer,
+                    cctvServer: cctvServer
                 },
-                success: function (success) {
+                success: function(success) {
                     if (success) {
                         Swal.fire({
                             title: 'Approved',
                             icon: 'success'
                         }).then(() => location.href = '/Admin/RequestIoT');
-                    }
-                    else errorAlert();
+                    } else errorAlert();
                 }
             });
         });
@@ -36,14 +36,13 @@ function adClick(val, i) {
                     answer: "Reject",
                     reason: reason
                 },
-                success: function (success) {
+                success: function(success) {
                     if (success) {
                         Swal.fire({
                             title: 'Rejected',
                             icon: 'success'
                         }).then(() => location.href = '/Admin/RequestIoT');
-                    }
-                    else errorAlert();
+                    } else errorAlert();
                 }
             });
         });
@@ -59,14 +58,13 @@ function adClick(val, i) {
                         answer: "Confirm",
                         reqID: parseInt(document.getElementById("reqID" + i).innerText)
                     },
-                    success: function (success) {
+                    success: function(success) {
                         if (success) {
                             Swal.fire({
                                 title: 'Deleted',
                                 icon: 'success'
                             }).then(() => location.href = '/Admin/RequestIoT');
-                        }
-                        else errorAlert();
+                        } else errorAlert();
                     }
                 });
             });
