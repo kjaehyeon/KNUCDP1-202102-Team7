@@ -1,26 +1,4 @@
-/*
-
-  This is a simple MJPEG streaming webserver implemented for AI-Thinker ESP32-CAM
-  and ESP-EYE modules.
-  This is tested to work with VLC and Blynk video widget and can support up to 10
-  simultaneously connected streaming clients.
-  Simultaneous streaming is implemented with FreeRTOS tasks.
-
-  Inspired by and based on this Instructable: $9 RTSP Video Streamer Using the ESP32-CAM Board
-  (https://www.instructables.com/id/9-RTSP-Video-Streamer-Using-the-ESP32-CAM-Board/)
-
-  Board: AI-Thinker ESP32-CAM or ESP-EYE
-  Compile as:
-   ESP32 Dev Module
-   CPU Freq: 240
-   Flash Freq: 80
-   Flash mode: QIO
-   Flash Size: 4Mb
-   Patrition: Minimal SPIFFS
-   PSRAM: Enabled
-*/
-
-// ESP32 has two cores: APPlication core and PROcess core (the one that runs ESP32 SDK stack)
+//home_wifi_multi.h SSID, PW 수정 후 COMPILE
 #define APP_CPU 1
 #define PRO_CPU 0
 
@@ -42,25 +20,11 @@
 #define CAMERA_MODEL_AI_THINKER
 
 #include "camera_pins.h"
-
-/*
-  Next one is an include with wifi credentials.
-  This is what you need to do:
-
-  1. Create a file called "home_wifi_multi.h" in the same folder   OR   under a separate subfolder of the "libraries" folder of Arduino IDE. (You are creating a "fake" library really - I called it "MySettings").
-  2. Place the following text in the file:
-  #define SSID1 "replace with your wifi ssid"
-  #define PWD1 "replace your wifi password"
-  3. Save.
-
-  Should work then
-*/
 #include "home_wifi_multi.h"
 
 OV2640 cam;
 
 WebServer server(80);
-
 // ===== rtos task handles =========================
 // Streaming is implemented with 3 tasks:
 TaskHandle_t tMjpeg;   // handles client connections to the webserver
@@ -78,7 +42,6 @@ const int FPS = 14;
 
 // We will handle web client requests every 50 ms (20 Hz)
 const int WSINTERVAL = 100;
-
 
 // ======== Server Connection Handler Task ==========================
 void mjpegCB(void* pvParameters) {
@@ -133,11 +96,9 @@ void mjpegCB(void* pvParameters) {
   }
 }
 
-
 // Commonly used variables:
 volatile size_t camSize;    // size of the current frame, byte
 volatile char* camBuf;      // pointer to the current frame
-
 
 // ==== RTOS task to grab frames from the camera =========================
 void camCB(void* pvParameters) {
@@ -346,8 +307,6 @@ void streamCB(void * pvParameters) {
   }
 }
 
-
-
 const char JHEADER[] = "HTTP/1.1 200 OK\r\n" \
                        "Content-disposition: inline; filename=capture.jpg\r\n" \
                        "Content-type: image/jpeg\r\n\r\n";
@@ -364,7 +323,6 @@ void handleJPG(void)
   client.write((char*)cam.getfb(), cam.getSize());
 }
 
-
 // ==== Handle invalid URL requests ============================================
 void handleNotFound()
 {
@@ -378,8 +336,6 @@ void handleNotFound()
   message += "\n";
   server.send(200, "text / plain", message);
 }
-
-
 
 // ==== SETUP method ==================================================================
 void setup()
@@ -451,7 +407,6 @@ void setup()
   Serial.print(ip);
   Serial.println("/mjpeg/1");
 
-
   // Start mainstreaming RTOS task
   xTaskCreatePinnedToCore(
     mjpegCB,
@@ -462,7 +417,6 @@ void setup()
     &tMjpeg,
     APP_CPU);
 }
-
 
 void loop() {
   vTaskDelay(1000);
