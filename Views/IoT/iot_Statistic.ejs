@@ -23,7 +23,7 @@
             <div class='dashboard-top'>
                 <%- include('iot_Top') %>
             </div>
-            <div class='dashboard-main'>
+            <div class='dashboard-anal'>
                 <div class='chartbox'>
                     <div class="colflex" id="dashChart">
                         <div class="chartInfo">
@@ -147,6 +147,7 @@
     let type = 1; //day, 2: month, 3:year
     // render를 통해 받아온 iotIP 할당
     iotIPAd = "<%=iotIP%>";
+    console.log(iotIPAd);
     $(dayButton).css("background-color", "#ECEFF6");
     const today = new Date(); //오늘 날짜 받기
     //Years 선택 시 오늘 날짜는 입력이 안되는 문제 때문에 하루를 더해줌
@@ -232,4 +233,5 @@
             $(".datepicker").datepicker("setDate", new Date());
         }
     });
+    $('.iot-top .title').text("Analytics");
 </script>
