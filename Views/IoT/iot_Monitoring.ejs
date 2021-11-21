@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang='en' dir='ltr'>
+
 <head>
     <%- include('../monitoring_head') %>
-    <link rel='stylesheet' href='/CSS/nav.css'/>
-    <link rel='stylesheet' href='/CSS/dashboard.css'/>
-    <link rel='stylesheet' href='/CSS/weather-icons.min.css'/>
-    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
-    <script src="https://cdn.socket.io/4.3.2/socket.io.js"></script>
+        <link rel='stylesheet' href='/CSS/nav.css' />
+        <link rel='stylesheet' href='/CSS/dashboard.css' />
+        <link rel='stylesheet' href='/CSS/weather-icons.min.css' />
+        <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+        <script src="https://cdn.socket.io/4.3.2/socket.io.js"></script>
 </head>
+
 <body>
     <div class='dashboard__container'>
         <div class='nav-wrapper'>
@@ -45,10 +47,7 @@
                         <div class='value'>100ppm</div>
                     </div>
                     <div class='value-wrapper propane numerical'>
-                        <img src='/Image/propane.png' 
-                            class='sensor-icon1'
-                            style='width:76px; height: 68px;'
-                            />
+                        <img src='/Image/propane.png' class='sensor-icon1' style='width:76px; height: 68px;' />
                         <div>Propane</div>
                         <div class='value'>35ppm</div>
                     </div>
@@ -66,8 +65,7 @@
                 <div class='cctv card'>
                     <div class='title'>
                         <div>
-                            <i class='fas fa-video'></i>
-                            CCTV
+                            <i class='fas fa-video'></i> CCTV
                         </div>
                         <div class='wd-screen'>Wide Screen</div>
                     </div>
@@ -79,8 +77,7 @@
                 </div>
                 <div class='capability card'>
                     <div class='title'>
-                        <i class='fas fa-chart-pie'></i>
-                        Warehouse Capability
+                        <i class='fas fa-chart-pie'></i> Warehouse Capability
                     </div>
                     <div class='capability-graph'>
                         <canvas id='chart2'></canvas>
@@ -98,4 +95,5 @@
         initMonitoringDashboard('<%=process.env.WEATHER_API_KEY%>', result);
     </script>
 </body>
+
 </html>
