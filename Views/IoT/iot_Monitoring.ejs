@@ -71,7 +71,7 @@
                     </div>
                     <div class='content'>
                         <i class='fas fa-chevron-left left'></i>
-                        <iframe src='<%=warehouse_info.cctvServer%>' frameborder='0' scrolling='no'></iframe>
+                        <iframe src='#' frameborder='0' scrolling='no'></iframe>
                         <i class='fas fa-chevron-right right'></i>
                     </div>
                 </div>
@@ -88,7 +88,11 @@
     </div>
     <script src='/JS/monitoring.js'></script>
     <script>
-        initMonitoringDashboard('<%=process.env.WEATHER_API_KEY%>', '<%=warehouse_info%>');
+        let warehouse_info = '<%=warehouse_info%>';
+        warehouse_info = warehouse_info.replaceAll('&#34;', '"');
+        const result = JSON.parse(warehouse_info);
+        $('iframe').attr('src', result.cctvServer);
+        initMonitoringDashboard('<%=process.env.WEATHER_API_KEY%>', result);
     </script>
 </body>
 
