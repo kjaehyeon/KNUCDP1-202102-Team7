@@ -69,6 +69,7 @@ app.use('/Admin', require('./Routes/ad')(app, dbConnection));
 app.use('/Provider', require('./Routes/pv')(app, dbConnection));
 app.use('/Buyer', require('./Routes/by')(app, dbConnection));
 app.use('/Iot', require('./Routes/iot')(app, dbConnection));
+app.use('/Api', require('./Routes/api')(app, dbConnection));
 
 app.get('/Public/Upload/:filename', function(req, res) {
     fs.readFile(__dirname + `/Public/Upload/${req.params.filename}`, function(err, data) {
