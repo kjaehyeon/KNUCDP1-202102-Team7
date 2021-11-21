@@ -192,25 +192,25 @@ const setSocketConnection = (warehouse_info) => {
                     temperature_yaxis[0] = Math.min(...temperature_array) - 10;
                 }
                 if (Math.max(...temperature_array) > temperature_yaxis[1]) {
-                    temperature_yaxis[1] = Math.min(...temperature_array) + 10;
+                    temperature_yaxis[1] = Math.max(...temperature_array) + 10;
                 }
                 if (Math.min(...humidity_array) < humidity_yaxis[0]) {
                     humididty_yaxis[0] = Math.min(...humidity_array) - 10;
                 }
                 if (Math.max(...humidity_array) > humidity_yaxis[1]) {
-                    humididty_yaxis[1] = Math.min(...humidity_array) + 10;
+                    humididty_yaxis[1] = Math.max(...humidity_array) + 10;
                 }
                 if (Math.min(...co_array) < co_yaxis[0]) {
                     co_yaxis[0] = Math.min(...co_array) - 10;
                 }
                 if (Math.max(...co_array) > co_yaxis[1]) {
-                    co_yaxis[1] = Math.min(...co_array) + 10;
+                    co_yaxis[1] = Math.max(...co_array) + 10;
                 }
                 if (Math.min(...propane_array) < propane_yaxis[0]) {
                     propane_yaxis[0] = Math.min(...propane_array) - 10;
                 }
                 if (Math.max(...propane_array) > propane_yaxis[1]) {
-                    propane_yaxis[1] = Math.min(...propane_array) + 10;
+                    propane_yaxis[1] = Math.max(...propane_array) + 10;
                 }
 
                 switch (graph) {
@@ -313,13 +313,11 @@ const generateWarehouseCapabilityChart = (warehouse_info) => {
         },
         plugins: [counter],
     });
-
-    const initMonitoringDashboard = (api_key, warehouse_info) => {
-        setWeatherInfo(api_key, warehouse_info.latitude, warehouse_info.longitude);
-        generateRealtimeGraph();
-        addClickListener();
-        setSocketConnection(warehouse_info);
-        generateWarehouseCapabilityChart(warehouse_info);
-    };
-
+};
+const initMonitoringDashboard = (api_key, warehouse_info) => {
+    setWeatherInfo(api_key, warehouse_info.latitude, warehouse_info.longitude);
+    generateRealtimeGraph();
+    addClickListener();
+    setSocketConnection(warehouse_info);
+    generateWarehouseCapabilityChart(warehouse_info);
 };
