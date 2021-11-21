@@ -1,5 +1,7 @@
 .dashboard-anal {
-    margin: 10px;
+    margin: 30px;
+    border-radius: 10px;
+    background: #fff;
 }
 
 .main_chart {
@@ -58,7 +60,7 @@
 }
 
 .chartbox {
-    border-radius: 25px;
+    border-radius: 10px;
     box-shadow: 1px 1px 5px #e4e6e9;
 }
 
@@ -66,6 +68,8 @@
     width: 3px;
     color: black;
     width: 80%;
+    margin-top: 1px;
+    margin-bottom: 1px;
 }
 
 #dayButton,
