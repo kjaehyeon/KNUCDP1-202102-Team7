@@ -15,7 +15,7 @@ import eventlet
 from django.db.models import Avg
 import requests
 from django.http import JsonResponse  
-import hashlib
+import socket
 
 basedir = os.path.dirname(os.path.realpath(__file__))
 eventlet.monkey_patch()
@@ -40,17 +40,18 @@ def data_processing(parsed_data):
             yesterdayValueList : SensorValue = SensorValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month, datetime__day=yesterday.day)
             aggreResult = yesterdayValueList.values('device_id').aggregate(Avg('temperature'), Avg('humidity'), Avg('co'), Avg('propane'))
             tmp = DayStatValue(device_id=parsed_data["device_id"],temperature=aggreResult['temperature__avg'], humidity=aggreResult['humidity__avg'],
-                            co=aggreResult['co__avg'], propane=aggreResult['propane__avg'])
-            tmp.save(datetime=yesterday)
+                            co=aggreResult['co__avg'], propane=aggreResult['propane__avg'], datetime=yesterday)
+            tmp.save()
+            
     #store statistic data of last month
-    if(now.day == 1 and now.hour == 0 and now.minute == 1 and now.second == 0 ):
-        yesterday = now - timedelta(days=1)
-        if(not MonthStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month).exists()):
-            LastMonthValueList : DayStatValue = DayStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month)
-            aggreResult = LastMonthValueList.values('device_id').aggregate(Avg('temperature'), Avg('humidity'), Avg('co'), Avg('propane'))
-            tmp = MonthStatValue(device_id=parsed_data["device_id"],temperature=aggreResult['temperature__avg'], humidity=aggreResult['humidity__avg'],
-                            co=aggreResult['co__avg'], propane=aggreResult['propane__avg'])
-            tmp.save(datetime=yesterday)
+    #if(now.day == 1 and now.hour == 0 and now.minute == 1 and now.second == 0 ):
+    yesterday = now - timedelta(days=1)
+    if(not MonthStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month).exists()):
+        LastMonthValueList : DayStatValue = DayStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month)
+        aggreResult = LastMonthValueList.values('device_id').aggregate(Avg('temperature'), Avg('humidity'), Avg('co'), Avg('propane'))
+        tmp = MonthStatValue(device_id=parsed_data["device_id"],temperature=aggreResult['temperature__avg'], humidity=aggreResult['humidity__avg'],
+                        co=aggreResult['co__avg'], propane=aggreResult['propane__avg'], datetime=yesterday)
+        tmp.save()
 
 
 
@@ -119,6 +120,21 @@ def background_thread():
 @sio.event
 def my_broadcast_event(sid, message):
     sio.emit('response', {'data': message['data']})
+    
+@sio.event
+def camera_move(sid, message):
+    orientation = message['data']
+    clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        clientsocket.connect(("192.168.0.21", 1234))
+    except socket.error:
+        print('error')
+        pass
+    if(orientation == 'r'):
+        clientsocket.send((orientation+'\n').encode('utf-8'))
+    elif(orientation == 'l'):
+        clientsocket.send((orientation+'\n').encode('utf-8'))
+    clientsocket.close()
     
 #추후 다중 센서 디바이스 연결을 위한 함수
 @sio.event

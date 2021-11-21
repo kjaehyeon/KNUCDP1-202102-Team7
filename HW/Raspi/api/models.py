@@ -19,7 +19,7 @@ class DayStatValue(models.Model):
     humidity = models.FloatField()
     co = models.FloatField()
     propane = models.FloatField()
-    datetime = models.DateTimeField(auto_now_add=True)
+    datetime = models.DateTimeField()
 
     def __str__(self):
         return f'[{self.pk}][{self.device_id}]'
@@ -30,7 +30,7 @@ class MonthStatValue(models.Model):
     humidity = models.FloatField()
     co = models.FloatField()
     propane = models.FloatField()
-    datetime = models.DateTimeField(auto_now_add=True)
+    datetime = models.DateTimeField()
 
     def __str__(self):
         return f'[{self.pk}][{self.device_id}]'
