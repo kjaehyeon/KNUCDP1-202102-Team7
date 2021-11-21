@@ -7,7 +7,7 @@ exports.init = function(req, res, db) {
                         + ' FROM Contract C, Warehouse W'
                         + ' WHERE C.warehouseID = W.warehouseID'
                         + ' AND W.warehouseID = ?', [req.session['warehouseID']]);
-        req.session['iotServer'] = warehouse_result.iotServer;
+        req.session['iotServer'] = warehouse_result[0].iotServer;
         res.render('IoT/iot_Monitoring', {
             user_type: req.session['type'],
             user_name: req.session['username'], 
