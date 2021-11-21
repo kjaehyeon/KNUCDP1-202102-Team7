@@ -1,3 +1,7 @@
+.dashboard-anal {
+    margin: 10px;
+}
+
 .main_chart {
     display: flex;
     flex-direction: column;

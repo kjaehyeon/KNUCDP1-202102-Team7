@@ -21,28 +21,28 @@
                         <div>My WareHouse</div>
                     </li>
                     <li class='item analytics'>
-                        <img class='icon-img' src='/Image/Chart_alt.png' alt="chart_alt">   
+                        <img class='icon-img' src='/Image/Chart_alt.png' alt="chart_alt">
                         <div>Analytics</div>
                     </li>
                 </ul>
             </div>
         </div>
         <div class='bottom'>
-            <img id='help-img' src='/Image/help_logo.png' alt='help'/>
+            <img id='help-img' src='/Image/help_logo.png' alt='help' />
             <div class='help'>Need Help with AutoIN</div>
             <div class='contact-btn'>Contact Us</div>
         </div>
     </nav>
     <script>
-        $('#logo-img').click(()=>{
+        $('#logo-img').click(() => {
             location.href = '/';
         })
-        $('.dashboard').click(()=>{
+        $('.dashboard').click(() => {
             location.href = '/Iot/Monitoring';
         })
-        $('.my-warehouse').click(()=>{
+        $('.my-warehouse').click(() => {
             let url = null;
-            switch('<%=user_type%>'){
+            switch ('<%=user_type%>') {
                 case 'buyer':
                     url = '/Buyer/RequestStatus';
                     break;
@@ -55,10 +55,20 @@
             }
             location.href = url;
         })
-        $('.analytics').click(()=>{
+        $('.analytics').click(() => {
             location.href = '/Iot/Statistic';
         })
     </script>
 </body>
 
 </html>
+<script>
+    $('.contact-btn').click(function() {
+        Swal.fire({
+            title: 'Contact Us',
+            html: `You can <b>Contact to AutoIN Group</b>., ` +
+                '<br>Click this <a href="http://autoingroup.com/contact/">Links</a>.',
+            icon: 'info'
+        })
+    })
+</script>
