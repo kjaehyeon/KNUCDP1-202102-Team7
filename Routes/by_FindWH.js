@@ -1,4 +1,4 @@
-exports.searchWH = function (req, res, app, db) {
+exports.searchWH = function(req, res, app, db) {
     var items = {};
     const results1 = db.query(`SELECT * from PublicWarehouse`);
     const results2 = db.query(`SELECT * from Warehouse where enroll='Y'`);
@@ -7,10 +7,9 @@ exports.searchWH = function (req, res, app, db) {
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             let wid;
-            if (results1.length <= step){
-                wid = results[step].warehouseID + 10000;
-            }
-            else {
+            if (results1.length <= step) {
+                wid = results[step].warehouseID;
+            } else {
                 wid = results[step].warehouseID
             }
             items[`item${step}`] = {
@@ -39,7 +38,7 @@ exports.searchWH = function (req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.findImage = function (req, res, app, db) {
+exports.findImage = function(req, res, app, db) {
     var items = {};
     let results = db.query(`SELECT * from FileInfo where warehouseID=${req.body.warehouseID}`);
     if (results.length > 0) {
@@ -53,7 +52,7 @@ exports.findImage = function (req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.inquireWH = function (req, res, app, db) {
+exports.inquireWH = function(req, res, app, db) {
     var mysql = require('mysql');
     var connection = mysql.createConnection(require('../Module/db').info);
     connection.connect();
@@ -67,7 +66,7 @@ exports.inquireWH = function (req, res, app, db) {
         endDate: req.body.endDate,
         amount: req.body.amount
     };
-    connection.query('INSERT INTO RequestForBuy SET ?', reqItem, function (error, results, fields) {
+    connection.query('INSERT INTO RequestForBuy SET ?', reqItem, function(error, results, fields) {
         if (error) {
             console.log(error);
             res.send(false);

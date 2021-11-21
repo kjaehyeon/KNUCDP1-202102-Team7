@@ -1,6 +1,6 @@
 const viewInfo = require('./viewInfo');
 
-exports.getWHInfo = function (req, res, app, db) {
+exports.getWHInfo = function(req, res, app, db) {
     var reqID = req.body.reqID;
     var items = {};
     let results = db.query(`select warehouseID from RequestForBuy where reqID=` + reqID + `;`);
@@ -11,18 +11,22 @@ exports.getWHInfo = function (req, res, app, db) {
     return items;
 }
 
-exports.getPVInfo = function (req, res, app, db) {
+exports.getPVInfo = function(req, res, app, db) {
     var reqID = req.body.reqID;
+    console.log(reqID);
     var items = {};
     let results = db.query(`select memberID from RequestForBuy, Provider where RequestForBuy.warehouseID=Provider.warehouseID and RequestForBuy.reqID=` + reqID + `;`);
     if (results.length > 0) {
         var providerID = results[0].memberID;
         items = viewInfo.getMemberInfo(db, providerID);
+        //console.log(items);
+    } else {
+        console.log("empty");
     }
     return items;
 }
 
-exports.getBYInfo = function (req, res, app, db) {
+exports.getBYInfo = function(req, res, app, db) {
     var reqID = req.body.reqID;
     var items = {};
     let results = db.query(`select buyerID from RequestForBuy where reqID=` + reqID + `;`);
@@ -33,7 +37,7 @@ exports.getBYInfo = function (req, res, app, db) {
     return items;
 }
 
-exports.getReqInfo = function (req, res, app, db) {
+exports.getReqInfo = function(req, res, app, db) {
     var reqID = req.body.reqID;
     var items = {};
     let results = db.query(`select * from RequestForBuy, Warehouse where Warehouse.warehouseID=RequestForBuy.warehouseID and reqID=` + reqID + `;`);
