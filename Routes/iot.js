@@ -83,7 +83,7 @@ module.exports = function(app, db) {
     });
 
     router.get('/Statistic', (req, res, next) => {
-        res.render('IoT/iot_Statistic', { iotIP: req.session['iotServer'], uname: req.session['username'] });
+        res.render('IoT/iot_Statistic', { iotIP: req.session['iotServer'], user_name: req.session['username'], user_type: req.session['type'] });
     })
 
     return router;
