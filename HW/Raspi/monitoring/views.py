@@ -58,18 +58,20 @@ def data_processing(parsed_data):
 class AuthSmsSend():
     EmgCount = 0
     pre = 0
+    time = None
 
 def notiEmg(data):
-    if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 200 or data["propane"] > 10 or data["vibration"] < 1000:
-        print("in notiEmg")
+    if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 200 or data["propane"] > 15 or data["vibration"] < 1000:
         AuthSmsSend.pre = 1
-        if AuthSmsSend.EmgCount >= 5:
+        ip = requests.get("https://api.ipify.org").text
+        if (AuthSmsSend.time is not None):
+            timeDiff = datetime.now() - AuthSmsSend.time
+        if AuthSmsSend.EmgCount >= 5 and (AuthSmsSend.time is None or timeDiff >= timedelta(hours = 1)):
             headers ={
                 'Content-Type': 'application/json; charset=utf-8',
-                'client-ip' : 'http://221.166.128.96:50000'
+                'client-ip' : f'http://{ip}:50000'
             }
             response = requests.get('http://192.168.0.17:5000/Api/Alert', headers=headers)
-            print(response.status_code, type(response.content))
 
 
             AuthSmsSend.EmgCount = 0
@@ -77,7 +79,6 @@ def notiEmg(data):
             if (AuthSmsSend.pre == 1):
                 AuthSmsSend.EmgCount += 1
     else:
-        print("pass")
         if (AuthSmsSend.pre == 1):
             AuthSmsSend.EmgCount = 0
         AuthSmsSend.pre = 0
