@@ -130,7 +130,7 @@ def camera_move(sid, message):
             clientsocket.send((orientation+'\n').encode('utf-8'))
         elif(orientation == 'l'):
             clientsocket.send((orientation+'\n').encode('utf-8'))
-    except socket.error or BlockingIOError:
+    except (socket.error , BlockingIOError) as e:
         pass
     finally:
         clientsocket.close()
