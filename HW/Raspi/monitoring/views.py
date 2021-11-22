@@ -126,14 +126,14 @@ def camera_move(sid, message):
     clientsocket.setblocking(False)
     try:
         clientsocket.connect(("192.168.0.21", 1234))
+        if(orientation == 'r'):
+            clientsocket.send((orientation+'\n').encode('utf-8'))
+        elif(orientation == 'l'):
+            clientsocket.send((orientation+'\n').encode('utf-8'))
     except socket.error or BlockingIOError:
-        clientsocket.close()
         pass
-    if(orientation == 'r'):
-        clientsocket.send((orientation+'\n').encode('utf-8'))
-    elif(orientation == 'l'):
-        clientsocket.send((orientation+'\n').encode('utf-8'))
-    clientsocket.close()
+    finally:
+        clientsocket.close()
     
 #추후 다중 센서 디바이스 연결을 위한 함수
 @sio.event
