@@ -52,7 +52,6 @@ def data_processing(parsed_data):
             tmp = MonthStatValue(device_id=parsed_data["device_id"],temperature=aggreResult['temperature__avg'], humidity=aggreResult['humidity__avg'],
                             co=aggreResult['co__avg'], propane=aggreResult['propane__avg'], datetime=yesterday)
             tmp.save()
-<<<<<<< HEAD
 
 
 
@@ -84,8 +83,6 @@ def notiEmg(data):
             AuthSmsSend.EmgCount = 0
         AuthSmsSend.pre = 0
         return 
-=======
->>>>>>> 20484d5678b4c54d90165100344afb07182ed49c
 
 class AuthSmsSend():
     EmgCount = 0
@@ -106,10 +103,6 @@ def notiEmg(data):
                 'client-ip' : f'http://{ip}:50000'
             }
             response = requests.get('http://192.168.0.17:5000/Api/Alert', headers=headers)
-<<<<<<< HEAD
-
-=======
->>>>>>> 20484d5678b4c54d90165100344afb07182ed49c
 
             AuthSmsSend.EmgCount = 0
         else:
@@ -166,17 +159,11 @@ def camera_move(sid, message):
     clientsocket.setblocking(False)
     try:
         clientsocket.connect(("192.168.0.21", 1234))
-<<<<<<< HEAD
-        clientsocket.settimeout(0)
-    except socket.error:
-        print('error')
-=======
         if(orientation == 'r'):
             clientsocket.send((orientation+'\n').encode('utf-8'))
         elif(orientation == 'l'):
             clientsocket.send((orientation+'\n').encode('utf-8'))
     except (socket.error , BlockingIOError) as e:
->>>>>>> 20484d5678b4c54d90165100344afb07182ed49c
         pass
     finally:
         clientsocket.close()
