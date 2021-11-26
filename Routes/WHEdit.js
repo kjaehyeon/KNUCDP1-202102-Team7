@@ -67,6 +67,7 @@ exports.Save = function (req, res, app, db) {
                     res.send('success');
                 }
             }
+            connection.end();
         });
     }
 }
