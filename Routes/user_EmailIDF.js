@@ -26,7 +26,7 @@ exports.emailIDF = async function(req, res, app, db) {
     });
 
     const mailOptions = {
-        from: `IDENTIFY YOUR EMAIL <nhj292777@naver.com>`,
+        from: `IDENTIFY YOUR EMAIL <service@autoingroup.com>`,
         to: req.body.email,
         subject: 'identfiy mail',
         html: emailTemplete

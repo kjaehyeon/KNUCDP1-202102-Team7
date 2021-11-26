@@ -50,6 +50,10 @@
                 socket.emit('disconnect_request');
                 return false;
             });
+            $('form#camera_move').submit(function(event) {
+                socket.emit('camera_move',{ data: $('#camera_orientation').val()});
+                return false;
+            })
         });
     </script>
 </head>
@@ -83,6 +87,10 @@
     </form>
     <form id="disconnect" method="POST" action="#">
         <input type="submit" value="Disconnect">
+    </form>
+    <form id="camera_move" method="POST" action="#">
+        <input type="text" name="close_room" id="camera_orientation" placeholder="move">
+        <input type="submit" value="Camera_move">
     </form>
     <h2>Receive:</h2>
     <div><p id="log"></p></div>
