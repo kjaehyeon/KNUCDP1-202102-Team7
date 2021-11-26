@@ -44,14 +44,14 @@ def data_processing(parsed_data):
             tmp.save()
             
     #store statistic data of last month
-    #if(now.day == 1 and now.hour == 0 and now.minute == 1 and now.second == 0 ):
-    yesterday = now - timedelta(days=1)
-    if(not MonthStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month).exists()):
-        LastMonthValueList : DayStatValue = DayStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month)
-        aggreResult = LastMonthValueList.values('device_id').aggregate(Avg('temperature'), Avg('humidity'), Avg('co'), Avg('propane'))
-        tmp = MonthStatValue(device_id=parsed_data["device_id"],temperature=aggreResult['temperature__avg'], humidity=aggreResult['humidity__avg'],
-                        co=aggreResult['co__avg'], propane=aggreResult['propane__avg'], datetime=yesterday)
-        tmp.save()
+    if(now.day == 1 and now.hour == 0 and now.minute == 1 and now.second == 0 ):
+        yesterday = now - timedelta(days=1)
+        if(not MonthStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month).exists()):
+            LastMonthValueList : DayStatValue = DayStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month)
+            aggreResult = LastMonthValueList.values('device_id').aggregate(Avg('temperature'), Avg('humidity'), Avg('co'), Avg('propane'))
+            tmp = MonthStatValue(device_id=parsed_data["device_id"],temperature=aggreResult['temperature__avg'], humidity=aggreResult['humidity__avg'],
+                            co=aggreResult['co__avg'], propane=aggreResult['propane__avg'], datetime=yesterday)
+            tmp.save()
 
 
 
@@ -92,18 +92,18 @@ class AuthSmsSend():
 
 def notiEmg(data):
     if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 200 or data["propane"] > 15 or data["vibration"] < 1000:
-        print("in notiEmg")
         AuthSmsSend.pre = 1
         ip = requests.get("https://api.ipify.org").text
         if (AuthSmsSend.time is not None):
             timeDiff = datetime.now() - AuthSmsSend.time
         if AuthSmsSend.EmgCount >= 5 and (AuthSmsSend.time is None or timeDiff >= timedelta(hours = 1)):
+            print(AuthSmsSend.EmgCount, AuthSmsSend.pre, AuthSmsSend.time)
+            AuthSmsSend.time = datetime.now()
             headers ={
                 'Content-Type': 'application/json; charset=utf-8',
                 'client-ip' : f'http://{ip}:50000'
             }
             response = requests.get('http://192.168.0.17:5000/Api/Alert', headers=headers)
-            print(response.status_code, type(response.content))
 
 
             AuthSmsSend.EmgCount = 0
@@ -111,7 +111,6 @@ def notiEmg(data):
             if (AuthSmsSend.pre == 1):
                 AuthSmsSend.EmgCount += 1
     else:
-        print("pass")
         if (AuthSmsSend.pre == 1):
             AuthSmsSend.EmgCount = 0
         AuthSmsSend.pre = 0
@@ -161,6 +160,7 @@ def camera_move(sid, message):
     clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         clientsocket.connect(("192.168.0.21", 1234))
+        clientsocket.settimeout(0)
     except socket.error:
         print('error')
         pass
