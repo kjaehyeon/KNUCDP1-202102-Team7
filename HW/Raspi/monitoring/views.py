@@ -70,8 +70,8 @@ def notiEmg(data):
             headers ={
                 'Content-Type': 'application/json; charset=utf-8',
                 'client-ip' : f'http://{ip}:50000'
-            }
-            response = requests.get('http://192.168.0.17:5000/Api/Alert', headers=headers)
+            }   
+            response = requests.get('http://3.38.92.244:5000/Api/Alert', headers=headers)
 
 
             AuthSmsSend.EmgCount = 0
