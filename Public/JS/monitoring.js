@@ -1,13 +1,13 @@
 let chart1 = null;
 let graph = 'temperature';
 const temperature_array = new Array(10).fill(0);
-const temperature_yaxis = [0, 100];
+const temperature_yaxis = [0, 40];
 const humidity_array = new Array(10).fill(0);
 const humidity_yaxis = [0, 100];
 const co_array = new Array(10).fill(0);
 const co_yaxis = [0, 100];
 const propane_array = new Array(10).fill(0);
-const propane_yaxis = [0, 100];
+const propane_yaxis = [0, 40];
 
 const setWeatherInfo = (api_key, latitude, longitude) => {
     const icon_name = {
@@ -102,7 +102,7 @@ const generateRealtimeGraph = () => {
             scales: {
                 y: {
                     min: 0,
-                    max: 100
+                    max: 40
                 }
             },
             plugins: {
@@ -114,7 +114,7 @@ const generateRealtimeGraph = () => {
     });
 }
 
-const addClickListener = () => {
+const addClickListener = (warehouse_info) => {
     $('.wd-screen').click(() => {
         window.open(warehouse_info.cctvServer);
     });
@@ -250,7 +250,7 @@ const setSocketConnection = (warehouse_info) => {
                     $('.value')[4].innerHTML = 'BAD';
                 }
                 $('.value-wrapper')[5].classList.remove('fine', 'bad');
-                if (sensor_val.vibration == 0) {
+                if (sensor_val.vibration > 800) {
                     $('.value-wrapper')[5].classList.add('fine');
                     $('.value')[5].innerHTML = 'FINE';
                 } else {
@@ -317,7 +317,7 @@ const generateWarehouseCapabilityChart = (warehouse_info) => {
 const initMonitoringDashboard = (api_key, warehouse_info) => {
     setWeatherInfo(api_key, warehouse_info.latitude, warehouse_info.longitude);
     generateRealtimeGraph();
-    addClickListener();
+    addClickListener(warehouse_info);
     setSocketConnection(warehouse_info);
     generateWarehouseCapabilityChart(warehouse_info);
 };

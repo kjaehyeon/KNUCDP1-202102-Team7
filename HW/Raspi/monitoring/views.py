@@ -52,6 +52,7 @@ def data_processing(parsed_data):
             tmp = MonthStatValue(device_id=parsed_data["device_id"],temperature=aggreResult['temperature__avg'], humidity=aggreResult['humidity__avg'],
                             co=aggreResult['co__avg'], propane=aggreResult['propane__avg'], datetime=yesterday)
             tmp.save()
+<<<<<<< HEAD
 
 
 
@@ -83,12 +84,13 @@ def notiEmg(data):
             AuthSmsSend.EmgCount = 0
         AuthSmsSend.pre = 0
         return 
+=======
+>>>>>>> 20484d5678b4c54d90165100344afb07182ed49c
 
 class AuthSmsSend():
     EmgCount = 0
     pre = 0
     time = None
-
 
 def notiEmg(data):
     if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 200 or data["propane"] > 15 or data["vibration"] < 1000:
@@ -104,7 +106,10 @@ def notiEmg(data):
                 'client-ip' : f'http://{ip}:50000'
             }
             response = requests.get('http://192.168.0.17:5000/Api/Alert', headers=headers)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 20484d5678b4c54d90165100344afb07182ed49c
 
             AuthSmsSend.EmgCount = 0
         else:
@@ -158,17 +163,23 @@ def my_broadcast_event(sid, message):
 def camera_move(sid, message):
     orientation = message['data']
     clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    clientsocket.setblocking(False)
     try:
         clientsocket.connect(("192.168.0.21", 1234))
+<<<<<<< HEAD
         clientsocket.settimeout(0)
     except socket.error:
         print('error')
+=======
+        if(orientation == 'r'):
+            clientsocket.send((orientation+'\n').encode('utf-8'))
+        elif(orientation == 'l'):
+            clientsocket.send((orientation+'\n').encode('utf-8'))
+    except (socket.error , BlockingIOError) as e:
+>>>>>>> 20484d5678b4c54d90165100344afb07182ed49c
         pass
-    if(orientation == 'r'):
-        clientsocket.send((orientation+'\n').encode('utf-8'))
-    elif(orientation == 'l'):
-        clientsocket.send((orientation+'\n').encode('utf-8'))
-    clientsocket.close()
+    finally:
+        clientsocket.close()
     
 #추후 다중 센서 디바이스 연결을 위한 함수
 @sio.event
