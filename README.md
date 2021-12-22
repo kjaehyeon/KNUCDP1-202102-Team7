@@ -221,10 +221,7 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 ### 대여 신청
 
 - Search Warehouse → 지도에서 창고 선택 → Inquire → 면적, 대여 기한 입력 → Submit
-  - 창고 검색
-    ![image](https://user-images.githubusercontent.com/33050476/147015992-9107718d-ee3d-4ba4-8b3e-4188f3348f2c.png)
-  - 참고 선택
-    ![SearchWarehouse.PNG](Public/Image/README/SearchWarehouse.PNG)
+    ![image](https://user-images.githubusercontent.com/33050476/147016299-416e1d9c-ef1a-44a9-81f1-a418abbad6a5.png)
 
 ### 대여 승인 절차
 
