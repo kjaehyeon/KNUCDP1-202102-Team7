@@ -5,10 +5,11 @@
 #include <DHT_U.h>
 #include <MQUnifiedsensor.h>
 
-char ssid[] = "droptopB1";            // your network SSID (name)
-char pass[] = "droptop925!!";        // your network password
+char ssid[] = "raspi-webgui";            // your network SSID (name)
+char pass[] = "autoin1020";        // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
-char server[] = "192.168.219.103";
+char server[] = "192.168.50.1";
+int socket_status;
 WiFiEspClient client;
 
 //for DHT-22
@@ -116,6 +117,7 @@ void loop()
     delay(100);
     digitalWrite(blue, HIGH);
     status = WiFi.status();
+    socket_status = client.connected();
     if(status != WL_CONNECTED){
       setup(); //wifi 꺼지면 다시 setup
     }
@@ -142,9 +144,12 @@ void loop()
     //Serial.println("Connected to server");
     String tmp = String("GET /monitoring/sensor_val/?device_id=")+DEVICE_ID+String("&temperature=")+ temp + String("&humidity=")+humi+String("&co=")+ppm2+String("&propane=")+ppm1+String("&flame=")+flame+String("&vibration=")+vib;
     client.println(tmp);
-    client.println("Host: 192.168.219.103");
+    client.println("Host: 192.168.50.1");
     client.println("Connection: Keep-Alive");
     client.println();
+     if(!socket_status){
+      client.connect(server, 8000);
+    }
 }
 
 void getSensorData(){
