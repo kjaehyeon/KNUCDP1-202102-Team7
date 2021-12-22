@@ -6,7 +6,7 @@
 
 - 전체 시스템 구성도
 
-    ![system_diagram.png](Public/Image/README/system_diagram.png)
+    ![system_diagram.PNG](Public/Image/README/system_diagram.PNG)
 
 Express framework를 이용하여 이용자가 창고를 등록하고 원하는 면적, 날짜 만큼 대여할 수 있는 공유 플랫폼을 형성하고, 등록한 창고의 경우 창고 상황을 라즈베리파이 및 아두이노 센서로 실시간 모니터링할 수 있는 시스템
 
