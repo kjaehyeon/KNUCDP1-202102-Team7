@@ -26,10 +26,10 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 - node.js
 - npm
 
-### RaspberryPi
+### RaspberryPi 4B+
 
-- node.js
-- apollo-server-express: 버전 2 이하 (버전 3 이후는 graphql, pubsub 등 별도 설치 필요)
+- python
+- Django + socket.io
 
 ## 로컬 개발 환경 세팅
 
@@ -69,22 +69,14 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 
 ## 창고 PC 세팅
 
-- 종프2에서는 라즈베리파이를 사용하였으나, 일반 데스크탑, 노트북 등 무엇을 사용하든 무관.
-1. HW/raspi 폴더로 이동
-2. 창고 IP 주소 세팅
-    - app.js 파일 내 ip 주소 서버 주소로 수정
-
+1. 라즈베리파이에 RaspAP 설치 후 AP-STA모드로 설정 (RaspAP 공식문서 참고)
     ```bash
-    ip: '<IP>:<PORT>'
+    curl -sL https://install.raspap.com | bash
     ```
-
-3. 아두이노 포트 수정
-    - 아두이노 연결 후 포트 확인하여 apollo.js 수정
-    - 아래 둘 중 하나 수정하면 됨
-
+2. Raspi 폴더 내부에서 도커파일 빌드 및 실행
     ```bash
-    var serial = new SerialPort('/COM5', 9600);  // windows
-    var serial = new SerialPort('/dev/ttyACM0', 9600);  // raspi
+    $ docker-compose build
+    $ docker-compose up
     ```
 
 ## 서버 배포
