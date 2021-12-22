@@ -116,11 +116,12 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 7. 컨테이너 내에 있는 DB 복구
 
 ## 아두이노 회로도
--cctv 디바이스 회로도
+
+### cctv 디바이스 회로도
 ![circuit_cctv.png](Public/Image/README/circuit_cctv.png)
 
 
--sensing 디바이스 회로도
+### sensing 디바이스 
 ![circuit_sensing.png](Public/Image/README/circuit_sensing.png)
 
 ## 브라우저 호환
