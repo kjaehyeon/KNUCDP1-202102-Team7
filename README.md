@@ -6,7 +6,7 @@
 
 - 전체 시스템 구성도
 
-    ![SystemDiagram.png](Public/Image/README/SystemDiagram.png)
+    ![Systemdiagram.png](Public/Image/README/Systemdiagram.png)
 
 Express framework를 이용하여 이용자가 창고를 등록하고 원하는 면적, 날짜 만큼 대여할 수 있는 공유 플랫폼을 형성하고, 등록한 창고의 경우 창고 상황을 라즈베리파이 및 아두이노 센서로 실시간 모니터링할 수 있는 시스템
 
@@ -117,7 +117,9 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 
 ## 아두이노 회로도
 
-![ArduinoCurcuit.png](Public/Image/README/ArduinoCurcuit.png)
+![circuit_cctv.png](Public/Image/README/circuit_cctv.png)
+
+![circuit_sensing.png](Public/Image/README/circuit_sensing.png)
 
 ## 브라우저 호환
 
