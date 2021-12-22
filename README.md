@@ -73,7 +73,7 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
     ```bash
     curl -sL https://install.raspap.com | bash
     ```
-2. Raspi 폴더 내부에서 도커파일 빌드 및 실행
+2. HW 폴더 내부에서 도커파일 빌드 및 실행
     ```bash
     $ docker-compose build
     $ docker-compose up
