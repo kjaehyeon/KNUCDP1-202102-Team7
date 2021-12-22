@@ -123,7 +123,7 @@ def my_broadcast_event(sid, message):
 def camera_move(sid, message):
     orientation = message['data']
     clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    clientsocket.setblocking(False)
+    print(orientation)
     try:
         clientsocket.connect(("192.168.0.21", 1234))
         if(orientation == 'r'):
@@ -131,6 +131,7 @@ def camera_move(sid, message):
         elif(orientation == 'l'):
             clientsocket.send((orientation+'\n').encode('utf-8'))
     except (socket.error , BlockingIOError) as e:
+        print(e)
         pass
     finally:
         clientsocket.close()
@@ -143,20 +144,16 @@ def my_event(sid, message):
 @sio.event
 def join(sid, message):
     sio.enter_room(sid, message['room'])
-    sio.emit('response', {'data': 'Entered room: ' + message['room']},
-             room=sid)
+    sio.emit('response', {'data': 'Entered room: ' + message['room']},room=sid)
 
 @sio.event
 def leave(sid, message):
     sio.leave_room(sid, message['room'])
-    sio.emit('response', {'data': 'Left room: ' + message['room']},
-             room=sid)
+    sio.emit('response', {'data': 'Left room: ' + message['room']},room=sid)
 
 @sio.event
 def close_room(sid, message):
-    sio.emit('response',
-             {'data': 'Room ' + message['room'] + ' is closing.'},
-             room=message['room'])
+    sio.emit('response',{'data': 'Room ' + message['room'] + ' is closing.'},room=message['room'])
     sio.close_room(message['room'])
 
 @sio.event
