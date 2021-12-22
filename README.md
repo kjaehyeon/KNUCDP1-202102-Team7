@@ -379,8 +379,6 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 
   ### Registration
 
-![Warehousing](Public/Image/README/Warehousing.gif)
-
   - 창고의 물품 입출고 상태를 실시간으로 확인할 수 있음
 
     - Provider는 자신의 창고를 사용하는 모든 사용자의 물품을 볼 수 있음
@@ -448,18 +446,5 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
   ![IoT_Help](Public/Image/README/IoT_Help.png)
 
 # 참고 링크
-- IoT의 이전 버전 Demo Youtube
-    - https://youtu.be/wSYU74OY1p0
-- IoT 병합 전 버전의 GitHub Repo
-    - https://github.com/WOOSIEUN/capstone2021-autoinven
-      
-# 개선하면 좋은 부분
-
-- 아두이노의 RFID 리더기가 랜덤으로 인식이 되지 않는 케이스가 있음
-  - 전원을 껐다 켜면 정상 작동함
-  - 메모리 부족으로 추정했으나 아닌 듯하고 정확한 원인을 모르겠음
-- 창고 등록시 사진을 여러 개 등록할 수 있도록 할 것
-  - 현재 창고 사진 1개 등록할 수 있음
-- 클라이언트 - 창고 서버 간의 통신을 프록시로 구현
-  - 현재 클라이언트 측에서 창고 서버의 웹소켓 주소를 직접 접속하도록 구현되어 있음
-  - 메인 서버가 웹소켓 요청을 받으면 창고 서버로 우회하도록 구현
+- Demo
+     https://youtu.be/oDh_BqvCCWI
