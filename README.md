@@ -352,11 +352,17 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 
   ### Monitoring
 
-![Monitoring](Public/Image/README/Monitoring.gif)
+![Monitoring](https://user-images.githubusercontent.com/60174385/147019101-f7df6f89-3d23-4f67-ac22-d1173b0c44e8.png)
 
   - 창고의 상태를 실시간으로 확인할 수 있음
   - 온도/습도: 현재 온도/습도를 알 수 있음
   - 불꽃/가스: 불꽃/가스 발생 여부를 알 수 있음
+  - 창고 수용량: 현재 창고 수용량을 알 수 있음 
+  - CCTV: 창고 내부 상황을 알 수 있음
+
+![Alert](https://user-images.githubusercontent.com/60174385/147019151-ef1098c9-0b28-4777-a90f-5a6491064eaa.png)
+
+  - 이상상황 발생시 알림 메세지  
 
   ### Registration
 
