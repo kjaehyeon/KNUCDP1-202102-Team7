@@ -362,7 +362,15 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 
 ![Alert](https://user-images.githubusercontent.com/60174385/147019151-ef1098c9-0b28-4777-a90f-5a6491064eaa.png)
 
-  - 이상상황 발생시 알림 메세지  
+  - 이상상황 발생시 알림 메세지
+
+
+  ### Analytics
+  
+  ![Analyrics](https://user-images.githubusercontent.com/60174385/147019304-c5869d99-bb74-4955-9434-c3db4b47d28a.png)
+  
+  - 연도별 / 월별 / 일별에 따른 센서 값 시각화
+  - 해당 센서 그래프의 최대, 최소, 평균값 표시
 
   ### Registration
 
