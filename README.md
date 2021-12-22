@@ -55,9 +55,17 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 
 ## 아두이노 세팅
 
+### Sensing 디바이스
+- Arduino MEGA 2560으로 개발
 1. 아래 회로도 참조하여 구성
-2. HW/ArduinoSensor 폴더 안 Arduino_Sensor.ino 파일을 아두이노에 업로드
+2. HW/ArduinoSensor 폴더 안 Sesing_Device.ino 파일을 아두이노에 업로드
 3. 창고 PC에 연결
+
+### CCTV 디바이스
+-Arudino MEGA 2560, ESP-32 Wrover Module 환경에서 개발
+1.아래 회로도 참조하여 구성
+2. HW/CCTV_Device 폴더 안 ino 파일을 아두이노에 업로드
+3. 창고 PC에 
 
 ## 창고 PC 세팅
 
