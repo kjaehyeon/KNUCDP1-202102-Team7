@@ -121,7 +121,7 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 ![circuit_cctv.png](Public/Image/README/circuit_cctv.png)
 
 
-### sensing 디바이스 
+### sensing 디바이스 회로도
 ![circuit_sensing.png](Public/Image/README/circuit_sensing.png)
 
 ## 브라우저 호환
