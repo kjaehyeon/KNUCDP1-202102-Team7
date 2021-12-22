@@ -53,6 +53,8 @@ def data_processing(parsed_data):
                             co=aggreResult['co__avg'], propane=aggreResult['propane__avg'], datetime=yesterday)
             tmp.save()
 
+
+
 class AuthSmsSend():
     EmgCount = 0
     pre = 0
@@ -65,6 +67,37 @@ def notiEmg(data):
         if (AuthSmsSend.time is not None):
             timeDiff = datetime.now() - AuthSmsSend.time
         if AuthSmsSend.EmgCount >= 5 and (AuthSmsSend.time is None or timeDiff >= timedelta(hours = 1)):
+            headers ={
+                'Content-Type': 'application/json; charset=utf-8',
+                'client-ip' : f'http://{ip}:50000'
+            }   
+            response = requests.get('http://3.38.92.244:5000/Api/Alert', headers=headers)
+
+
+            AuthSmsSend.EmgCount = 0
+        else:
+            if (AuthSmsSend.pre == 1):
+                AuthSmsSend.EmgCount += 1
+    else:
+        if (AuthSmsSend.pre == 1):
+            AuthSmsSend.EmgCount = 0
+        AuthSmsSend.pre = 0
+        return 
+
+class AuthSmsSend():
+    EmgCount = 0
+    pre = 0
+    time = None
+
+def notiEmg(data):
+    if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 200 or data["propane"] > 15 or data["vibration"] < 1000:
+        AuthSmsSend.pre = 1
+        ip = requests.get("https://api.ipify.org").text
+        if (AuthSmsSend.time is not None):
+            timeDiff = datetime.now() - AuthSmsSend.time
+        if AuthSmsSend.EmgCount >= 5 and (AuthSmsSend.time is None or timeDiff >= timedelta(hours = 1)):
+            print(AuthSmsSend.EmgCount, AuthSmsSend.pre, AuthSmsSend.time)
+            AuthSmsSend.time = datetime.now()
             headers ={
                 'Content-Type': 'application/json; charset=utf-8',
                 'client-ip' : f'http://{ip}:50000'

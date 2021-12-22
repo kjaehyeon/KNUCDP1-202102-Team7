@@ -5,9 +5,8 @@
 char ssid[] = "202ho";            // your network SSID (name)
 char pass[] = "202mlife12!";        // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
-int reqCount = 0;                // number of requests received
-int angle = 90;
-WiFiEspServer server(1234);
+int angle = 90;                //motor initial angle
+WiFiEspServer server(1234);    // port 1234
 Servo servo;
 
 void setup()
@@ -37,7 +36,7 @@ void loop(){
   if(client){
     while(client.connected()){
       char client_Read = client.read();
-      if(client_Read == 'r'){
+      if(client_Read == 'r'){              //r이 오면 오른쪽으로 15도 l이 오면 왼쪽으로 15도 회전
         for(int i = 0; i <15; i++){
           angle = angle +1;
           if(angle >= 180)
@@ -57,10 +56,4 @@ void loop(){
       }
     }
   }
-  /*if(Serial3.find("right")){
-    Serial.print("rrr");
-  }
-  if(Serial3.find("left")){
-    Serial.print("qqq");
-  }*/
 }
