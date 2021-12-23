@@ -5,10 +5,11 @@
 #include <DHT_U.h>
 #include <MQUnifiedsensor.h>
 
-char ssid[] = "droptopB1";            // your network SSID (name)
-char pass[] = "droptop925!!";        // your network password
+char ssid[] = "DGSMC-2";            // your network SSID (name)
+char pass[] = "12345678";        // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
-char server[] = "192.168.219.103";
+char server[] = "192.168.0.144";
+int socket_status;
 WiFiEspClient client;
 
 //for DHT-22
@@ -27,9 +28,9 @@ WiFiEspClient client;
 #define DEVICE_ID 1
 
 //for led
-int red = 8;
-int green = 9;
-int blue = 10;
+#define RED 8
+#define GREEN 9
+#define BLUE 10
 
 //for SW-18010
 #define SWPIN A2
@@ -48,15 +49,15 @@ float ppm2; //CO
 void setup()
 {
     Serial.begin(9600);
-    Serial3.begin(9600);
+    Serial3.begin(115200);
     //led pin 설정
-    pinMode(red, OUTPUT);
-    pinMode(green, OUTPUT);
-    pinMode(blue, OUTPUT);
+    pinMode(RED, OUTPUT);
+    pinMode(GREEN, OUTPUT);
+    pinMode(BLUE, OUTPUT);
     
-    digitalWrite(blue, LOW);
+    digitalWrite(BLUE, LOW);
     delay(100);
-    digitalWrite(red, HIGH);
+    digitalWrite(RED, HIGH);
     
     WiFi.init(&Serial3);
     // Wifi 연결
@@ -112,14 +113,15 @@ void setup()
 
 void loop()
 {   
-    digitalWrite(red, LOW);
-    delay(100);
-    digitalWrite(blue, HIGH);
+    digitalWrite(RED, LOW);
+
+    digitalWrite(BLUE, HIGH);
     status = WiFi.status();
+    //socket_status = client.connected();
     if(status != WL_CONNECTED){
       setup(); //wifi 꺼지면 다시 setup
     }
-    delay(200);
+    
     sensors_event_t event;  
     //온도값 얻기
     dht.temperature().getEvent(&event);
@@ -138,13 +140,16 @@ void loop()
     int vib = analogRead(SWPIN);
     //불꽃센서 정보 얻기
     int flame = digitalRead(FLAMPIN);
-    //client.connect(server, 8000);
-    //Serial.println("Connected to server");
-    String tmp = String("GET /monitoring/sensor_val/?device_id=")+DEVICE_ID+String("&temperature=")+ temp + String("&humidity=")+humi+String("&co=")+ppm2+String("&propane=")+ppm1+String("&flame=")+flame+String("&vibration=")+vib;
-    client.println(tmp);
-    client.println("Host: 192.168.219.103");
-    client.println("Connection: Keep-Alive");
-    client.println();
+    
+    if(client.connected()){
+      String tmp = String("GET /monitoring/sensor_val/?device_id=")+DEVICE_ID+String("&temperature=")+ temp + String("&humidity=")+humi+String("&co=")+ppm2+String("&propane=")+ppm1+String("&flame=")+flame+String("&vibration=")+vib;
+      client.println(tmp);
+      client.println(String("Host: ")+server);
+      client.println("Connection: Keep-Alive");
+      client.println();
+    }else{
+      client.connect(server, 8000);
+    }
 }
 
 void getSensorData(){

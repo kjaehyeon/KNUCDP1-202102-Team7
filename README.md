@@ -6,7 +6,7 @@
 
 - 전체 시스템 구성도
 
-    ![SystemDiagram.png](Public/Image/README/SystemDiagram.png)
+    ![system_diagram.PNG](Public/Image/README/system_diagram.PNG)
 
 Express framework를 이용하여 이용자가 창고를 등록하고 원하는 면적, 날짜 만큼 대여할 수 있는 공유 플랫폼을 형성하고, 등록한 창고의 경우 창고 상황을 라즈베리파이 및 아두이노 센서로 실시간 모니터링할 수 있는 시스템
 
@@ -26,10 +26,10 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 - node.js
 - npm
 
-### RaspberryPi
+### RaspberryPi 4B+
 
-- node.js
-- apollo-server-express: 버전 2 이하 (버전 3 이후는 graphql, pubsub 등 별도 설치 필요)
+- python
+- Django + socket.io
 
 ## 로컬 개발 환경 세팅
 
@@ -55,28 +55,28 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 
 ## 아두이노 세팅
 
+### Sensing 디바이스
+- Arduino MEGA 2560으로 개발
 1. 아래 회로도 참조하여 구성
-2. HW/ArduinoSensor 폴더 안 Arduino_Sensor.ino 파일을 아두이노에 업로드
+2. HW/ArduinoSensor 폴더 안 Sesing_Device.ino 파일을 아두이노에 업로드
+3. 창고 PC에 연결
+
+### CCTV 디바이스
+- Arudino MEGA 2560, ESP-32 Wrover Module 환경에서 개발
+1. 아래 회로도 참조하여 구성
+2. HW/CCTV_Device 폴더 안 ino 파일을 아두이노에 업로드
 3. 창고 PC에 연결
 
 ## 창고 PC 세팅
 
-- 종프2에서는 라즈베리파이를 사용하였으나, 일반 데스크탑, 노트북 등 무엇을 사용하든 무관.
-1. HW/raspi 폴더로 이동
-2. 창고 IP 주소 세팅
-    - app.js 파일 내 ip 주소 서버 주소로 수정
-
+1. 라즈베리파이에 RaspAP 설치 후 AP-STA모드로 설정 (RaspAP 공식문서 참고)
     ```bash
-    ip: '<IP>:<PORT>'
+    curl -sL https://install.raspap.com | bash
     ```
-
-3. 아두이노 포트 수정
-    - 아두이노 연결 후 포트 확인하여 apollo.js 수정
-    - 아래 둘 중 하나 수정하면 됨
-
+2. HW 폴더 내부에서 도커파일 빌드 및 실행
     ```bash
-    var serial = new SerialPort('/COM5', 9600);  // windows
-    var serial = new SerialPort('/dev/ttyACM0', 9600);  // raspi
+    $ docker-compose build
+    $ docker-compose up
     ```
 
 ## 서버 배포
@@ -117,7 +117,12 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 
 ## 아두이노 회로도
 
-![ArduinoCurcuit.png](Public/Image/README/ArduinoCurcuit.png)
+### cctv 디바이스 회로도
+![circuit_cctv.png](Public/Image/README/circuit_cctv.png)
+
+
+### sensing 디바이스 회로도
+![circuit_sensing.png](Public/Image/README/circuit_sensing.png)
 
 ## 브라우저 호환
 
@@ -221,8 +226,7 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 ### 대여 신청
 
 - Search Warehouse → 지도에서 창고 선택 → Inquire → 면적, 대여 기한 입력 → Submit
-
-    ![SearchWarehouse.PNG](Public/Image/README/SearchWarehouse.PNG)
+    ![image](https://user-images.githubusercontent.com/33050476/147016299-416e1d9c-ef1a-44a9-81f1-a418abbad6a5.png)
 
 ### 대여 승인 절차
 
@@ -353,15 +357,27 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
 
   ### Monitoring
 
-![Monitoring](Public/Image/README/Monitoring.gif)
+![Monitoring](https://user-images.githubusercontent.com/60174385/147019101-f7df6f89-3d23-4f67-ac22-d1173b0c44e8.png)
 
   - 창고의 상태를 실시간으로 확인할 수 있음
   - 온도/습도: 현재 온도/습도를 알 수 있음
   - 불꽃/가스: 불꽃/가스 발생 여부를 알 수 있음
+  - 창고 수용량: 현재 창고 수용량을 알 수 있음 
+  - CCTV: 창고 내부 상황을 알 수 있음
+
+![Alert](https://user-images.githubusercontent.com/60174385/147019151-ef1098c9-0b28-4777-a90f-5a6491064eaa.png)
+
+  - 이상상황 발생시 알림 메세지
+
+
+  ### Analytics
+  
+  ![Analyrics](https://user-images.githubusercontent.com/60174385/147019304-c5869d99-bb74-4955-9434-c3db4b47d28a.png)
+  
+  - 연도별 / 월별 / 일별에 따른 센서 값 시각화
+  - 해당 센서 그래프의 최대, 최소, 평균값 표시
 
   ### Registration
-
-![Warehousing](Public/Image/README/Warehousing.gif)
 
   - 창고의 물품 입출고 상태를 실시간으로 확인할 수 있음
 
@@ -430,18 +446,5 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
   ![IoT_Help](Public/Image/README/IoT_Help.png)
 
 # 참고 링크
-- IoT의 이전 버전 Demo Youtube
-    - https://youtu.be/wSYU74OY1p0
-- IoT 병합 전 버전의 GitHub Repo
-    - https://github.com/WOOSIEUN/capstone2021-autoinven
-      
-# 개선하면 좋은 부분
-
-- 아두이노의 RFID 리더기가 랜덤으로 인식이 되지 않는 케이스가 있음
-  - 전원을 껐다 켜면 정상 작동함
-  - 메모리 부족으로 추정했으나 아닌 듯하고 정확한 원인을 모르겠음
-- 창고 등록시 사진을 여러 개 등록할 수 있도록 할 것
-  - 현재 창고 사진 1개 등록할 수 있음
-- 클라이언트 - 창고 서버 간의 통신을 프록시로 구현
-  - 현재 클라이언트 측에서 창고 서버의 웹소켓 주소를 직접 접속하도록 구현되어 있음
-  - 메인 서버가 웹소켓 요청을 받으면 창고 서버로 우회하도록 구현
+- Demo
+     https://youtu.be/oDh_BqvCCWI

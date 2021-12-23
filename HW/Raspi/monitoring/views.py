@@ -72,7 +72,7 @@ def notiEmg(data):
                 'Content-Type': 'application/json; charset=utf-8',
                 'client-ip' : f'http://{ip}:50000'
             }   
-            response = requests.get('http://3.38.92.244:5000/Api/Alert', headers=headers)
+            response = requests.get('http://'+os.environ.get('SERVER_IP')+'/Api/Alert', headers=headers)
 
 
             AuthSmsSend.EmgCount = 0
@@ -127,8 +127,12 @@ def my_broadcast_event(sid, message):
 def camera_move(sid, message):
     orientation = message['data']
     clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+<<<<<<< HEAD
+=======
+    print(orientation)
+>>>>>>> 479650b1feb6803a6f1cacacdcd2339f8109578a
     try:
-        clientsocket.connect(("192.168.0.21", 1234))
+        clientsocket.connect((os.environ.get('ARDUINO_IP'), 1234))
         if(orientation == 'r'):
             #clientsocket.send((orientation+'\n').encode('utf-8'))
             clientsocket.send(('l'+'\n').encode('utf-8'))
@@ -136,7 +140,11 @@ def camera_move(sid, message):
             #clientsocket.send((orientation+'\n').encode('utf-8'))
             clientsocket.send(('r'+'\n').encode('utf-8'))
     except (socket.error , BlockingIOError) as e:
+<<<<<<< HEAD
         print("error!")
+=======
+        print(e)
+>>>>>>> 479650b1feb6803a6f1cacacdcd2339f8109578a
         pass
     finally:
         clientsocket.close()
@@ -149,20 +157,16 @@ def my_event(sid, message):
 @sio.event
 def join(sid, message):
     sio.enter_room(sid, message['room'])
-    sio.emit('response', {'data': 'Entered room: ' + message['room']},
-             room=sid)
+    sio.emit('response', {'data': 'Entered room: ' + message['room']},room=sid)
 
 @sio.event
 def leave(sid, message):
     sio.leave_room(sid, message['room'])
-    sio.emit('response', {'data': 'Left room: ' + message['room']},
-             room=sid)
+    sio.emit('response', {'data': 'Left room: ' + message['room']},room=sid)
 
 @sio.event
 def close_room(sid, message):
-    sio.emit('response',
-             {'data': 'Room ' + message['room'] + ' is closing.'},
-             room=message['room'])
+    sio.emit('response',{'data': 'Room ' + message['room'] + ' is closing.'},room=message['room'])
     sio.close_room(message['room'])
 
 @sio.event

@@ -30,31 +30,40 @@ exports.EnrollWH = function (req, res, app, db) {
     if (onlyNum.test(item.landArea) == false) {
         res.send("errortype2");
         console.log('errortype2');
+        connection.end();
     } else if (onlyNum.test(item.floorArea) == false) {
         res.send("errortype3");
         console.log('errortype3');
+        connection.end();
     } else if (onlyNum.test(item.useableArea) == false) {
         res.send("errortype11");
         console.log('errortype11');
+        connection.end();
     } else if (onlyNumDot.test(item.price) == false) {
         res.send("errortype4");
         console.log('errortype4');
+        connection.end();
     } else if ((engishDigit.test(item.warehouseName) || (engishDigit.test(item.infoComment)) || (engishDigit.test(item.etcComment))) == false) {
         res.send("errortype6");
+        connection.end();
     } else if (emailReg.test(item.warehouseEmail) == false) {
         res.send("errortype9");
+        connection.end();
     } else if (phoneReg.test(item.warehouseTEL) == false) {
         res.send("errortype10");
+        connection.end();
     } else {
         connection.query('INSERT INTO Warehouse SET ?', item, function (error, results, fields) {
             if (error) {
                 console.log("error ocurred Warehouse set error", error.message);
                 res.redirect('/Provider/EnrollWH');
+                connection.end();
             } else {
                 connection.query('SELECT LAST_INSERT_ID() as wid;', function (error, results, fields) {
                     if (error) {
                         console.log("error ocurred LAST_INSERT_ID() error", error);
                         res.redirect('/Provider/EnrollWH');
+                        connection.end();
                     } else {
                         let upLoadFile = req.files;
                         let fileName = req.files.profile_img.name;
@@ -65,6 +74,7 @@ exports.EnrollWH = function (req, res, app, db) {
                             if (err) {
                                 res.send(err);
                                 console.log('file mv error' + err);
+                                connection.end();
                             } else {
                                 warehouseID = results[0].wid;
                                 var fileInfo = {
@@ -75,6 +85,7 @@ exports.EnrollWH = function (req, res, app, db) {
                                     if (error) {
                                         console.log("error ocurred FileInfo error", error);
                                         res.redirect('/Provider/EnrollWH');
+                                        connection.end();
                                     } else {
                                         var reqItem = {
                                             "reqDate": new Date(),
@@ -89,6 +100,7 @@ exports.EnrollWH = function (req, res, app, db) {
                                             } else {
                                                 res.send("errortype0");
                                             }
+                                            connection.end();
                                         });
                                     }
                                 });

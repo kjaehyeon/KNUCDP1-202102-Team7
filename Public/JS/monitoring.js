@@ -298,12 +298,13 @@ const generateWarehouseCapabilityChart = (warehouse_info) => {
             }],
         },
         options: {
+            responsive: false,
             plugins: {
                 legend: {
-                    position: 'right'
+                    position: 'right',
+                    padding: 10
                 },
-            },
-            aspectRatio: 2,
+            },  
             yAxes: [{
                 gridLines: {
                     display: false,
