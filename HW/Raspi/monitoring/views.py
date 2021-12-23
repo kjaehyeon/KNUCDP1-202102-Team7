@@ -127,24 +127,14 @@ def my_broadcast_event(sid, message):
 def camera_move(sid, message):
     orientation = message['data']
     clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-<<<<<<< HEAD
-=======
-    print(orientation)
->>>>>>> 479650b1feb6803a6f1cacacdcd2339f8109578a
     try:
         clientsocket.connect((os.environ.get('ARDUINO_IP'), 1234))
         if(orientation == 'r'):
-            #clientsocket.send((orientation+'\n').encode('utf-8'))
-            clientsocket.send(('l'+'\n').encode('utf-8'))
+            clientsocket.send((orientation+'\n').encode('utf-8'))
         elif(orientation == 'l'):
-            #clientsocket.send((orientation+'\n').encode('utf-8'))
-            clientsocket.send(('r'+'\n').encode('utf-8'))
+            clientsocket.send((orientation+'\n').encode('utf-8'))
     except (socket.error , BlockingIOError) as e:
-<<<<<<< HEAD
         print("error!")
-=======
-        print(e)
->>>>>>> 479650b1feb6803a6f1cacacdcd2339f8109578a
         pass
     finally:
         clientsocket.close()
