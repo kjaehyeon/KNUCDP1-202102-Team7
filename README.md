@@ -78,6 +78,7 @@ Express framework를 이용하여 이용자가 창고를 등록하고 원하는 
     $ docker-compose build
     $ docker-compose up
     ```
+※주의점 Dockerfile의 python버젼과 라즈베리파이의 python버젼이 일치하는지 반드시 확인
 
 ## 서버 배포
 
