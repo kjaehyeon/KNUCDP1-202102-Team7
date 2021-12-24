@@ -61,7 +61,7 @@ class AuthSmsSend():
     time = None
 
 def notiEmg(data):
-    if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 300 or data["propane"] > 30 or data["vibration"] < 900:
+    if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 1000 or data["propane"] > 500 or data["vibration"] < 900:
         AuthSmsSend.pre = 1
         ip = requests.get("https://api.ipify.org").text
         if (AuthSmsSend.time is not None):
@@ -71,10 +71,12 @@ def notiEmg(data):
             headers ={
                 'Content-Type': 'application/json; charset=utf-8',
                 'client-ip' : f'http://{ip}:50000'
-            }   
-            response = requests.get('http://'+os.environ.get('SERVER_IP')+'/Api/Alert', headers=headers)
-
-
+            }  
+            try:
+                response = requests.get('http://'+os.environ.get('SERVER_IP')+'/Api/Alert', headers=headers)
+            except Exception as e:
+                print(e)
+                pass
             AuthSmsSend.EmgCount = 0
         else:
             if (AuthSmsSend.pre == 1):
@@ -89,6 +91,7 @@ def notiEmg(data):
 @api_view(['GET'])
 def sensor_value(request):
     if(request.method == 'GET'):
+        print(request.GET)
         parsed_data : json = json.loads('{"device_id":'+request.GET['device_id']+
                             ',"temperature":'+request.GET['temperature']+
                             ',"humidity":'+request.GET['humidity']+
