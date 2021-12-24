@@ -2,7 +2,7 @@ asgiref==3.4.1
 bidict==0.21.4
 certifi==2021.10.8
 charset-normalizer==2.0.9
-Django==4.0
+Django==3.2.9
 django-cors-headers==3.10.1
 djangorestframework==3.13.1
 dnspython==2.1.0
