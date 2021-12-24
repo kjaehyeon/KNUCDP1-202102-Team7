@@ -61,7 +61,7 @@ class AuthSmsSend():
     time = None
 
 def notiEmg(data):
-    if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 1000 or data["propane"] > 500 or data["vibration"] < 900:
+    if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 1000 or data["propane"] > 500 or data["vibration"] < 1:
         AuthSmsSend.pre = 1
         ip = requests.get("https://api.ipify.org").text
         if (AuthSmsSend.time is not None):
