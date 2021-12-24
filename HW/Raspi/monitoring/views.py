@@ -61,19 +61,22 @@ class AuthSmsSend():
     time = None
 
 def notiEmg(data):
-    if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 200 or data["propane"] > 15 or data["vibration"] <1:
+    if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 1000 or data["propane"] > 500 or data["vibration"] < 1:
         AuthSmsSend.pre = 1
         ip = requests.get("https://api.ipify.org").text
         if (AuthSmsSend.time is not None):
             timeDiff = datetime.now() - AuthSmsSend.time
         if AuthSmsSend.EmgCount >= 5 and (AuthSmsSend.time is None or timeDiff >= timedelta(hours = 1)):
+            AuthSmsSend.time = datetime.now()
             headers ={
                 'Content-Type': 'application/json; charset=utf-8',
                 'client-ip' : f'http://{ip}:50000'
-            }   
-            response = requests.get('http://'+os.environ.get('SERVER_IP')+'/Api/Alert', headers=headers)
-
-
+            }  
+            try:
+                response = requests.get('http://'+os.environ.get('SERVER_IP')+'/Api/Alert', headers=headers)
+            except Exception as e:
+                print(e)
+                pass
             AuthSmsSend.EmgCount = 0
         else:
             if (AuthSmsSend.pre == 1):
@@ -88,6 +91,7 @@ def notiEmg(data):
 @api_view(['GET'])
 def sensor_value(request):
     if(request.method == 'GET'):
+        print(request.GET)
         parsed_data : json = json.loads('{"device_id":'+request.GET['device_id']+
                             ',"temperature":'+request.GET['temperature']+
                             ',"humidity":'+request.GET['humidity']+
@@ -126,7 +130,6 @@ def my_broadcast_event(sid, message):
 def camera_move(sid, message):
     orientation = message['data']
     clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print(orientation)
     try:
         clientsocket.connect((os.environ.get('ARDUINO_IP'), 1234))
         if(orientation == 'r'):
@@ -134,7 +137,7 @@ def camera_move(sid, message):
         elif(orientation == 'l'):
             clientsocket.send((orientation+'\n').encode('utf-8'))
     except (socket.error , BlockingIOError) as e:
-        print(e)
+        print("error!")
         pass
     finally:
         clientsocket.close()
