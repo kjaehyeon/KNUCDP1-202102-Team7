@@ -91,7 +91,6 @@ def notiEmg(data):
 @api_view(['GET'])
 def sensor_value(request):
     if(request.method == 'GET'):
-        print(request.GET)
         parsed_data : json = json.loads('{"device_id":'+request.GET['device_id']+
                             ',"temperature":'+request.GET['temperature']+
                             ',"humidity":'+request.GET['humidity']+
