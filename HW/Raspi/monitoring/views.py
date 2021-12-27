@@ -1,7 +1,4 @@
-async_mode = None
-
 import os
-import asyncio
 
 from django.http import HttpResponse
 from rest_framework.response import Response
@@ -11,10 +8,8 @@ from datetime import datetime
 from rest_framework.decorators import api_view
 import json
 from datetime import datetime, timedelta
-import eventlet
 from django.db.models import Avg
 import requests
-from django.http import JsonResponse  
 import socket
 
 basedir = os.path.dirname(os.path.realpath(__file__))
