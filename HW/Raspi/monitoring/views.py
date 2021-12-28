@@ -1,5 +1,3 @@
-async_mode = None
-
 import os, environ
 from pathlib import Path
 from django.http import HttpResponse
@@ -10,7 +8,6 @@ from datetime import datetime
 from rest_framework.decorators import api_view
 import json
 from datetime import datetime, timedelta
-import eventlet
 from django.db.models import Avg
 import requests
 import socket
