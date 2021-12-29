@@ -1,10 +1,10 @@
-module.exports = async (app, pool) => {
+module.exports = (app, pool) => {
     const express = require('express');
     const router = express.Router();
     const crypto = require('crypto');
     const request = require('request');
 
-    router.get('/Alert', (req, res) => {
+    router.get('/Alert', async (req, res) => {
         const to_list = [];
         const ip = req.headers['client-ip'];
         if(!ip){
@@ -88,7 +88,7 @@ module.exports = async (app, pool) => {
             } catch (err) {
                 console.log(err.message);
             } finally {
-
+                connection.release();
             }
         }
     });
