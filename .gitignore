@@ -3,3 +3,4 @@
 *.sql
 node_modules/
 .env
+/backup1.sql

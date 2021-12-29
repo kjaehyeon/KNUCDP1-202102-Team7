@@ -108,7 +108,6 @@ def index_test(request):
     return HttpResponse(open(os.path.join(basedir, 'static/index.html')))
 
 def background_thread():
-    """Example of how to send server generated events to clients."""
     count = 0
     while True:
         sio.sleep(10)
