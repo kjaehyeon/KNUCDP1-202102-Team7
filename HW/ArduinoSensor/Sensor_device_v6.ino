@@ -193,28 +193,31 @@ const unsigned long Interval = 700L;
 void loop() {
     //와이파이 연결 끊어지면 다시 연결 시도
     if(WiFi.status() != WL_CONNECTED){
-      while(WiFiMulti.run() != WL_CONNECTED) {
         digitalWrite(BLUE, LOW);
         digitalWrite(RED, HIGH);
+      while(WiFiMulti.run() != WL_CONNECTED) {
         delay(100);
       }
       String ip = WiFi.localIP().toString();
       USE_SERIAL.printf("[SETUP] WiFi Connected %s\n", ip.c_str());
       resetSensorVal();
     }else if(!socketIO.isConnected()){ // 소켓 연결이 끊어지면 다시 시도
+      digitalWrite(BLUE, LOW);
+      digitalWrite(RED, HIGH);
       socketIO.begin(server, 8000, "/socket.io/?EIO=4");
       socketIO.onEvent(socketIOEvent);
       delay(100);
       resetSensorVal();
     }else{
+      digitalWrite(BLUE, HIGH);
+      digitalWrite(RED, LOW);
+
       socketIO.loop();
       uint64_t now = millis();
       getSensorVal();
       
       delay(50);
       
-      digitalWrite(BLUE, HIGH);
-      digitalWrite(RED, LOW);
       if(now - messageTimestamp > Interval && sensorval.count > 0) {
           messageTimestamp = now;
   
