@@ -1,46 +1,88 @@
 const viewInfo = require('./viewInfo');
 
-exports.getWHInfo = function(req, res, app, db) {
+exports.getWHInfo = async function(req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
-    let results = db.query(`select warehouseID from RequestForBuy where reqID=` + reqID + `;`);
+    var connection = null;
+    let results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query('select warehouseID from RequestForBuy where reqID=' + reqID);
+    } catch (err) { 
+        console.loge(err);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         var warehouseID = results[0].warehouseID;
-        items = viewInfo.getWHInfo(db, warehouseID);
+        items = await viewInfo.getWHInfo(pool, warehouseID);
+    } else {
+        JSON.stringify(items);
     }
     return items;
 }
 
-exports.getPVInfo = function(req, res, app, db) {
+exports.getPVInfo = async function(req, res, app, pool) {
     var reqID = req.body.reqID;
-    console.log(reqID);
     var items = {};
-    let results = db.query(`select memberID from RequestForBuy, Provider where RequestForBuy.warehouseID=Provider.warehouseID and RequestForBuy.reqID=` + reqID + `;`);
+    var connection = null;
+    var results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query('select memberID from RequestForBuy, Provider'
+                                            + ' where RequestForBuy.warehouseID=Provider.warehouseID' 
+                                            + ' and RequestForBuy.reqID=' + reqID);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         var providerID = results[0].memberID;
-        items = viewInfo.getMemberInfo(db, providerID);
-        //console.log(items);
+        items = await viewInfo.getMemberInfo(db, providerID);
     } else {
         console.log("empty");
     }
     return items;
 }
 
-exports.getBYInfo = function(req, res, app, db) {
+exports.getBYInfo = async function(req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
-    let results = db.query(`select buyerID from RequestForBuy where reqID=` + reqID + `;`);
+    var connection = null;
+    var results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query('select buyerID from RequestForBuy where reqID=' + reqID);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         var buyerID = results[0].buyerID;
-        items = viewInfo.getMemberInfo(db, buyerID);
+        items = await viewInfo.getMemberInfo(pool, buyerID);
+    } else {
+        JSON.stringify(items);
     }
     return items;
 }
 
-exports.getReqInfo = function(req, res, app, db) {
+exports.getReqInfo = async function(req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
-    let results = db.query(`select * from RequestForBuy, Warehouse where Warehouse.warehouseID=RequestForBuy.warehouseID and reqID=` + reqID + `;`);
+    var connection = null;
+    var results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query('select * from RequestForBuy, Warehouse'
+                                            + ' where Warehouse.warehouseID=RequestForBuy.warehouseID' 
+                                            + ' and reqID=' + reqID);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         items = {
             reqID: results[0].reqID,

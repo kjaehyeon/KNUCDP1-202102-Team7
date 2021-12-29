@@ -1,9 +1,19 @@
-exports.searchWH = function(req, res, app, db) {
+exports.searchWH = async function(req, res, app, pool) {
     var items = {};
-    const results1 = db.query(`SELECT * from PublicWarehouse`);
-    const results2 = db.query(`SELECT * from Warehouse where enroll='Y'`);
-
-    const results = results1.concat(results2);
+    var connection = null;
+    var results1 = null;
+    var results2 = null;
+    var results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results1] = await connection.query('SELECT * from PublicWarehouse');
+        [results2] = await connection.query(`SELECT * from Warehouse where enroll='Y'`);
+        results = results1.concat(results2);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             let wid;
@@ -38,9 +48,18 @@ exports.searchWH = function(req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.findImage = function(req, res, app, db) {
+exports.findImage = async function(req, res, app, pool) {
     var items = {};
-    let results = db.query(`SELECT * from FileInfo where warehouseID=${req.body.warehouseID}`);
+    var connection = null;
+    var results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(`SELECT * from FileInfo where warehouseID=${req.body.warehouseID}`);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[`image${step}`] = {
@@ -52,10 +71,8 @@ exports.findImage = function(req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.inquireWH = function(req, res, app, db) {
+exports.inquireWH = async function(req, res, app, pool) {
     var mysql = require('mysql');
-    var connection = mysql.createConnection(require('../Module/db').info);
-    connection.connect();
     var reqItem = {
         reqDate: new Date(),
         reqType: "ReqByBuyer",
@@ -66,14 +83,15 @@ exports.inquireWH = function(req, res, app, db) {
         endDate: req.body.endDate,
         amount: req.body.amount
     };
-    connection.query('INSERT INTO RequestForBuy SET ?', reqItem, function(error, results, fields) {
-        if (error) {
-            console.log(error);
-            res.send(false);
-            connection.end();
-        } else {
-            res.send(true);
-            connection.end();
-        }
-    })
+    var connection = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        await connection.query('INSERT INTO RequestForBuy SET ?', [reqItem]);
+        res.send(true);
+    } catch (err) {
+        console.log(err.message);
+        res.send(false);
+    } finally {
+        connection.release();
+    }
 }

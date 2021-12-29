@@ -1,4 +1,4 @@
-exports.delete = function (req, res, app, db) {
+exports.delete = async function (req, res, app, pool) {
 
     var memberID = req.session.memberID;
     var memberType = req.session.type;
@@ -11,19 +11,29 @@ exports.delete = function (req, res, app, db) {
 
     var insertSQL = `INSERT INTO Deletedmember SET memberID=?, type=?, password=?, email=?, contactNumber=?, address=?, nationa=?, DeletedDate=?`;
     var deleteSQL = `DELETE FROM Member WHERE memberID='${req.session.memberID}'`;
+    var connection = null;
+    var check = null;
+
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        await connection.beginTransaction();
+        await connection.query(insertSQL, [memberID, memberType, name, email, contactNumber, address, national, deletedDate]);
+        await connection.query(deleteSQL);
+        await connection.commit();
+        check = true;
+    } catch (err) {
+        console.log(err.message);
+        await connection.rollback();
+        check = false;
+    } finally {
+        connection.release();
+    }
     var check = db.query(insertSQL, [memberID, memberType, name, email, contactNumber, address, national, deletedDate]);
 
     if (!check) {
-        console.log("insertSQL : error ocurred", error);
         res.redirect('/User/Edit');
     } else {
-        var deletionCheck = db.query(deleteSQL);
-
-        if (!deletionCheck) {
-            console.log("deleteSQL : error ocurred", error);
-        } else {
-            req.session.destroy();
-            res.redirect('/');
-        }
+        req.session.destroy();
+        res.redirect('/');
     }
 }

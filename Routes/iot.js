@@ -1,5 +1,4 @@
-module.exports = function(app, db) {
-
+module.exports = function(app, pool) {
     const express = require('express');
     const router = express.Router();
 
@@ -25,39 +24,39 @@ module.exports = function(app, db) {
     };
     router.use(check);
 
-    router.get('/', (req, res, next) => {
-        iot_Monitoring.init(req, res, db)
+    router.get('/', async (req, res, next) => {
+        await iot_Monitoring.init(req, res, pool)
     });
 
-    router.post('/', (req, res, next) => {
-        iot_Monitoring.sessionCheck(req, res, db)
+    router.post('/', async (req, res, next) => {
+        await iot_Monitoring.sessionCheck(req, res, pool)
     });
 
-    router.get('/Monitoring', (req, res, next) => {
-        iot_Monitoring.init(req, res, db)
+    router.get('/Monitoring', async (req, res, next) => {
+        await iot_Monitoring.init(req, res, pool)
     });
 
-    router.get('/Warehousing', (req, res, next) => {
-        var itemlist = iot_Warehousing.initWarehouse(req, res, db);
+    router.get('/Warehousing', async (req, res, next) => {
+        var itemlist = await iot_Warehousing.initWarehouse(req, res, pool);
         var userType = req.session['type'];
         itemlist = JSON.parse(itemlist);
         res.render('IoT/iot_Warehousing', { 'session': req.session, 'itemlist': itemlist, 'userType': userType });
     });
 
-    router.get('/Help', (req, res, next) => {
-        iot_Help.init(req, res, db)
+    router.get('/Help', async (req, res, next) => {
+        await iot_Help.init(req, res, pool)
     });
 
-    router.get('/RandomTest', (req, res, next) => {
-        iot_Warehousing.randomTest(req, res, db)
+    router.get('/RandomTest', async (req, res, next) => {
+        await iot_Warehousing.randomTest(req, res, pool)
     });
 
     router.get('/RegisterItem', (req, res, next) => {
         res.render('IoT/iot_RegisterItem', { 'session': req.session })
     });
 
-    router.post('/RegisterItem', (req, res, next) => {
-        iot_RegisterItem.registerItem(req, res, db)
+    router.post('/RegisterItem', async (req, res, next) => {
+        await iot_RegisterItem.registerItem(req, res, pool)
     });
 
     router.get('/EditItem', (req, res, next) => {
@@ -68,16 +67,16 @@ module.exports = function(app, db) {
         res.render('IoT/iot_EditItem', { 'RFID': req.body.RFID, 'name': req.body.name, 'num': req.body.num, 'session': req.session })
     });
 
-    router.post('/EditSave', (req, res, next) => {
-        iot_EditItem.editItem(req, res, db)
+    router.post('/EditSave', async (req, res, next) => {
+        await iot_EditItem.editItem(req, res, pool)
     });
 
-    router.post('/DeleteItem', (req, res, next) => {
-        iot_Warehousing.delItem(req, res, db)
+    router.post('/DeleteItem', async (req, res, next) => {
+        await iot_Warehousing.delItem(req, res, pool)
     });
 
-    router.post('/RFID', (req, res, next) => {
-        iot_RFID.receive(req, res, db)
+    router.post('/RFID', async (req, res, next) => {
+        await iot_RFID.receive(req, res, pool)
     });
 
     router.get('/Statistic', (req, res, next) => {

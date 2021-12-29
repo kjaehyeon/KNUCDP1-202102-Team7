@@ -1,4 +1,4 @@
-module.exports = function(app, db) {
+module.exports = function(app, pool) {
     const express = require('express');
     const router = express.Router();
     const ad_ReqEnroll = require('./ad_RequestEnroll');
@@ -21,107 +21,107 @@ module.exports = function(app, db) {
     };
     router.use(check);
 
-    router.get('/RequestEnroll', function(req, res, next) {
-        var items = ad_ReqEnroll.RequestForEnroll(req, res, app, db);
+    router.get('/RequestEnroll', async function(req, res, next) {
+        var items = await ad_ReqEnroll.RequestForEnroll(req, res, app, pool);
         items = JSON.parse(items);
-        res.render('User/Admin/ad_RequestEnroll', { 'app': app, 'session': req.session, 'db': db, 'items': items });
+        res.render('User/Admin/ad_RequestEnroll', { 'app': app, 'session': req.session, 'pool': pool, 'items': items });
     });
 
-    router.post('/RequestEnroll', function(req, res, next) {
-        ad_ReqEnroll.withAnswer(req, res, app, db);
+    router.post('/RequestEnroll', async function(req, res, next) {
+        await ad_ReqEnroll.withAnswer(req, res, app, pool);
     });
-
-    router.post('/EnrollWHInfo', function(req, res, next) {
-        var WHitems = EnrollWHInfo.getWHInfo(req, res, app, db);
-        var PVitems = EnrollWHInfo.getPVInfo(req, res, app, db);
+    
+    router.post('/EnrollWHInfo', async function(req, res, next) {
+        var WHitems = await EnrollWHInfo.getWHInfo(req, res, app, pool);
+        var PVitems = await EnrollWHInfo.getPVInfo(req, res, app, pool);
         WHitems = JSON.parse(WHitems);
         PVitems = JSON.parse(PVitems);
-        res.render('User/EnrollWHInfo', { 'req': req, 'app': app, 'session': req.session, 'db': db, 'WHitems': WHitems, 'PVitems': PVitems });
+        res.render('User/EnrollWHInfo', { 'req': req, 'app': app, 'session': req.session, 'pool': pool, 'WHitems': WHitems, 'PVitems': PVitems });
     });
 
-    router.get('/RequestIoT', function(req, res, next) {
-        var items = ad_ReqIoT.RequestForIoT(req, res, app, db);
+    router.get('/RequestIoT', async function(req, res, next) {
+        var items = await ad_ReqIoT.RequestForIoT(req, res, app, pool);
         items = JSON.parse(items);
-        res.render('User/Admin/ad_RequestIoT', { 'app': app, 'session': req.session, 'db': db, 'items': items });
+        res.render('User/Admin/ad_RequestIoT', { 'app': app, 'session': req.session, 'pool': pool, 'items': items });
     });
 
-    router.post('/RequestIoT', function(req, res, next) {
-        ad_ReqIoT.withAnswer(req, res, app, db);
+    router.post('/RequestIoT', async function(req, res, next) {
+        await ad_ReqIoT.withAnswer(req, res, app, pool);
     });
 
-    router.post('/IoTWHInfo', function(req, res, next) {
-        var WHitems = IoTWHInfo.getWHInfo(req, res, app, db);
-        var PVitems = IoTWHInfo.getPVInfo(req, res, app, db);
+    router.post('/IoTWHInfo', async function(req, res, next) {
+        var WHitems = await IoTWHInfo.getWHInfo(req, res, app, pool);
+        var PVitems = await IoTWHInfo.getPVInfo(req, res, app, pool);
         WHitems = JSON.parse(WHitems);
         PVitems = JSON.parse(PVitems);
-        res.render('User/IoTWHInfo', { 'req': req, 'app': app, 'session': req.session, 'db': db, 'WHitems': WHitems, 'PVitems': PVitems });
+        res.render('User/IoTWHInfo', { 'req': req, 'app': app, 'session': req.session, 'pool': pool, 'WHitems': WHitems, 'PVitems': PVitems });
     });
 
-    router.post('/IoTTest', function(req, res, next) {
-        ad_IoTTest.init(req, res, app, db);
+    router.post('/IoTTest', async function(req, res, next) {
+        await ad_IoTTest.init(req, res, app, pool);
     });
 
-    router.get('/RequestBuy', function(req, res, next) {
-        var items = ad_ReqBuy.RequestForBuy(req, res, app, db);
+    router.get('/RequestBuy', async function(req, res, next) {
+        var items = await ad_ReqBuy.RequestForBuy(req, res, app, pool);
         items = JSON.parse(items);
-        res.render('User/Admin/ad_RequestBuy', { 'app': app, 'session': req.session, 'db': db, 'items': items });
+        res.render('User/Admin/ad_RequestBuy', { 'app': app, 'session': req.session, 'pool': pool, 'items': items });
     });
 
-    router.post('/RequestWHInfo', function(req, res, next) {
+    router.post('/RequestWHInfo', async function(req, res, next) {
         console.log("post start");
-        var WHitems = RequestWHInfo.getWHInfo(req, res, app, db);
-        var PVitems = RequestWHInfo.getPVInfo(req, res, app, db);
-        var BYitems = RequestWHInfo.getBYInfo(req, res, app, db);
-        var ReqItems = RequestWHInfo.getReqInfo(req, res, app, db);
+        var WHitems = await RequestWHInfo.getWHInfo(req, res, app, pool);
+        var PVitems = await RequestWHInfo.getPVInfo(req, res, app, pool);
+        var BYitems = await RequestWHInfo.getBYInfo(req, res, app, pool);
+        var ReqItems = await RequestWHInfo.getReqInfo(req, res, app, pool);
         WHitems = JSON.parse(WHitems);
         PVitems = JSON.parse(PVitems);
         BYitems = JSON.parse(BYitems);
         ReqItems = JSON.parse(ReqItems);
-        res.render('User/RequestWHInfo', { 'req': req, 'app': app, 'session': req.session, 'db': db, 'WHitems': WHitems, 'PVitems': PVitems, 'BYitems': BYitems, 'ReqItems': ReqItems });
+        res.render('User/RequestWHInfo', { 'req': req, 'app': app, 'session': req.session, 'pool': pool, 'WHitems': WHitems, 'PVitems': PVitems, 'BYitems': BYitems, 'ReqItems': ReqItems });
     });
 
-    router.get('/WarehouseList', function(req, res, next) {
-        var WHList = ad_WarehouseList.getWHList(req, res, app, db);
+    router.get('/WarehouseList', async function(req, res, next) {
+        var WHList = await ad_WarehouseList.getWHList(req, res, app, pool);
         WHList = JSON.parse(WHList);
-        res.render('User/Admin/ad_WarehouseList', { 'app': app, 'session': req.session, 'db': db, 'WHList': WHList });
+        res.render('User/Admin/ad_WarehouseList', { 'app': app, 'session': req.session, 'pool': pool, 'WHList': WHList });
     });
 
-    router.post('/WHInfo', function(req, res, next) {
-        var WHitems = WHInfo.getWHInfo(req, res, app, db);
-        var PVitems = WHInfo.getPVInfo(req, res, app, db);
-        var curItems = WHInfo.getCurUsage(req, res, app, db);
-        var nextItems = WHInfo.getNextUsage(req, res, app, db);
-        var preItems = WHInfo.getPreUsage(req, res, app, db);
+    router.post('/WHInfo', async function(req, res, next) {
+        var WHitems = await WHInfo.getWHInfo(req, res, app, pool);
+        var PVitems = await WHInfo.getPVInfo(req, res, app, pool);
+        var curItems = await WHInfo.getCurUsage(req, res, app, pool);
+        var nextItems = await WHInfo.getNextUsage(req, res, app, pool);
+        var preItems = await WHInfo.getPreUsage(req, res, app, pool);
         WHitems = JSON.parse(WHitems);
         PVitems = JSON.parse(PVitems);
         curItems = JSON.parse(curItems);
         nextItems = JSON.parse(nextItems);
         preItems = JSON.parse(preItems);
-        res.render('User/WHInfo', { 'req': req, 'app': app, 'session': req.session, 'db': db, 'WHitems': WHitems, 'PVitems': PVitems, 'curItems': curItems, 'preItems': preItems, 'nextItems': nextItems });
+        res.render('User/WHInfo', { 'req': req, 'app': app, 'session': req.session, 'pool': pool, 'WHitems': WHitems, 'PVitems': PVitems, 'curItems': curItems, 'preItems': preItems, 'nextItems': nextItems });
     });
 
-    router.get('/UsageHistory', function(req, res, next) {
-        var items = ad_UsageHistory.getUsageHistory(req, res, app, db);
+    router.get('/UsageHistory', async function(req, res, next) {
+        var items = await ad_UsageHistory.getUsageHistory(req, res, app, pool);
         items = JSON.parse(items);
-        res.render('User/Admin/ad_UsageHistory', { 'app': app, 'session': req.session, 'db': db, 'items': items });
+        res.render('User/Admin/ad_UsageHistory', { 'app': app, 'session': req.session, 'pool': pool, 'items': items });
     });
 
-    router.post('/UsageHistory/INFO', function(req, res, next) {
-        var WHitems = ad_UsageHistoryInfo.getWHInfo(req, res, app, db);
-        var PVitems = ad_UsageHistoryInfo.getPVInfo(req, res, app, db);
-        var BYitems = ad_UsageHistoryInfo.getBYInfo(req, res, app, db);
+    router.post('/UsageHistory/INFO', async function(req, res, next) {
+        var WHitems = await ad_UsageHistoryInfo.getWHInfo(req, res, app, pool);
+        var PVitems = await ad_UsageHistoryInfo.getPVInfo(req, res, app, pool);
+        var BYitems = await ad_UsageHistoryInfo.getBYInfo(req, res, app, pool);
         WHitems = JSON.parse(WHitems);
         PVitems = JSON.parse(PVitems);
         BYitems = JSON.parse(BYitems);
-        res.render('User/Admin/ad_UsageHistoryInfo', { 'app': app, 'session': req.session, 'db': db, 'WHitems': WHitems, 'PVitems': PVitems, 'BYitems': BYitems });
+        res.render('User/Admin/ad_UsageHistoryInfo', { 'app': app, 'session': req.session, 'pool': pool, 'WHitems': WHitems, 'PVitems': PVitems, 'BYitems': BYitems });
     });
 
-    router.post('/RequestBuy/Ans', function(req, res, next) {
-        ad_ReqBuy.withAnswer(req, res, app, db);
+    router.post('/RequestBuy/Ans', async function(req, res, next) {
+        await ad_ReqBuy.withAnswer(req, res, app, pool);
     });
 
     router.get('/Question', function(req, res, next) {
-        res.render('User/Admin/ad_Question', { 'app': app, 'session': req.session, 'db': db });
+        res.render('User/Admin/ad_Question', { 'app': app, 'session': req.session, 'pool': pool });
     });
 
     return router;

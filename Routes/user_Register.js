@@ -1,10 +1,6 @@
-// ȸ������ �ڵ鷯
-exports.register = function (req, res, app, db) {
-    var mysql = require('mysql');
+exports.register = async function (req, res, app, pool) {
     const crypto = require('crypto');
-
-    var connection = mysql.createConnection(require('../Module/db').info);
-    connection.connect();
+    var connection = null;
     var user = {
         memberID: req.body.memberID,
         type: req.body.type,
@@ -17,35 +13,50 @@ exports.register = function (req, res, app, db) {
         national: req.body.national
     }
 
-    connection.query('INSERT INTO Member SET ?', user, function (error, results, fields) {
-        if (error) {
-            console.log("error ocurred", error);
-            res.send(false);
-        } else {
-            req.session['memberID'] = user.memberID;
-            req.session['type'] = user.type;
-            req.session['username'] = user.name;
-            req.session['password'] = user.password;
-            req.session['contactNumber'] = user.contactNumber;
-            req.session['email'] = user.email;
-            req.session['zipcode'] = user.zipcode;
-            req.session['address'] = user.address;
-            req.session['national'] = user.national;
-            res.send(true);
-        }
-        connection.end()
-    });
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        await connection.beginTransaction();
+        await connection.query('INSERT INTO Member SET ?', user);
+        await connection.commit();
+        req.session['memberID'] = user.memberID;
+        req.session['type'] = user.type;
+        req.session['username'] = user.name;
+        req.session['password'] = user.password;
+        req.session['contactNumber'] = user.contactNumber;
+        req.session['email'] = user.email;
+        req.session['zipcode'] = user.zipcode;
+        req.session['address'] = user.address;
+        req.session['national'] = user.national;
+
+        res.send(true);
+    } catch (err) {
+        console.log(err.message);
+        await connection.rollback();
+        res.send(false);
+    } finally {
+        connection.release();
+    }
 }
 
 
-exports.checkID = function (req, res, app, db) {
+exports.checkID = async function (req, res, app, pool) {
     var memberID = req.body.memberID;
-    var results = db.query(`SELECT * FROM Member WHERE memberID='${memberID}'`);
+    var connection = null;
+    var results = null;
+
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(`SELECT * FROM Member WHERE memberID='${memberID}'`);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (!results.length) res.send(true);
     else res.send(false);
 }
 
-exports.checkPW = function (req, res, app, db) {
+exports.checkPW = function (req, res, app, pool) {
     var attr = req.body;
     var id = attr.id;
     var pw = attr.pw;

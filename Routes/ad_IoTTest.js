@@ -1,6 +1,15 @@
-exports.init = function (req, res, app, db) {
+exports.init = async function (req, res, app, pool) {
     var wid = req.body.wid;
-    var rows = db.query(`SELECT * FROM Warehouse WHERE warehouseID=${wid}`);
+    var connection = null;
+    let rows = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [rows] = await connection.query(`SELECT * FROM Warehouse WHERE warehouseID=${wid}`);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (!rows.length) res.render('Alert/cannotAccess');
     else {
         req.session['warehouseID'] = wid;

@@ -1,4 +1,4 @@
-exports.registerItem = function (req, res, db) {
+exports.registerItem = async function (req, res, pool) {
     var RFID = req.body.RFID.toUpperCase();
     var name = req.body.name;
     var num = req.body.num;
@@ -6,19 +6,23 @@ exports.registerItem = function (req, res, db) {
     var picture = `./${RFID}.jpg`;
     var id = req.session['memberID'];
     var wid = req.session['warehouseID'];
-
-    var check = db.query(`Select rfid from iot where rfid='` + RFID + `'`);
-    console.log(check);
-    if (check.length > 0) {
-        console.log("err: registerItem duplicate RFID");
-        res.send("error1")
-    } else {
-        var row = db.query(`INSERT INTO iot VALUES('${RFID}', '${id}', '${name}', ${num}, ${received}, '${picture}',${wid});`);
-        if (!row) {
-            console.log("err: registerItem");
-            res.send("error")
+    var connection = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        var [check] = await connection.query(`Select rfid from iot where rfid='` + RFID + `'`);
+        if (check.length > 0) {
+            throw new Error('err: registerItem');
         } else {
-            res.send("success")
+            var [row] = await connection.query(`INSERT INTO iot VALUES('${RFID}', '${id}', '${name}', ${num}, ${received}, '${picture}',${wid})`);
+            if (!row) {
+                throw new Error('err: registerItem');
+            }
         }
+        res.send('success');
+    } catch (err) {
+        console.log(err.message);
+        res.send('error');
+    } finally {
+        connection.release();
     }
 }
