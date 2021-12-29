@@ -2,186 +2,220 @@
 <html lang="en" dir="ltr">
 
 <head>
-  <%- include('../../head') %>
-  <link rel="stylesheet" href="/CSS/by_FindWH.css">
+    <%- include('../../head') %>
+        <link rel="stylesheet" href="/CSS/by_FindWH.css">
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <%- include('../../nav_Bar') %>
-      <div class="page-header page-header-small">
-        <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
-      </div>
-    </header>
-    <section>
-      <div class="container mt-4">
-        <div class="container pt-3 mb-3" style="width:50%; float:left;">
-          <div class="pac-card" id="pac-card">
-            <div>
-              <div id="title">WareHouse Search</div>
-              <div id="type-selector" class="pac-controls">
-                <input type="radio" name="type" id="changetype-all" checked="checked"/>
-                <label for="changetype-all">All</label>
-      
-                <input type="radio" name="type" id="changetype-address" />
-                <label for="changetype-address">address</label>
-      
-                <input type="radio" name="type" id="changetype-geocode" />
-                <label for="changetype-geocode">geocode</label>
-      
-                <input type="radio" name="type" id="changetype-cities" />
-                <label for="changetype-cities">(cities)</label>
-      
-                <input type="radio" name="type" id="changetype-regions" />
-                <label for="changetype-regions">(regions)</label>
-              </div>
-              <br />
-              <div id="strict-bounds-selector" class="pac-controls">
-                <input type="checkbox" id="use-location-bias" value="" checked />
-                <label for="use-location-bias">Bias to map viewport</label>
-      
-                <input type="checkbox" id="use-strict-bounds" value="" />
-                <label for="use-strict-bounds">Strict bounds</label>
-              </div>
-            </div>
-            <div id="pac-container">
-              <input id="pac-input" type="text" placeholder="Enter a location" />
-            </div>
-          </div>
-          <div id="map" style="width:100%; height:80vh;"></div>
-          <div id="infowindow-content">
-            <span id="place-name" class="title"></span><br />
-            <span id="place-address"></span>
-          </div>
-        </div>
-        <div class="container pt-3 mb-3" style="width:50%; float:right; overflow:auto;">
-          <table class="table table-bordered">
-            <div id="image_container"></div>
-            <tbody>
-              <tr>
-                <th class="thead-dark-vertical">Name</th>
-                <td id="whName"></td>
-              </tr>
-              <tr>
-                <th rowspan="2" class="thead-dark-vertical" id="mid">Warehouse Address</th>
-                <td id="whAddress">　</td>
-              </tr>
-              <tr>
-                <td id="whAddressDetail">　</td>
-              </tr>
-              <tr>
-                <th class="thead-dark-vertical">Land Area</th>
-                <td id="whLandArea"></td>
-              </tr>
-              <tr>
-                <th class="thead-dark-vertical">Floor Area</th>
-                <td id="whFloorArea"></td>
-              </tr>
-              <tr>
-                <th class="thead-dark-vertical">Usable Area</th>
-                <td id="whUseableArea"></td>
-              </tr>
-              <tr>
-                <th class="thead-dark-vertical">Price Per m<sup>2</sup></th>
-                <td id="whPrice"></td>
-              </tr>
-              <tr>
-                <th class="thead-dark-vertical">Email</th>
-                <td id="whEmail"></td>
-              </tr>
-              <tr>
-                <th class="thead-dark-vertical">Tel</th>
-                <td id="whPhone"></td>
-              </tr>
-              <tr>
-                <th class="thead-dark-vertical">IoT</th>
-                <td id="whIoT"></td>
-              </tr>
-              <tr>
-                <th class="thead-dark-vertical">Info Comment</th>
-                <td id=whInfoComment></td>
-              </tr>
-              <tr>
-                <th class="thead-dark-vertical">Etc Comment</th>
-                <td id=whEtcComment></td>
-                <td id="whID" style="display: none"></td>
-              </tr>
-            </tbody>
-          </table>
-
-          <button class="btn btn-warning btn-block mb-4 collapsed" id="btnInquire" data-toggle="collapse" data-target="#inquire" style="display: none;">Inquire</button>
-          <button class="btn btn-warning btn-block mb-4" id="btnContact" style="display: none;">
-            <i class="fas fa-phone-alt" style="margin-right: 5px;"></i>
-            Please contact us
-          </button>
-          <div class="black_bg"></div>
-          <div class="modal_wrap">
-            <div class="modal_body_2">
-              <h4>Contact service@autoingroup.com</h4>
-              <div class="modal_close">
-                <button type="button" class="btn btn-grey">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="inquire" class="collapse">
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Rental Area</label>
-            <div class="col-sm-8"><input type="text" class="form-control" id="area" placeholder="Rental Area">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Start Date</label>
-            <div class="col-sm-8 input-group date" id="datetimepicker1" data-target-input="nearest">
-              <input id="sDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1">
-              <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                <div class="input-group-text">
-                  <i class="fa fa-calendar"></i>
+    <div class="wrap">
+        <header>
+            <%- include('../../nav_Bar') %>
+                <div class="page-header page-header-small">
+                    <div class="page-header-image" data-parallax="true" style="background-image: url('/Image/about_WH.jpg');"></div>
                 </div>
-              </div>
-            </div>
-            <label class="col-sm-4 col-form-label">End Date</label>
-            <div class="col-sm-8 input-group date" id="datetimepicker2" data-target-input="nearest">
-              <input id="eDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2">
-              <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                <div class="input-group-text">
-                  <i class="fa fa-calendar"></i>
+        </header>
+        <section>
+            <div class="container mt-4">
+                <div class="container pt-3 mb-3" style="width:50%; float:left;">
+
+                    <div id="map" style="width:100%; height:80vh;"></div>
+                    <div id="infowindow-content">
+                        <span id="place-name" class="title"></span><br />
+                        <span id="place-address"></span>
+                    </div>
                 </div>
-              </div>
+                <div class="container pt-3 mb-3" style="width:50%; float:right;">
+
+                    <div>
+                        <div class="search-card" id="search-card" style="position:relative;">
+                            <input id="pac-input" type="text" placeholder="Enter a location" style="position:absolute;" />
+                            <svg id="backicon" style="position:absolute; display:none; margin-top:1vh; margin-left: 1vh;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="mdi-arrow-left" width="28" height="28" viewBox="0 0 24 24" fill="#cccccc">
+                                <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
+                            </svg>
+                            <img id="autoinIcon" src="/Image/autoin_logo.png" width="24" height="24" style="position:absolute; margin-top:1.2vh; margin-left: 1vh;">
+                            <!--<img id="searchBtn" src="https://icongr.am/entypo/magnifying-glass.svg?size=28&color=cccccc" style="">-->
+                            <svg id="searchBtn" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20" id="entypo-magnifying-glass" height="28" width="28" fill="#cccccc">
+                                <g>
+                                    <path d="M17.545 15.467l-3.779-3.779a6.15 6.15 0 0 0 .898-3.21c0-3.417-2.961-6.377-6.378-6.377A6.185 6.185 0 0 0 2.1 8.287c0 3.416 2.961 6.377 6.377 6.377a6.15 6.15 0 0 0 3.115-.844l3.799 3.801a.953.953 0 0 0 1.346 0l.943-.943c.371-.371.236-.84-.135-1.211zM4.004 8.287a4.282 4.282 0 0 1 4.282-4.283c2.366 0 4.474 2.107 4.474 4.474a4.284 4.284 0 0 1-4.283 4.283c-2.366-.001-4.473-2.109-4.473-4.474z"/>
+                                </g>
+                            </svg>
+                            <div id="midbar">|</div>
+                            <svg id="clearSearchBox" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="mdi-close" width="32" height="32" viewBox="0 0 24 24" fill="#cccccc">
+                                <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+                        </div>
+                    </div>
+                    <div id="searchResult">
+                        <div class="marker_list">
+                            <div style="text-align:center;margin-top:35vh;">
+                                Search the location by UpSide SearchBar.
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="item_detail" style="display: none">
+                        <div id="image_container"></div>
+                        <div id="item_container">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th class="thead-dark-vertical">Name</th>
+                                        <td id="whName"></td>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2" class="thead-dark-vertical" id="mid">Warehouse Address</th>
+                                        <td id="whAddress">　</td>
+                                    </tr>
+                                    <tr>
+                                        <td id="whAddressDetail">　</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="thead-dark-vertical">Land Area</th>
+                                        <td id="whLandArea"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="thead-dark-vertical">Floor Area</th>
+                                        <td id="whFloorArea"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="thead-dark-vertical">Usable Area</th>
+                                        <td id="whUseableArea"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="thead-dark-vertical">Price Per m<sup>2</sup></th>
+                                        <td id="whPrice"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="thead-dark-vertical">Email</th>
+                                        <td id="whEmail"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="thead-dark-vertical">Tel</th>
+                                        <td id="whPhone"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="thead-dark-vertical">IoT</th>
+                                        <td id="whIoT"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="thead-dark-vertical">Info Comment</th>
+                                        <td id=whInfoComment></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="thead-dark-vertical">Etc Comment</th>
+                                        <td id=whEtcComment></td>
+                                        <td id="whID" style="display: none"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-warning btn-block mb-4 collapsed" id="btnInquire" data-toggle="collapse" data-target="#inquire" style="display: none;">Inquire</button>
+                        <button class="btn btn-warning btn-block mb-4" id="btnContact" style="display: none;">
+                                <i class="fas fa-phone-alt" style="margin-right: 5px;"></i>
+                                Please contact us
+                            </button>
+                        <div class="black_bg"></div>
+                        <div class="modal_wrap">
+                            <div class="modal_body_2">
+                                <h4>Contact service@autoingroup.com</h4>
+                                <div class="modal_close">
+                                    <button type="button" class="btn btn-grey">Close</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="inquire" class="collapse">
+                    <div class="form-group row">
+
+                    </div>
+                    <div class="form-group fcol align_center" style="width: 100%">
+                        <div class="row w50">
+                            <label class="col-sm-4 col-form-label">Rental Area</label>
+                            <div class="col-sm-8" style="margin-bottom:16px;"><input type="text" class="form-control" id="area" placeholder="Rental Area">
+                            </div>
+                        </div>
+                        <div class="row w50">
+                            <label class="col-sm-4 col-form-label">Start Date</label>
+                            <div class="col-sm-8 input-group date" id="datetimepicker1" data-target-input="nearest">
+                                <input id="sDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1">
+                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row w50">
+                            <label class="col-sm-4 col-form-label">End Date</label>
+                            <div class="col-sm-8 input-group date" id="datetimepicker2" data-target-input="nearest">
+                                <input id="eDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2">
+                                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="center-wrap">
+                        <button type="submit" class="btn btn-main" id="btn">Submit</button>
+                    </div>
+                </div>
+                <p id="startDate" style="display: none"></p>
+                <p id="endDate" style="display: none"></p>
             </div>
-          </div>
-          <div class="center-wrap">
-            <button type="submit" class="btn btn-main" id="btn">Submit</button>
-          </div>
-        </div>
-        <p id="startDate" style="display: none"></p>
-        <p id="endDate" style="display: none"></p>
-      </div>
-    </section>
-  </div>
-  <footer>
-    <%- include('../../footer_forMain') %>
-  </footer>
+        </section>
+    </div>
+    <footer>
+        <%- include('../../footer_forMain') %>
+    </footer>
 </body>
 
 <script type="text/javascript" src="/JS/findWH.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_MAP_JAVASCRIPT_KEY %>&callback=initMap&libraries=places"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_MAP_JAVASCRIPT_KEY %>&callback=initMap&libraries=places,geometry"></script>
 <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=MyKey&callback=initMap&libraries=places"></script> -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js">
 </script>
 <script>
-  window.onload = function () {
-  function onClick() {
-    document.querySelector('.modal_wrap').style.display = 'block';
-  }
-  function offClick() {
-    document.querySelector('.modal_wrap').style.display = 'none';
-  }
-  document.querySelector('#btnContact').addEventListener('click', onClick);
-  document.querySelector('.modal_close').addEventListener('click', offClick);
-};
+    window.onload = function() {
+        function onClick() {
+            document.querySelector('.modal_wrap').style.display = 'block';
+        }
+
+        function offClick() {
+            document.querySelector('.modal_wrap').style.display = 'none';
+        }
+        document.querySelector('#btnContact').addEventListener('click', onClick);
+        document.querySelector('.modal_close').addEventListener('click', offClick);
+
+
+    };
+
+    $("#searchBtn").click(function() {
+        document.querySelector("#pac-input").focus();
+        document.querySelector("#pac-input").dispatchEvent(new KeyboardEvent('keydown', {
+            key: 'Enter',
+            keyCode: 13
+        }));
+    });
+
+    $("#btnInquire").click(function() {
+        //btnInquire의 top 위치 가져옴
+        let location = document.querySelector("#btnInquire").offsetTop;
+
+        window.scrollTo({
+            top: location + 35, //가져온 위치 + 아래 div height인 35더함
+            behavior: 'smooth'
+        });
+    });
+
+    $(clearSearchBox).click(function() {
+        let input = document.getElementById("pac-input");
+        input.value = null;
+    });
 </script>
+
 </html>
