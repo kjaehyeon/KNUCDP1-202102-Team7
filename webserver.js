@@ -7,12 +7,11 @@ require('dotenv').config();
 // 2) bodyParser Module 불러오기
 const bodyParser = require('body-parser');
 // 3) connection pool 불러오기
-const pool = require('./Module/pool');
+const mysql = require('./Module/db');
 // 4) EJS Module 불러오기
 const ejs = require('ejs');
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
-// const bcsock = require('./Module/bcsocket');
 var apolloServer = require('./apollo');
 var http = require('http');
 
@@ -56,17 +55,17 @@ app.use(session({
     // 8-3) 세션에 저장할 내역이 없더라도, 세션 저장할지
     saveUninitialized: true,
     // 8-4) 서버가 재시작되어도 세션 유지
-    store: new MySQLStore(mySQL.info)
+    store: new MySQLStore(mysql.info)
 }));
 
 // 10) 각 라우터에 인자값을 넘겨주는 것
-app.use('/', require('./Routes/main')(app, pool));
-app.use('/User', require('./Routes/user')(app, pool));
-app.use('/Admin', require('./Routes/ad')(app, pool));
-app.use('/Provider', require('./Routes/pv')(app, pool));
-app.use('/Buyer', require('./Routes/by')(app, pool));
-app.use('/Iot', require('./Routes/iot')(app, pool));
-app.use('/Api', require('./Routes/api')(app, pool));
+app.use('/', require('./Routes/main')(app, mysql.pool));
+app.use('/User', require('./Routes/user')(app, mysql.pool));
+app.use('/Admin', require('./Routes/ad')(app, mysql.pool));
+app.use('/Provider', require('./Routes/pv')(app, mysql.pool));
+app.use('/Buyer', require('./Routes/by')(app, mysql.pool));
+app.use('/Iot', require('./Routes/iot')(app, mysql.pool));
+app.use('/Api', require('./Routes/api')(app, mysql.pool));
 
 app.get('/Public/Upload/:filename', function(req, res) {
     fs.readFile(__dirname + `/Public/Upload/${req.params.filename}`, function(err, data) {
