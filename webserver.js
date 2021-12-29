@@ -70,7 +70,11 @@ app.use('/Api', require('./Routes/api')(app, mysql.pool));
 app.get('/Public/Upload/:filename', function(req, res) {
     fs.readFile(__dirname + `/Public/Upload/${req.params.filename}`, function(err, data) {
         if (err) throw err;
-        res.write(data);
+        else {
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write(data);
+            res.end();
+        }
     })
 });
 
