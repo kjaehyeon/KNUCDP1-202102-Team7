@@ -1,5 +1,5 @@
-import os
-
+import os, environ
+from pathlib import Path
 from django.http import HttpResponse
 from rest_framework.response import Response
 import socketio
@@ -12,7 +12,12 @@ from django.db.models import Avg
 import requests
 import socket
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 basedir = os.path.dirname(os.path.realpath(__file__))
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 #eventlet.monkey_patch()
 sio = socketio.Server(async_mode='eventlet', cors_allowed_origins='*', cors_credentials=True)
 
@@ -68,7 +73,7 @@ def notiEmg(data):
                 'client-ip' : f'http://{ip}:50000'
             }  
             try:
-                response = requests.get('http://'+os.environ.get('SERVER_IP')+'/Api/Alert', headers=headers)
+                response = requests.get('http://'+env('SERVER_IP')+'/Api/Alert', headers=headers)
             except Exception as e:
                 print(e)
                 pass
@@ -85,19 +90,36 @@ def notiEmg(data):
 #센서 디바이스로 부터 데이터 받아오는 함수
 @api_view(['GET'])
 def sensor_value(request):
+    print(request)
     if(request.method == 'GET'):
-        parsed_data : json = json.loads('{"device_id":'+request.GET['device_id']+
-                            ',"temperature":'+request.GET['temperature']+
-                            ',"humidity":'+request.GET['humidity']+
-                            ',"co":'+request.GET['co']+
-                            ',"propane":'+request.GET['propane']+
-                            ',"flame":'+request.GET['flame']+
-                            ',"vibration":'+request.GET['vibration']+
-                            '}')
-        data = json.dumps(parsed_data)
-        sio.emit('response', {'data' : data})
-        data_processing(parsed_data)
-        notiEmg(parsed_data)
+        try:
+            parsed_data : json = json.loads('{"device_id":'+request.GET['device_id']+
+                                ',"temperature":'+request.GET['temperature']+
+                                ',"humidity":'+request.GET['humidity']+
+                                ',"co":'+request.GET['co']+
+                                ',"propane":'+request.GET['propane']+
+                                ',"flame":'+request.GET['flame']+
+                                ',"vibration":'+request.GET['vibration']+
+                                '}')
+        except Exception as e :
+            print("error", e.with_traceback)
+
+        try:                      
+            data = json.dumps(parsed_data)
+        except Exception as e :
+            print("error", e.with_traceback)
+        
+        try:
+            sio.emit('response', {'data' : data})
+        except Exception as e:
+            print("error", e.with_traceback)
+        
+        try:
+            data_processing(parsed_data)
+        except Exception as e:
+            print("error", e.with_traceback)
+        
+        #notiEmg(parsed_data)
     return Response(status=200)
 
 #socket.io 테스트 페이지       
@@ -124,7 +146,7 @@ def camera_move(sid, message):
     orientation = message['data']
     clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        clientsocket.connect((os.environ.get('ARDUINO_IP'), 1234))
+        clientsocket.connect((env('ARDUINO_IP'), 1234))
         if(orientation == 'r'):
             clientsocket.send((orientation+'\n').encode('utf-8'))
         elif(orientation == 'l'):
