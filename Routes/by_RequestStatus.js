@@ -1,4 +1,4 @@
-exports.RequestForBuy = function (req, res, app, db) {
+exports.RequestForBuy = function(req, res, app, db) {
     var items = {};
     var sql = `select * from RequestForBuy where buyerID='${req.session['memberID']}'`;
     let results = db.query(sql);
@@ -21,7 +21,7 @@ exports.RequestForBuy = function (req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.ReqBuyWithAnswer = function (req, res, app, db) {
+exports.ReqBuyWithAnswer = function(req, res, app, db) {
     var reqID = req.body.reqID;
     var reqType = req.body.reqType;
     var answer = req.body.answer;
@@ -32,14 +32,14 @@ exports.ReqBuyWithAnswer = function (req, res, app, db) {
     connection.connect();
     if (answer === "Cancel") {
         var cnlType = reqType === 'ReqByBuyer' ? 'CnlByBuyer1' : 'CnlByBuyer5';
-        connection.query(`UPDATE RequestForBuy SET reqType=?, rejectCmt=? WHERE reqID =?`, [cnlType, reason, reqID], function (error, results, fields) {
+        connection.query(`UPDATE RequestForBuy SET reqType=?, rejectCmt=? WHERE reqID =?`, [cnlType, reason, reqID], function(error, results, fields) {
             if (error) {
                 res.send(false);
                 connection.end();
             } else {
                 var now = new Date(new Date().getTime() + 32400000).toISOString().replace(/T/, ' ').replace(/\..+/, '');
                 var cols = 'reqID, reqDate, reqType, warehouseID, buyerID, area, startDate, endDate, rejectCmt, amount';
-                connection.query(`INSERT INTO DeletedBuy (${cols}, rejectTime) (SELECT ${cols}, ? FROM RequestForBuy WHERE reqID=?)`, [now, reqID], function (error, results, fields) {
+                connection.query(`INSERT INTO DeletedBuy (${cols}, rejectTime) (SELECT ${cols}, ? FROM RequestForBuy WHERE reqID=?)`, [now, reqID], function(error, results, fields) {
                     if (error) {
                         console.log(error);
                         res.send(false);
@@ -55,7 +55,7 @@ exports.ReqBuyWithAnswer = function (req, res, app, db) {
         var viewState = parseInt(reqType.charAt(reqType.length - 1));
         viewState -= 2; // flag_buyer
         if (viewState === 0) {
-            connection.query(`DELETE FROM RequestForBuy WHERE reqID=?`, reqID, function (error, results, fields) {
+            connection.query(`DELETE FROM RequestForBuy WHERE reqID=?`, reqID, function(error, results, fields) {
                 if (error) {
                     res.send(false);
                     connection.end()
@@ -66,7 +66,7 @@ exports.ReqBuyWithAnswer = function (req, res, app, db) {
             });
         } else {
             reqType = reqType.substring(0, reqType.length - 1) + viewState.toString();
-            connection.query(`UPDATE RequestForBuy SET reqType=? WHERE reqID =?`, [reqType, reqID], function (error, results, fields) {
+            connection.query(`UPDATE RequestForBuy SET reqType=? WHERE reqID =?`, [reqType, reqID], function(error, results, fields) {
                 if (error) {
                     res.send(false);
                     connection.end()
@@ -77,7 +77,7 @@ exports.ReqBuyWithAnswer = function (req, res, app, db) {
             });
         }
     } else if (answer === "Accept") {
-        connection.query(`DELETE FROM RequestForBuy WHERE reqID=?`, reqID, function (error, results, fields) {
+        connection.query(`DELETE FROM RequestForBuy WHERE reqID=?`, reqID, function(error, results, fields) {
             if (error) {
                 console.log(error);
                 res.send(false);
@@ -92,7 +92,7 @@ exports.ReqBuyWithAnswer = function (req, res, app, db) {
                     area: req.body.area,
                     amount: req.body.amount
                 };
-                connection.query(`INSERT INTO Contract SET ?`, contract, function (error, results, fields) {
+                connection.query(`INSERT INTO Contract SET ?`, contract, function(error, results, fields) {
                     if (error) {
                         console.log(error);
                         res.send(false);
