@@ -1,7 +1,16 @@
-exports.RequestForBuy = function(req, res, app, db) {
+exports.RequestForBuy = async function (req, res, app, pool) {
     var items = {};
     var sql = `select * from RequestForBuy where buyerID='${req.session['memberID']}'`;
-    let results = db.query(sql);
+    var connection = null;
+    var results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(sql);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[`item${step}`] = {
@@ -21,88 +30,51 @@ exports.RequestForBuy = function(req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.ReqBuyWithAnswer = function(req, res, app, db) {
+exports.ReqBuyWithAnswer = async function (req, res, app, pool) {
     var reqID = req.body.reqID;
     var reqType = req.body.reqType;
     var answer = req.body.answer;
     var reason = req.body.reason;
-    var mysql = require('mysql');
-    var connection = mysql.createConnection(require('../Module/db').info);
-    // const nodePickle = require('pickle');
-    connection.connect();
-    if (answer === "Cancel") {
-        var cnlType = reqType === 'ReqByBuyer' ? 'CnlByBuyer1' : 'CnlByBuyer5';
-        connection.query(`UPDATE RequestForBuy SET reqType=?, rejectCmt=? WHERE reqID =?`, [cnlType, reason, reqID], function(error, results, fields) {
-            if (error) {
-                res.send(false);
-                connection.end();
+    var connection = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        await connection.beginConnection();
+        if (answer == 'Cancel') {
+            var cnlType = reqType === 'ReqByBuyer' ? 'CnlByBuyer1' : 'CnlByBuyer5';
+            await connection.query('UPDATE RequestForBuy SET reqType=?, rejectCmt=? WHERE reqID =?', [cnlType, reason, reqID]);
+            var now = new Date(new Date().getTime() + 32400000).toISOString().replace(/T/, ' ').replace(/\..+/, '');
+            var cols = 'reqID, reqDate, reqType, warehouseID, buyerID, area, startDate, endDate, rejectCmt, amount';
+            await connection.query(`INSERT INTO DeletedBuy (${cols}, rejectTime)`
+                                    + ` (SELECT ${cols}, ? FROM RequestForBuy WHERE reqID=?)`, [now, reqID]);
+        } else if (answer == 'Confirm') {
+            var viewState = parseInt(reqType.charAt(reqType.length - 1));
+            viewState -= 2; // flag_buyer
+            if (viewState === 0) {
+                await connection.query('DELETE FROM RequestForBuy WHERE reqID=?', [reqID]);
             } else {
-                var now = new Date(new Date().getTime() + 32400000).toISOString().replace(/T/, ' ').replace(/\..+/, '');
-                var cols = 'reqID, reqDate, reqType, warehouseID, buyerID, area, startDate, endDate, rejectCmt, amount';
-                connection.query(`INSERT INTO DeletedBuy (${cols}, rejectTime) (SELECT ${cols}, ? FROM RequestForBuy WHERE reqID=?)`, [now, reqID], function(error, results, fields) {
-                    if (error) {
-                        console.log(error);
-                        res.send(false);
-                        connection.end();
-                    } else {
-                        res.send(true);
-                        connection.end();
-                    }
-                });
+                reqType = reqType.substring(0, reqType.length - 1) + viewState.toString();
+                await connection.query(`UPDATE RequestForBuy SET reqType=? WHERE reqID =?`, [reqType, reqID]);
             }
-        });
-    } else if (answer === "Confirm") {
-        var viewState = parseInt(reqType.charAt(reqType.length - 1));
-        viewState -= 2; // flag_buyer
-        if (viewState === 0) {
-            connection.query(`DELETE FROM RequestForBuy WHERE reqID=?`, reqID, function(error, results, fields) {
-                if (error) {
-                    res.send(false);
-                    connection.end()
-                } else {
-                    res.send(true);
-                    connection.end();
-                }
-            });
-        } else {
-            reqType = reqType.substring(0, reqType.length - 1) + viewState.toString();
-            connection.query(`UPDATE RequestForBuy SET reqType=? WHERE reqID =?`, [reqType, reqID], function(error, results, fields) {
-                if (error) {
-                    res.send(false);
-                    connection.end()
-                } else {
-                    res.send(true);
-                    connection.end();
-                }
-            });
+        } else if (answer == 'Accept') {
+            await connection.query('DELETE FROM RequestForBuy WHERE reqID=?', [reqID]);
+            var contract = {
+                reqID: reqID,
+                buyerID: req.session['memberID'],
+                warehouseID: req.body.whID,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+                area: req.body.area,
+                amount: req.body.amount
+            };
+            await connection.query('INSERT INTO Contract SET ?', [contract]);
         }
-    } else if (answer === "Accept") {
-        connection.query(`DELETE FROM RequestForBuy WHERE reqID=?`, reqID, function(error, results, fields) {
-            if (error) {
-                console.log(error);
-                res.send(false);
-                connection.end();
-            } else {
-                var contract = {
-                    reqID: reqID,
-                    buyerID: req.session['memberID'],
-                    warehouseID: req.body.whID,
-                    startDate: req.body.startDate,
-                    endDate: req.body.endDate,
-                    area: req.body.area,
-                    amount: req.body.amount
-                };
-                connection.query(`INSERT INTO Contract SET ?`, contract, function(error, results, fields) {
-                    if (error) {
-                        console.log(error);
-                        res.send(false);
-                        connection.end()
-                    } else {
-                        res.send(true);
-                        connection.end();
-                    }
-                });
-            }
-        });
+        await connection.commit();
+        res.send(true);
+    } catch (err) {
+        console.log(err.message);
+        await connection.rollback();
+        res.send(false);
+    } finally {
+        connection.release();
     }
 }

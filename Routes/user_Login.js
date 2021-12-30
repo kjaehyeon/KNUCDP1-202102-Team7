@@ -1,8 +1,18 @@
-exports.login = function (req, res, app, db) {
+exports.login = async function (req, res, app, pool) {
     const crypto = require('crypto');
     var memberID = req.body.memberID;
     var password = req.body.password;
-    let results = db.query('SELECT * FROM Member WHERE memberID = ?', [memberID]);
+    var connection = null;
+    var results = null;
+
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query('SELECT * FROM Member WHERE memberID = ?', [memberID])
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
 
     if (results.length > 0) {
         if (results[0].password == crypto.createHash('sha512').update(password).digest('base64')) {

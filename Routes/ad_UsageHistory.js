@@ -1,7 +1,16 @@
-exports.getUsageHistory = function (req, res, app, db) {
+exports.getUsageHistory = async function (req, res, app, pool) {
     var items = {};
+    var connection = null;
+    var results = null;
     var sql = `select * from Contract, Warehouse where Contract.warehouseID=Warehouse.warehouseID`;
-    let results = db.query(sql);
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(sql);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[`item${step}`] = {

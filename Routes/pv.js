@@ -1,4 +1,4 @@
-module.exports = function (app, db) {
+module.exports = function (app, pool) {
     var express = require('express');
     var router = express.Router();
 
@@ -21,7 +21,7 @@ module.exports = function (app, db) {
         res.render('User/Provider/pv_EnrollWH', {
             'app': app,
             'session': req.session,
-            'db': db
+            'pool': pool
         });
     });
 
@@ -29,69 +29,69 @@ module.exports = function (app, db) {
         res.render('User/Provider/pv_EnrollWH', {
             'app': app,
             'session': req.session,
-            'db': db
+            'pool': pool
         });
     });
 
-    router.post('/EnrollWH', function (req, res, next) {
-        pv_EnrollWH.EnrollWH(req, res, app, db);
+    router.post('/EnrollWH', async function (req, res, next) {
+        await pv_EnrollWH.EnrollWH(req, res, app, pool);
     });
 
-    router.post('/MyWarehouse/Buy/Ans', function (req, res, next) {
-        pv_myWH.ReqBuyAns(req, res, app, db);
+    router.post('/MyWarehouse/Buy/Ans', async function (req, res, next) {
+        await pv_myWH.ReqBuyAns(req, res, app, pool);
     });
 
-    router.post('/MyWarehouse/Enroll/Ans', function (req, res, next) {
-        pv_myWH.ReqEnrollAns(req, res, app, db);
+    router.post('/MyWarehouse/Enroll/Ans', async function (req, res, next) {
+        await pv_myWH.ReqEnrollAns(req, res, app, pool);
     });
 
-    router.post('/MyWarehouse/IoT/Ans', function (req, res, next) {
-        pv_myWH.ReqIoTAns(req, res, app, db);
+    router.post('/MyWarehouse/IoT/Ans', async function (req, res, next) {
+        await pv_myWH.ReqIoTAns(req, res, app, pool);
     });
 
-    router.post('/WHInfo', function (req, res, next) {
-        var WHitems = WHInfo.getWHInfo(req, res, app, db);
-        var PVitems = WHInfo.getPVInfo(req, res, app, db);
-        var curItems = WHInfo.getCurUsage(req, res, app, db);
-        var nextItems = WHInfo.getNextUsage(req, res, app, db);
-        var preItems = WHInfo.getPreUsage(req, res, app, db);
+    router.post('/WHInfo', async function (req, res, next) {
+        var WHitems = await WHInfo.getWHInfo(req, res, app, pool);
+        var PVitems = await WHInfo.getPVInfo(req, res, app, pool);
+        var curItems = await WHInfo.getCurUsage(req, res, app, pool);
+        var nextItems = await WHInfo.getNextUsage(req, res, app, pool);
+        var preItems = await WHInfo.getPreUsage(req, res, app, pool);
         WHitems = JSON.parse(WHitems);
         PVitems = JSON.parse(PVitems);
         curItems = JSON.parse(curItems);
         nextItems = JSON.parse(nextItems);
         preItems = JSON.parse(preItems);
-        res.render('User/WHInfo', {'req': req, 'app': app, 'session': req.session, 'db': db, 'WHitems': WHitems, 'PVitems': PVitems, 'curItems': curItems, 'preItems': preItems, 'nextItems': nextItems});
+        res.render('User/WHInfo', {'req': req, 'app': app, 'session': req.session, 'pool': pool, 'WHitems': WHitems, 'PVitems': PVitems, 'curItems': curItems, 'preItems': preItems, 'nextItems': nextItems});
     });
 
-    router.post('/WHInfo/Edit', function (req, res, next) {
-        WHEdit.Show(req, res, app, db);
+    router.post('/WHInfo/Edit', async function (req, res, next) {
+        await WHEdit.Show(req, res, app, pool);
     });
 
-    router.post('/WHInfo/Edit/Save', function (req, res, next) {
-        WHEdit.Save(req, res, app, db);
+    router.post('/WHInfo/Edit/Save', async function (req, res, next) {
+        await WHEdit.Save(req, res, app, pool);
     });
 
-    router.post('/EnrollWHInfo', function (req, res, next) {
-        var WHitems = EnrollWHInfo.getWHInfo(req, res, app, db);
+    router.post('/EnrollWHInfo', async function (req, res, next) {
+        var WHitems = await EnrollWHInfo.getWHInfo(req, res, app, pool);
         WHitems = JSON.parse(WHitems);
-        res.render('User/EnrollWHInfo', {'req': req, 'app': app, 'session': req.session, 'db': db, 'WHitems': WHitems});
+        res.render('User/EnrollWHInfo', {'req': req, 'app': app, 'session': req.session, 'pool': pool, 'WHitems': WHitems});
     });
     
-    router.post('/RequestWHInfo', function (req, res, next) {
-        var WHitems = RequestWHInfo.getWHInfo(req, res, app, db);
-        var BYitems = RequestWHInfo.getBYInfo(req, res, app, db);
-        var ReqItems = RequestWHInfo.getReqInfo(req, res, app, db);
+    router.post('/RequestWHInfo', async function (req, res, next) {
+        var WHitems = await RequestWHInfo.getWHInfo(req, res, app, pool);
+        var BYitems = await RequestWHInfo.getBYInfo(req, res, app, pool);
+        var ReqItems = await RequestWHInfo.getReqInfo(req, res, app, pool);
         WHitems = JSON.parse(WHitems);
         BYitems = JSON.parse(BYitems);
         ReqItems = JSON.parse(ReqItems);
-        res.render('User/RequestWHInfo', {'req': req, 'app': app, 'session': req.session, 'db': db, 'WHitems': WHitems, 'BYitems': BYitems, 'ReqItems': ReqItems});
+        res.render('User/RequestWHInfo', {'req': req, 'app': app, 'session': req.session, 'pool': pool, 'WHitems': WHitems, 'BYitems': BYitems, 'ReqItems': ReqItems});
     });
 
-    router.get('/MyWarehouse', function (req, res, next) {
-        var enrollItems = pv_myWH.RequestForEnroll(req, res, app, db);
-        var requestItems = pv_myWH.RequestForBuy(req, res, app, db);
-        var IoTitems = WHInfo.getIoTInfo(req, res, app, db);
-        var wList = pv_myWH.Mywarehouse(req, res, app, db);
+    router.get('/MyWarehouse', async function (req, res, next) {
+        var enrollItems = await pv_myWH.RequestForEnroll(req, res, app, pool);
+        var requestItems = await pv_myWH.RequestForBuy(req, res, app, pool);
+        var IoTitems = await WHInfo.getIoTInfo(req, res, app, pool);
+        var wList = await pv_myWH.Mywarehouse(req, res, app, pool);
         enrollItems = JSON.parse(enrollItems);
         requestItems = JSON.parse(requestItems);
         IoTitems = JSON.parse(IoTitems);
@@ -100,7 +100,7 @@ module.exports = function (app, db) {
         res.render('User/Provider/pv_MyWH', {
             'app': app,
             'session': req.session,
-            'db': db,
+            'pool': pool,
             'enrollItems': enrollItems,
             'requestItems': requestItems,
             'IoTitems': IoTitems,

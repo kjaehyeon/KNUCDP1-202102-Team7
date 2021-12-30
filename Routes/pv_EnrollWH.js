@@ -1,7 +1,6 @@
-exports.EnrollWH = function (req, res, app, db) {
-    var mysql = require('mysql');
-    var connection = mysql.createConnection(require('../Module/db').info);
-    connection.connect();
+exports.EnrollWH = async function (req, res, app, pool) {
+    var connection = null;
+    var results = null;
     var onlyNum = /^[0-9]*$/; // 숫자만 받는 정규식
     var onlyNumDot = /^[0-9.]*$/; // 숫자와 점만 받는 정규식
     var engishDigit = /^[a-zA-Z0-9]+$/; // 영어 대소문자 및 숫자 받는 정규식
@@ -46,57 +45,42 @@ exports.EnrollWH = function (req, res, app, db) {
     } else if (phoneReg.test(item.warehouseTEL) == false) {
         res.send("errortype10");
     } else {
-        connection.query('INSERT INTO Warehouse SET ?', item, function (error, results, fields) {
-            if (error) {
-                console.log("error ocurred Warehouse set error", error.message);
-                res.redirect('/Provider/EnrollWH');
-            } else {
-                connection.query('SELECT LAST_INSERT_ID() as wid;', function (error, results, fields) {
-                    if (error) {
-                        console.log("error ocurred LAST_INSERT_ID() error", error);
-                        res.redirect('/Provider/EnrollWH');
-                    } else {
-                        let upLoadFile = req.files;
-                        let fileName = req.files.profile_img.name;
-                        let username = req.session.username;
-                        var fileExt = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
-                        fileName = new Date().getTime().toString() + fileExt;
-                        upLoadFile.profile_img.mv(`./Public/Upload/${username}_${fileName}`, err => {
-                            if (err) {
-                                res.send(err);
-                                console.log('file mv error' + err);
-                            } else {
-                                warehouseID = results[0].wid;
-                                var fileInfo = {
-                                    "warehouseID": warehouseID,
-                                    "filename": `${username}_${fileName}`
-                                };
-                                connection.query('INSERT INTO FileInfo SET ?', fileInfo, function (error, results, fields) {
-                                    if (error) {
-                                        console.log("error ocurred FileInfo error", error);
-                                        res.redirect('/Provider/EnrollWH');
-                                    } else {
-                                        var reqItem = {
-                                            "reqDate": new Date(),
-                                            "reqType": "ReqEnrollPV",
-                                            "providerID": req.session['memberID'],
-                                            "warehouseID": warehouseID
-                                        };
-                                        connection.query('INSERT INTO RequestForEnroll SET ?', reqItem, function (error, results, fields) {
-                                            if (error) {
-                                                console.log("error ocurred RequsetForEnroll error", error);
-                                                res.send("errortype5");
-                                            } else {
-                                                res.send("errortype0");
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
+        try {
+            connection = await pool.getConnection(async conn => conn);
+            await connection.beginTransaction();
+            await connection.query('INSERT INTO Warehouse SET ?', [item]);
+            [results] = await connection.query('SELECT LAST_INSERT_ID() as wid');
+            let upLoadFile = req.files;
+            let fileName = req.files.profile_img.name;
+            let username = req.session.username;
+            var fileExt = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
+            fileName = new Date().getTime().toString() + fileExt;
+            upLoadFile.profile_img.mv(`./Public/Upload/${username}_${fileName}`, async (err) => {
+                if (err) {
+                    throw err;
+                } else {
+                    warehouseID = results[0].wid;
+                    var fileInfo = {
+                        "warehouseID": warehouseID,
+                        "filename": `${username}_${fileName}`
+                    };
+
+                    await connection.query('INSERT INTO FileInfo SET ?', [fileInfo]);
+                    var reqItem = {
+                        "reqDate": new Date(),
+                        "reqType": "ReqEnrollPV",
+                        "providerID": req.session['memberID'],
+                        "warehouseID": warehouseID
+                    };
+                    await connection.query('INSERT INTO RequestForEnroll SET ?', [reqItem]);
+                    await connection.commit();
+                    connection.release();
+                }
+            });
+        } catch (err) {
+            await connection.rollback();
+            connection.release();
+            res.redirect('/Provider/EnrollWH');
+        }
     }
 }

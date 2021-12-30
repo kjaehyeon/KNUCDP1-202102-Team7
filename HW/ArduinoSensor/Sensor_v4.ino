@@ -5,10 +5,11 @@
 #include <DHT_U.h>
 #include <MQUnifiedsensor.h>
 
-char ssid[] = "droptopB1";            // your network SSID (name)
-char pass[] = "droptop925!!";        // your network password
+char ssid[]= "raspi-webgui";           // your network SSID (name)
+char pass[] = "autoin1020";        // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
-char server[] = "192.168.219.103";
+char server[] = "192.168.50.1";
+int socket_status;
 WiFiEspClient client;
 
 //for DHT-22
@@ -27,36 +28,39 @@ WiFiEspClient client;
 #define DEVICE_ID 1
 
 //for led
-int red = 8;
-int green = 9;
-int blue = 10;
+#define RED 8
+#define GREEN 9
+#define BLUE 10
 
 //for SW-18010
 #define SWPIN A2
 //for Flame sensor
 #define FLAMPIN 4
 //dht 클랙서 생성 (Data Pin, Sensor Type)
+
+
 DHT_Unified dht(DHTPIN, DHTTYPE);
 //MQ2 생성
 MQUnifiedsensor MQ2(Board, Voltage_Resolution, ADC_Bit_Resolution, MQ2PIN, MQTYPE);
 
-//대기 시간 변수
-uint32_t Mydelay = 1000;
 float ppm1; //propane
 float ppm2; //CO
+
+unsigned long lastConnectionTime = 0;         // last time you connected to the server, in milliseconds
+const unsigned long postingInterval = 700L; // delay between updates, in milliseconds
 
 void setup()
 {
     Serial.begin(9600);
-    Serial3.begin(9600);
+    Serial3.begin(115200);
     //led pin 설정
-    pinMode(red, OUTPUT);
-    pinMode(green, OUTPUT);
-    pinMode(blue, OUTPUT);
+    pinMode(RED, OUTPUT);
+    pinMode(GREEN, OUTPUT);
+    pinMode(BLUE, OUTPUT);
     
-    digitalWrite(blue, LOW);
+    digitalWrite(BLUE, LOW);
     delay(100);
-    digitalWrite(red, HIGH);
+    digitalWrite(RED, HIGH);
     
     WiFi.init(&Serial3);
     // Wifi 연결
@@ -112,14 +116,23 @@ void setup()
 
 void loop()
 {   
-    digitalWrite(red, LOW);
-    delay(100);
-    digitalWrite(blue, HIGH);
-    status = WiFi.status();
+    digitalWrite(RED, LOW);
+    digitalWrite(BLUE, HIGH);
+    
+   
+    if (millis() - lastConnectionTime > postingInterval) {
+    httpReq();
+  }
+  
+}
+
+void httpReq(){
+  status = WiFi.status();
+    //socket_status = client.connected();
     if(status != WL_CONNECTED){
       setup(); //wifi 꺼지면 다시 setup
     }
-    delay(200);
+    
     sensors_event_t event;  
     //온도값 얻기
     dht.temperature().getEvent(&event);
@@ -138,37 +151,23 @@ void loop()
     int vib = analogRead(SWPIN);
     //불꽃센서 정보 얻기
     int flame = digitalRead(FLAMPIN);
-    //client.connect(server, 8000);
-    //Serial.println("Connected to server");
-    String tmp = String("GET /monitoring/sensor_val/?device_id=")+DEVICE_ID+String("&temperature=")+ temp + String("&humidity=")+humi+String("&co=")+ppm2+String("&propane=")+ppm1+String("&flame=")+flame+String("&vibration=")+vib;
-    client.println(tmp);
-    client.println("Host: 192.168.219.103");
-    client.println("Connection: Keep-Alive");
-    client.println();
-}
-
-void getSensorData(){
-    delay(Mydelay);
-  
-    sensors_event_t event;  
-    //온도값 얻기
-    dht.temperature().getEvent(&event);
-    //습도값 얻기
-    dht.humidity().getEvent(&event);
-  
-   //LPG값 얻기
-    MQ2.update();
-    MQ2.setA(574.25); MQ2.setB(-2.222); // set for LPG
-    ppm1 = MQ2.readSensor();
-
-    //CO값 얻기
-    MQ2.setA(36974); MQ2.setB(-3.109); // set for LPG
-    ppm2 = MQ2.readSensor();
-
-    //진동값 얻기
-    int vib = analogRead(SWPIN);
-    //불꽃센서 정보 얻기
-    int flame = digitalRead(FLAMPIN);
+    
+    
+    if(client.connected()){  
+      String tmp = String("GET /monitoring/sensor_val/?device_id=")+DEVICE_ID+String("&temperature=")+ temp + String("&humidity=")+humi+String("&co=")+ppm2+String("&propane=")+ppm1+String("&flame=")+flame+String("&vibration=")+vib+String(" HTTP/1.1");
+      String host = String("Host: ") +server;
+      client.println(tmp);
+      client.println(host);
+      client.println("Connection: keep-alive");
+      client.println();
+    
+      lastConnectionTime = millis();
+    }else{
+      Serial.print("failed");
+      client.connect(server,8000);
+    }
+    //client.stop();
+       
 }
 
 void printWifiStatus()

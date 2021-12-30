@@ -1,16 +1,13 @@
-exports.Show = function (req, res, app, db) {
+exports.Show = async function (req, res, app, pool) {
     const viewInfo = require('./viewInfo');
     const wid = req.body.wid;
-    let WHInfo = viewInfo.getWHInfo(db, wid);
+    let WHInfo = await viewInfo.getWHInfo(pool, wid);
     WHInfo = JSON.parse(WHInfo);
     res.render('User/WHEdit', {session: req.session, wh: WHInfo});
 }
 
-exports.Save = function (req, res, app, db) {
-    var mysql = require('mysql');
-    var fs = require('fs');
-    var connection = mysql.createConnection(require('../Module/db').info);
-    connection.connect();
+exports.Save = async function (req, res, app, pool) {
+    var fs = require('fs').promises;
     var onlyNum = /^[0-9]*$/;
     var onlyNumDot = /^[0-9.]*$/; // 숫자와 점만 받는 정규식
     var emailReg = /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
@@ -26,6 +23,8 @@ exports.Save = function (req, res, app, db) {
         infoComment: req.body.infoComment,
         etcComment: req.body.etcComment
     }
+    var connection = null;
+    var results = null;
     //예외처리를 위한 정규식
     if (onlyNum.test(item.landArea) === false) res.send("errortype2");
     else if (onlyNum.test(item.floorArea) === false) res.send("errortype3");
@@ -34,39 +33,33 @@ exports.Save = function (req, res, app, db) {
     else if (emailReg.test(item.warehouseEmail) === false) res.send("errortype9");
     else if (phoneReg.test(item.warehouseTEL) === false) res.send("errortype10");
     else {
-        connection.query(`UPDATE Warehouse SET ? WHERE warehouseID=?`, [item, wid], function (error, results, fields) {
-            if (error) {
-                console.log('update error:', error);
-                res.send(error);
+        try {
+            connection = await pool.getConnection(async conn => conn);
+            await connection.beginTransaction();
+            await connection.query(`UPDATE Warehouse SET ? WHERE warehouseID=?`, [item, wid]);
+            let upLoadFile = req.files;
+            if (upLoadFile) {
+                [results] = await connection.query('SELECT filename FROM FileInfo WHERE warehouseID=?', [wid]);
+                let fileName = results[0].filename;
+                await fs.unlink(`./Public/Upload/${fileName}`);
+                upLoadFile.profile_img.mv(`./Public/Upload/${fileName}`, async (err) => {
+                    if (err) {
+                        throw err;
+                    } else {
+                        await connection.commit();
+                        res.send('success');
+                    }
+                });
             } else {
-                let upLoadFile = req.files;
-                if (upLoadFile) {
-                    connection.query('SELECT filename FROM FileInfo WHERE warehouseID=?', wid, function (error, results, fields) {
-                        if (error) {
-                            console.log("error:", error.message);
-                            res.send('error');
-                        }
-                        let fileName = results[0].filename;
-                        fs.unlink(`./Public/Upload/${fileName}`, (error) => {
-                            if (error) {
-                                console.log('file mv error' + error);
-                                res.send(error);
-                            } else {
-                                upLoadFile.profile_img.mv(`./Public/Upload/${fileName}`, error => {
-                                    if (error) {
-                                        console.log('file mv error' + error);
-                                        res.send(error);
-                                    } else {
-                                        res.send('success');
-                                    }
-                                });
-                            }
-                        });
-                    });
-                } else {
-                    res.send('success');
-                }
+                await connection.commit();
+                res.send('success');
             }
-        });
+        } catch (err) {
+            console.log(err.message);
+            res.send(err);
+            await connection.rollback();
+        } finally {
+            connection.release();
+        }
     }
 }

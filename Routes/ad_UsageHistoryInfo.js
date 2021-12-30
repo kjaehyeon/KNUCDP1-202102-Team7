@@ -1,34 +1,70 @@
 const viewInfo = require('./viewInfo');
 
-exports.getWHInfo = function (req, res, app, db) {
+exports.getWHInfo = async function (req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
-    let results = db.query(`select warehouseID from Contract where reqID=` + [reqID] + `;`);
+    var connection = null;
+    var results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query('select warehouseID from Contract where reqID=' + reqID);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         var warehouseID = results[0].warehouseID;
-        items = viewInfo.getWHInfo(db, warehouseID);
+        items = await viewInfo.getWHInfo(pool, warehouseID);
+    } else {
+        JSON.stringify(items);
     }
     return items;
 }
 
-exports.getPVInfo = function (req, res, app, db) {
+exports.getPVInfo = async function (req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
-    let results = db.query(`select memberID from Contract, Warehouse, Provider where Contract.warehouseID=Warehouse.warehouseID and Warehouse.warehouseID=Provider.warehouseID and reqID=` + [reqID] + `;`);
+    var connection = null;
+    var results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query('select memberID from Contract, Warehouse, Provider'
+                                            + ' where Contract.warehouseID=Warehouse.warehouseID' 
+                                            + ' and Warehouse.warehouseID=Provider.warehouseID'
+                                            + ' and reqID=' + reqID);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         var providerID = results[0].memberID;        
-        items = viewInfo.getMemberInfo(db, providerID);
+        items = await viewInfo.getMemberInfo(pool, providerID);
+    } else {
+        JSOIN.stringify(items);
     }
     return items;
 }
 
-exports.getBYInfo = function (req, res, app, db) {
+exports.getBYInfo = async function (req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
-    let results = db.query(`select buyerID from Contract where reqID=` + [reqID] + `;`);
+    var connection = null;
+    var results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = connection.query('select buyerID from Contract where reqID=' + reqID);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         var buyerID = results[0].buyerID;
-        items = viewInfo.getMemberInfo(db, buyerID);
+        items = await viewInfo.getMemberInfo(db, buyerID);
+    } else {
+        JSON.stringify(items);
     }
     return items;
 }

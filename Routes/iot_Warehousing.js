@@ -1,14 +1,16 @@
-exports.initWarehouse = function (req, res, db) {
+exports.initWarehouse = async function (req, res, pool) {
     var items = {};
     var type = req.session['type']
     var wid = req.session['warehouseID']
     var id = req.session['memberID']
-
-    if (type == "provider" || type == "admin") {
-        var results = db.query("SELECT * FROM iot WHERE warehouseID=?;", [wid]);
-        if (!results) console.log('err: warehousing init');
-        else {
-            if (results.length > 0) {
+    var connection = null;
+    var results = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        if (type == "provider" || type == "admin") {
+            [results] = await connection.query('SELECT * FROM iot WHERE warehouseID=?', [wid]);
+            if (!results.length) throw new Error('err: warehousing init');
+            else {
                 for (var step = 0; step < results.length; step++) {
                     results[step].received = results[step].received ? 'Arrived' : 'Not arrived';
                     items[`item${step}`] = {
@@ -22,11 +24,9 @@ exports.initWarehouse = function (req, res, db) {
                 }
             }
         }
-    } else {
-        var results = db.query("SELECT * FROM iot WHERE id=? and warehouseID=?;", [id, wid]);
-        if (!results) console.log('err: warehousing init');
         else {
-            if (results.length > 0) {
+            [results] = await connection.query("SELECT * FROM iot WHERE id=? and warehouseID=?", [id, wid]);
+            if (!results.length) {
                 for (var step = 0; step < results.length; step++) {
                     results[step].received = results[step].received ? 'Arrived' : 'Not arrived';
                     items[`item${step}`] = {
@@ -40,24 +40,36 @@ exports.initWarehouse = function (req, res, db) {
                 }
             }
         }
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
     }
     return JSON.stringify(items);
 }
 
-exports.delItem = function (req, res, db) {
+exports.delItem = async function (req, res, pool) {
     var rfid = req.body.itemDel;
-
     var delSQL = `DELETE FROM iot WHERE rfid='${rfid}';`
-    var check = db.query(delSQL);
+    var connection = null;
+    var check = null;
+    try {
+        connection  = await pool.getConnection(async conn => conn);
+        [check] = await connection.query(delSQL);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (!check) {
-        console.log("error ocurred", error);
+        console.log("error ocurred");
         res.redirect('Warehousing');
     } else {
         res.redirect('Warehousing');
     }
 }
 
-exports.randomTest = function (req, res, db) {
+exports.randomTest = async function (req, res, pool) {
     var types = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff', 'ggg'];
     var rfid = Math.random().toString(16).substr(2, 8).toUpperCase();
     var name = types[Math.floor(Math.random() * types.length)];
@@ -66,8 +78,14 @@ exports.randomTest = function (req, res, db) {
     var picture = `./${rfid}.jpg`;
     var id = req.session['memberID'];
     var wid = req.session['warehouseID'];
-
-    var row = db.query(`INSERT INTO iot VALUES('${rfid}', '${id}', '${name}', ${num}, ${received}, '${picture}', ${wid});`);
-    if (!row) console.log('err: randomTest');
-    else res.redirect('Warehousing');
+    var connection = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        await connection.query(`INSERT INTO iot VALUES('${rfid}', '${id}', '${name}', ${num}, ${received}, '${picture}', ${wid})`);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
+    res.redirect('Warehousing');
 }

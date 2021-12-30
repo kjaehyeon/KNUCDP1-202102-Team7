@@ -15,8 +15,3 @@ class MonthStatSerializer(serializers.ModelSerializer):
     class Meta:
         model = MonthStatValue
         fields = ['device_id','temperature','humidity','co','propane','datetime']
-
-# class YearStatSerializer(serializers.ModelSerializer):
-#     class meta:
-#         model = YearStatValue
-#         fields = ['device_id','temperature','humidity','co','propane','flame','vibration','datetime']
