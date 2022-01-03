@@ -1,7 +1,7 @@
-exports.alert = async (req, res, pool) => {
+module.exports = async (req, res, pool) => {
     const crypto = require('crypto');
     const request = require('request');
-    
+
     const to_list = [];
     const ip = req.headers['client-ip'];
     if(!ip){
