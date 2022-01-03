@@ -59,3 +59,20 @@ exports.login = async (req, res, pool) => {
         }
     }
 };
+
+exports.check = (req, res, next) => {
+    const token = req.headers['token'];
+    const jwt = require('jsonwebtoken');
+    const secret_key = process.env.JWT_SECRET_KEY;
+
+    try {
+        const user_info = jwt.verify(token, secret_key);
+        req.user = user_info;
+        next();
+    } catch (err) {
+        console.log(err);
+        res.status(401).json({
+            message: err.message
+        })
+    }
+};
