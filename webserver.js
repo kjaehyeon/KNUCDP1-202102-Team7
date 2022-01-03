@@ -65,7 +65,7 @@ app.use('/Admin', require('./Routes/ad')(app, mysql.pool));
 app.use('/Provider', require('./Routes/pv')(app, mysql.pool));
 app.use('/Buyer', require('./Routes/by')(app, mysql.pool));
 app.use('/Iot', require('./Routes/iot')(app, mysql.pool));
-app.use('/Api', require('./Routes/api')(app, mysql.pool));
+app.use('/api', require('./Routes/api')(app, mysql.pool));
 
 app.get('/Public/Upload/:filename', function(req, res) {
     fs.readFile(__dirname + `/Public/Upload/${req.params.filename}`, function(err, data) {
