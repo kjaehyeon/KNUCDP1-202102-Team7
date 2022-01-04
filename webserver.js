@@ -71,7 +71,7 @@ app.get('/Public/Upload/:filename', function(req, res) {
     fs.readFile(__dirname + `/Public/Upload/${req.params.filename}`, function(err, data) {
         if (err) throw err;
         else {
-            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.writeHead(200, {'Content-Type': 'image/png'});
             res.write(data);
             res.end();
         }
