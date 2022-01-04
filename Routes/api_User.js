@@ -46,7 +46,7 @@ exports.login = async (req, res, pool) => {
         } catch (err) {
             console.log(err.message);
             if (err.message === 'login fail') {
-                res.status(401).json({
+                res.status(400).json({
                     message: err.message
                 });
             } else {
