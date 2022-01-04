@@ -75,6 +75,7 @@ exports.EnrollWH = async function (req, res, app, pool) {
                     await connection.query('INSERT INTO RequestForEnroll SET ?', [reqItem]);
                     await connection.commit();
                     connection.release();
+                    res.send('errortype0');
                 }
             });
         } catch (err) {
