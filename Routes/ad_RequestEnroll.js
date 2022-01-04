@@ -50,8 +50,8 @@ exports.withAnswer = async function (req, res, app, pool) {
                 "memberID": providerID,
                 "warehouseID": req.body.warehouseID,
             };
-            await connection.query('INSERT INTO Provider SET ?', info);
-            await connection.query('DELETE FROM RequestForEnroll WHERE reqID=?', reqID);
+            await connection.query('INSERT INTO Provider SET ?', [info]);
+            await connection.query('DELETE FROM RequestForEnroll WHERE reqID=?', [reqID]);
             await connection.query('UPDATE Warehouse SET enroll=? WHERE warehouseID=?', ['Y', info.warehouseID]);
         } else if (answer == "Reject") {
             await connection.query('UPDATE RequestForEnroll'
@@ -62,9 +62,9 @@ exports.withAnswer = async function (req, res, app, pool) {
             await connection.query(`INSERT INTO DeletedEnroll (${cols}, rejectTime)`
                                     + ` (SELECT ${cols}, ? FROM RequestForEnroll WHERE reqID=?)`,[now, reqID]);
         } else if (answer === "Confirm") {
-            await connection.query('DELETE FROM RequestForEnroll WHERE reqID=?', reqID);
-            await connection.query('DELETE FROM Warehouse WHERE warehouseID=?', warehouseID);
-            await connection.query('DELETE FROM FileInfo WHERE warehouseID=?');
+            await connection.query('DELETE FROM RequestForEnroll WHERE reqID=?', [reqID]);
+            await connection.query('DELETE FROM Warehouse WHERE warehouseID=?', [warehouseID]);
+            await connection.query('DELETE FROM FileInfo WHERE warehouseID=?', [warehouseID]);
         }
         await connection.commit();
         res.send(true);
