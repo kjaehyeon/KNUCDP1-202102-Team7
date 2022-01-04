@@ -120,30 +120,18 @@ exports.listItem = async function listItem(req, res, pool) {
     wid = req.body.wid
     connection.beginTransaction();
     try{
-        let [items] = await connection.query(`SELECT * FROM Item WHERE warehouseID='${wid}';`);
-        // item이 없을 경우엔 에러
-        if (items.length == 0) {
-            throw new Error('err: Item is empty');
-        }
-        it_id = it_id[0].it_id;
-        let [row] = await connection.query(`UPDATE Item SET status = 2 where id = '${it_id}';`);
-        if (!row.affectedRows) {
-            throw new Error('err: Item recieved status failed');
-        } else {
-            res.send("success");
-        }
-        // 2. ItemTimeStamp 테이블에 (아이템 id, 날짜시간, 2) 삽입
-        [row] = await connection.query(`INSERT INTO ItemTimeStamp(it_id, i_date, status) VALUES('${it_id}', ${new Date().toLocaleString}, 2);`);
-        if (!row.affectedRows) {
-            throw new Error('err: ItemTimeStamp Insert failed');
-        } else {
-            res.send("success");
-        }
+        let [items] = await connection.query(`SELECT I.it_id, I.name as name, I.status, I.create_date as datetime, M.name as buyer_name, I.picture as image 
+        FROM Item I, Member M 
+        WHERE I.buyer_id = M.memberID AND warehouseID = '${wid}';`);
+        res.status(200).json({
+            items
+        });
         connection.commit();
     } catch(err){
         console.log(err.message);
         await connection.rollback();
-        res.send("error");
+        res.status(400)
+        res.send(`error : ${err.message}`);
     } finally {
         await connection.release();
     }
