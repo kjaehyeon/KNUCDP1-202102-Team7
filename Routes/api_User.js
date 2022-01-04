@@ -62,6 +62,7 @@ exports.login = async (req, res, pool) => {
 
 exports.check = (req, res, next) => {
     const token = req.headers['token'];
+    console.log(req.headers);
     const jwt = require('jsonwebtoken');
     const secret_key = process.env.JWT_SECRET_KEY;
 
