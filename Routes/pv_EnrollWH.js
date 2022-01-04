@@ -3,7 +3,7 @@ exports.EnrollWH = async function (req, res, app, pool) {
     var results = null;
     var onlyNum = /^[0-9]*$/; // 숫자만 받는 정규식
     var onlyNumDot = /^[0-9.]*$/; // 숫자와 점만 받는 정규식
-    var engishDigit = /^[a-zA-Z0-9]+$/; // 영어 대소문자 및 숫자 받는 정규식
+    var engishDigit = /^[a-zA-Z0-9_ ]+$/; // 영어 대소문자 및 숫자 받는 정규식(띄어쓰기 추가함)
     var emailReg = /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
     var phoneReg = /^(01(?:0|1|[6-9])|02|0[3-9]\d{1})-(?:\d{3}|\d{4})-\d{4}$/;
     var item = {
@@ -64,7 +64,6 @@ exports.EnrollWH = async function (req, res, app, pool) {
                         "warehouseID": warehouseID,
                         "filename": `${username}_${fileName}`
                     };
-
                     await connection.query('INSERT INTO FileInfo SET ?', [fileInfo]);
                     var reqItem = {
                         "reqDate": new Date(),

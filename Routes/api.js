@@ -3,6 +3,7 @@ module.exports = (app, pool) => {
     const router = express.Router();
     const crypto = require('crypto');
     const request = require('request');
+    const itemControl = require('./by_ItemControl');
 
     router.get('/Alert', async (req, res) => {
         const to_list = [];
@@ -91,6 +92,15 @@ module.exports = (app, pool) => {
                 connection.release();
             }
         }
+    });
+    router.post('/EnrollItem', async (req, res, next) => {
+        await itemControl.enrollItem(req, res, pool);
+    });
+    router.post('/item/in', async (req, res, next) => {
+        await itemControl.receivedItem(req, res, pool);
+    });
+    router.post('/item/out', async (req, res, next) => {
+        await itemControl.releaseItem(req, res, pool);
     });
 
     return router;  
