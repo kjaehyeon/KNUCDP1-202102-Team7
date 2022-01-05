@@ -1,6 +1,7 @@
 module.exports = (app, pool) => {
     const express = require('express');
     const router = express.Router();
+    const itemControl = require('./api_ItemControl');
     const alert = require('./api_Alert');
     const user = require('./api_User');
     const warehouse = require('./api_Warehouse');
@@ -36,6 +37,19 @@ module.exports = (app, pool) => {
                 messge: err.message
             });
         }
+    });
+    router.post('/EnrollItem', async (req, res, next) => {
+        await itemControl.enrollItem(req, res, pool);
+    });
+    router.post('/item/in', user.check, async (req, res, next) => {
+        await itemControl.receivedItem(req, res, pool);
+    });
+    router.post('/item/out', user.check, async (req, res, next) => {
+        await itemControl.releaseItem(req, res, pool);
+    });
+    router.get('/itemlist', user.check, async (req, res, next) => {
+        console.log("itemlist requested");
+        await itemControl.listItem(req, res, pool);
     });
 
     return router;  
