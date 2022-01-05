@@ -4,7 +4,7 @@ exports.RequestForEnroll = async function (req, res, app, pool) {
                 + ` where providerID ='${req.session['memberID']}'`
                 + ` and RequestForEnroll.warehouseID=Warehouse.warehouseID`;
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query(sql);

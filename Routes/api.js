@@ -6,15 +6,36 @@ module.exports = (app, pool) => {
     const warehouse = require('./api_Warehouse');
 
     router.get('/alert', async (req, res) => {
-        await alert(req, res, pool);
+        try {
+            await alert(req, res, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.status(500).json({
+                message: err.message
+            });
+        }
     });
 
     router.post('/login', async (req, res) => {
-        await user.login(req, res, pool);
+        try {
+            await user.login(req, res, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.status(500).json({
+                messge: err.message
+            });
+        }
     });
 
     router.get('/warehouse', user.check, async (req, res) => {
-        await warehouse.sendMyWarehouseList(req, res, pool);
+        try {
+            await warehouse.sendMyWarehouseList(req, res, pool);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({
+                messge: err.message
+            });
+        }
     });
 
     return router;  

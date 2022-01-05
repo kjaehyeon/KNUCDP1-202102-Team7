@@ -71,7 +71,7 @@ exports.check = (req, res, next) => {
         req.user = user_info;
         next();
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         res.status(401).json({
             message: err.message
         })

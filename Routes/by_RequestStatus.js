@@ -2,7 +2,7 @@ exports.RequestForBuy = async function (req, res, app, pool) {
     var items = {};
     var sql = `select * from RequestForBuy where buyerID='${req.session['memberID']}'`;
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query(sql);

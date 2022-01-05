@@ -3,7 +3,7 @@ exports.login = async function (req, res, app, pool) {
     var memberID = req.body.memberID;
     var password = req.body.password;
     var connection = null;
-    var results = null;
+    var results = [];
 
     try {
         connection = await pool.getConnection(async conn => conn);

@@ -1,7 +1,7 @@
 exports.getWHInfo = async function (pool, WID) {
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query('select * from Warehouse where warehouseID=' + WID);
@@ -22,7 +22,7 @@ exports.getWHInfo = async function (pool, WID) {
             landArea: results[0].landArea,
             floorArea: results[0].floorArea,
             useableArea: results[0].useableArea,
-            enrolledDate: results[0].enrolledDate.substring(0, 10),
+            enrolledDate: results[0].enrolledDate.toString().substring(0, 10),
             perprice: results[0].price,
             infoComment: results[0].infoComment,
             etcComment: results[0].etcComment,
@@ -35,10 +35,10 @@ exports.getWHInfo = async function (pool, WID) {
 exports.getMemberInfo = async function (pool, memID) {
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
-        [results] = await connection.query('select * from Member where memberID=' + memID);
+        [results] = await connection.query('select * from Member where memberID=?', [memID]);
     } catch (err) {
         console.log(err.message);
     } finally {

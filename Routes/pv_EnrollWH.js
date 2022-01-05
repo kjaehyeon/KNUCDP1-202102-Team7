@@ -1,6 +1,6 @@
 exports.EnrollWH = async function (req, res, app, pool) {
     var connection = null;
-    var results = null;
+    var results = [];
     var onlyNum = /^[0-9]*$/; // 숫자만 받는 정규식
     var onlyNumDot = /^[0-9.]*$/; // 숫자와 점만 받는 정규식
     var engishDigit = /^[a-zA-Z0-9]+$/; // 영어 대소문자 및 숫자 받는 정규식

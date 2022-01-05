@@ -28,7 +28,6 @@ exports.delete = async function (req, res, app, pool) {
     } finally {
         connection.release();
     }
-    var check = db.query(insertSQL, [memberID, memberType, name, email, contactNumber, address, national, deletedDate]);
 
     if (!check) {
         res.redirect('/User/Edit');

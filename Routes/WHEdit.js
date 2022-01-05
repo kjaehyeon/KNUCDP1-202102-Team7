@@ -1,8 +1,13 @@
 exports.Show = async function (req, res, app, pool) {
     const viewInfo = require('./viewInfo');
     const wid = req.body.wid;
-    let WHInfo = await viewInfo.getWHInfo(pool, wid);
-    WHInfo = JSON.parse(WHInfo);
+    let WHInfo = {};
+    try {
+        WHInfo = await viewInfo.getWHInfo(pool, wid);
+        WHInfo = JSON.parse(WHInfo);
+    } catch (err) {
+        console.log(err.message);
+    }
     res.render('User/WHEdit', {session: req.session, wh: WHInfo});
 }
 
@@ -24,7 +29,7 @@ exports.Save = async function (req, res, app, pool) {
         etcComment: req.body.etcComment
     }
     var connection = null;
-    var results = null;
+    var results = [];
     //예외처리를 위한 정규식
     if (onlyNum.test(item.landArea) === false) res.send("errortype2");
     else if (onlyNum.test(item.floorArea) === false) res.send("errortype3");
@@ -40,16 +45,20 @@ exports.Save = async function (req, res, app, pool) {
             let upLoadFile = req.files;
             if (upLoadFile) {
                 [results] = await connection.query('SELECT filename FROM FileInfo WHERE warehouseID=?', [wid]);
-                let fileName = results[0].filename;
-                await fs.unlink(`./Public/Upload/${fileName}`);
-                upLoadFile.profile_img.mv(`./Public/Upload/${fileName}`, async (err) => {
-                    if (err) {
-                        throw err;
-                    } else {
-                        await connection.commit();
-                        res.send('success');
-                    }
-                });
+                if (results.length > 0 ){
+                    let fileName = results[0].filename;
+                    await fs.unlink(`./Public/Upload/${fileName}`);
+                    upLoadFile.profile_img.mv(`./Public/Upload/${fileName}`, async (err) => {
+                        if (err) {
+                            throw err;
+                        } else {
+                            await connection.commit();
+                            res.send('success');
+                        }
+                    });
+                } else {
+                    throw new Error('no file');
+                }
             } else {
                 await connection.commit();
                 res.send('success');

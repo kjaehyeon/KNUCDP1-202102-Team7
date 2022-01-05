@@ -1,7 +1,7 @@
 exports.RequestForIoT = async function(req, res, app, pool) {
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
 
     try {
         connection = await pool.getConnection(async conn => conn);

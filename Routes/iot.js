@@ -1,13 +1,7 @@
 module.exports = function(app, pool) {
     const express = require('express');
     const router = express.Router();
-
     const iot_Monitoring = require('./iot_Monitoring');
-    const iot_Warehousing = require('./iot_Warehousing');
-    const iot_RegisterItem = require('./iot_RegisterItem');
-    const iot_EditItem = require('./iot_EditItem');
-    const iot_Help = require('./iot_Help');
-    const iot_RFID = require('./iot_RFID');
 
     var check = (req, res, next) => {
         var id = req.session['memberID'];
@@ -25,58 +19,30 @@ module.exports = function(app, pool) {
     router.use(check);
 
     router.get('/', async (req, res, next) => {
-        await iot_Monitoring.init(req, res, pool)
+        try {
+            await iot_Monitoring.init(req, res, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.render('Alert/errorOccured');
+        }
     });
 
     router.post('/', async (req, res, next) => {
-        await iot_Monitoring.sessionCheck(req, res, pool)
+        try {
+            await iot_Monitoring.sessionCheck(req, res, pool)
+        } catch (err) {
+            console.log(err.message);
+            res.render('Alert/cannotAccess');
+        }
     });
 
     router.get('/Monitoring', async (req, res, next) => {
-        await iot_Monitoring.init(req, res, pool)
-    });
-
-    router.get('/Warehousing', async (req, res, next) => {
-        var itemlist = await iot_Warehousing.initWarehouse(req, res, pool);
-        var userType = req.session['type'];
-        itemlist = JSON.parse(itemlist);
-        res.render('IoT/iot_Warehousing', { 'session': req.session, 'itemlist': itemlist, 'userType': userType });
-    });
-
-    router.get('/Help', async (req, res, next) => {
-        await iot_Help.init(req, res, pool)
-    });
-
-    router.get('/RandomTest', async (req, res, next) => {
-        await iot_Warehousing.randomTest(req, res, pool)
-    });
-
-    router.get('/RegisterItem', (req, res, next) => {
-        res.render('IoT/iot_RegisterItem', { 'session': req.session })
-    });
-
-    router.post('/RegisterItem', async (req, res, next) => {
-        await iot_RegisterItem.registerItem(req, res, pool)
-    });
-
-    router.get('/EditItem', (req, res, next) => {
-        res.render('IoT/iot_EditItem', { 'session': req.session })
-    });
-
-    router.post('/EditItem', (req, res, next) => {
-        res.render('IoT/iot_EditItem', { 'RFID': req.body.RFID, 'name': req.body.name, 'num': req.body.num, 'session': req.session })
-    });
-
-    router.post('/EditSave', async (req, res, next) => {
-        await iot_EditItem.editItem(req, res, pool)
-    });
-
-    router.post('/DeleteItem', async (req, res, next) => {
-        await iot_Warehousing.delItem(req, res, pool)
-    });
-
-    router.post('/RFID', async (req, res, next) => {
-        await iot_RFID.receive(req, res, pool)
+        try {
+            await iot_Monitoring.init(req, res, pool)
+        } catch (err) {
+            console.log(err.message);
+            res.render('Alert/errorOccured');
+        }
     });
 
     router.get('/Statistic', (req, res, next) => {

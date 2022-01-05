@@ -1,4 +1,4 @@
-exports.emailIDF = async function(req, res, app, pool) {
+exports.emailIDF = function(req, res, app, pool) {
 
     let authNum = Math.random().toString().substr(2, 6);
     const ejs = require('ejs');
