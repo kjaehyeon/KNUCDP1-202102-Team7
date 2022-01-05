@@ -8,6 +8,9 @@ exports.searchWH = async function(req, res, app, pool) {
         connection = await pool.getConnection(async conn => conn);
         [results1] = await connection.query('SELECT * from PublicWarehouse');
         [results2] = await connection.query(`SELECT * from Warehouse where enroll='Y'`);
+        for (index in results2){
+            results2[index].warehouseID += 10000
+        }
         results = results1.concat(results2);
     } catch (err) {
         console.log(err.message);

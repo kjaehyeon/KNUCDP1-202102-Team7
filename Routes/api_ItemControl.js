@@ -23,7 +23,7 @@ exports.enrollItem = async function (req, res, pool) {
         let [it_id] = await connection.query(`Select last_insert_id()`);
         it_id = it_id[0].it_id;
         const qr = crypto.createHash('sha512').update(`${wid}${bid}${it_id}${it_id}`).digest('base64');
-        [row] = await connection.query(`Update Item Set qrcode = '${qrcode}' where id = '${it_id}';`);
+        [row] = await connection.query(`Update Item Set qrcode = '${qr}' where id = '${it_id}';`);
         if (!row.affectedRows) {
             throw new Error('err: QR Hash create Failed');
         } else {
@@ -61,7 +61,9 @@ exports.receivedItem = async function receivedItem(req, res, pool) {
             res.send("success");
         }
         // 2. ItemTimeStamp 테이블에 (아이템 id, 날짜시간, 1) 삽입
-        [row] = await connection.query(`INSERT INTO ItemTimeStamp(it_id, i_date, status) VALUES('${it_id}', ${new Date().toLocaleString}, 1);`);
+        [row] = await connection.query(`INSERT INTO ItemTimeStamp(it_id, i_date, status) VALUES('${it_id}', ${
+            new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '')
+        }, 1);`);
         if (!row.affectedRows) {
             throw new Error('err: ItemTimeStamp Insert failed');
         } else {
@@ -98,7 +100,9 @@ exports.releaseItem = async function releaseItem(req, res, pool) {
             res.send("success");
         }
         // 2. ItemTimeStamp 테이블에 (아이템 id, 날짜시간, 2) 삽입
-        [row] = await connection.query(`INSERT INTO ItemTimeStamp(it_id, i_date, status) VALUES('${it_id}', ${new Date().toLocaleString}, 2);`);
+        [row] = await connection.query(`INSERT INTO ItemTimeStamp(it_id, i_date, status) VALUES('${it_id}', ${
+            new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '')
+        }, 2);`);
         if (!row.affectedRows) {
             throw new Error('err: ItemTimeStamp Insert failed');
         } else {
@@ -114,23 +118,31 @@ exports.releaseItem = async function releaseItem(req, res, pool) {
     }
 }
 
+//물품 목록
 exports.listItem = async function listItem(req, res, pool) {
     //connection 생성
     const connection = await pool.getConnection(async conn => conn);
-    wid = req.body.wid
+    wid = req.param('wid')
+    console.log(`in listitem 1 wid:${wid}`);
     connection.beginTransaction();
     try{
         let [items] = await connection.query(`SELECT I.it_id, I.name as name, I.status, I.create_date as datetime, M.name as buyer_name, I.picture as image 
         FROM Item I, Member M 
         WHERE I.buyer_id = M.memberID AND warehouseID = '${wid}';`);
-        res.status(200).json({
+        for (i in items){
+            const date = new Date(items[i]['datetime']).toISOString().split("T")[0];
+            const time = new Date(items[i]['datetime']).toTimeString().split(" ")[0];
+            items[i]['datetime'] = date + ' ' + time
+        }
+        console.log(items)
+        res.status(200).json(
             items
-        });
+        );
         connection.commit();
     } catch(err){
-        console.log(err.message);
+        console.log(`error : ${err.message}`);
         await connection.rollback();
-        res.status(400)
+        res.status(500)
         res.send(`error : ${err.message}`);
     } finally {
         await connection.release();

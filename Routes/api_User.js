@@ -18,8 +18,8 @@ exports.login = async (req, res, pool) => {
             if (!results.length) {
                 throw new Error('login fail');
             } else {
-                if ( results[0].password ===
-                    crypto.createHash('sha512').update(pw).digest('base64')) {
+                crypto.pbkdf2(pw, results[0].salt, 100000, 64, 'sha512', (err, key) => {
+                    if(key.toString('base64') === results[0].password){
                         const token = jwt.sign({
                             member_id: results[0].memberID,
                             type: results[0].type,
@@ -38,10 +38,10 @@ exports.login = async (req, res, pool) => {
                         res.status(200).json({
                             token
                         });
+                    } else {
+                        throw new Error('login fail');
                     }
-                else {
-                    throw new Error('login fail');
-                }
+                });
             }
         } catch (err) {
             console.log(err.message);
