@@ -19,7 +19,7 @@ exports.login = async (req, res, pool) => {
                 throw new Error('login fail');
             } else {
                 crypto.pbkdf2(pw, results[0].salt, 100000, 64, 'sha512', (err, key) => {
-                    if(key.toString('base64') === results[0].password){
+                    if (key.toString('base64') === results[0].password){
                         const token = jwt.sign({
                             member_id: results[0].memberID,
                             type: results[0].type,
@@ -30,7 +30,7 @@ exports.login = async (req, res, pool) => {
                             zipcode: results[0].zipcode,
                             national: results[0].national
                         }, secret_key, {
-                            expiresIn: '5m',
+                            expiresIn: '2h',
                             issuer: 'autoin.com',
                             subject: 'user_info'
                         });
