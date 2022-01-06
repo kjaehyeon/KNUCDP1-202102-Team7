@@ -4,7 +4,7 @@ exports.getWHInfo = async function (req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query('select warehouseID from Contract where reqID=?', [reqID]);
@@ -16,6 +16,8 @@ exports.getWHInfo = async function (req, res, app, pool) {
     if (results.length > 0) {
         var warehouseID = results[0].warehouseID;
         items = await viewInfo.getWHInfo(pool, warehouseID);
+    } else {
+        items = JSON.stringify(items);
     }
     return items;
 }
@@ -24,7 +26,7 @@ exports.getPVInfo = async function (req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query('select memberID from Contract, Warehouse, Provider'
@@ -39,6 +41,8 @@ exports.getPVInfo = async function (req, res, app, pool) {
     if (results.length > 0) {
         var providerID = results[0].memberID;        
         items = await viewInfo.getMemberInfo(db, providerID);
+    } else {
+        items = JSON.stringify(items);
     }
     return items;
 }

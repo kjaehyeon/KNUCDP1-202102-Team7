@@ -19,19 +19,29 @@ module.exports = function (app, pool) {
     router.use(check);
 
     router.post('/Register/MemberID', async function (req, res, next) {
-        await register.checkID(req, res, app, pool);
+        try {
+            await register.checkID(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.send(false);
+        }
     });
 
     router.post("/Register/checkPW", function (req, res, next) {
         register.checkPW(req, res, app, pool);
     });
 
-    router.post('/Register/EmailIDF', async function (req, res, next) {
-        await emailIDF.emailIDF(req, res, app, pool);
+    router.post('/Register/EmailIDF', function (req, res, next) {
+        emailIDF.emailIDF(req, res, app, pool);
     });
 
     router.post('/Register', async function (req, res, next) {
-        await register.register(req, res, app, pool);
+        try {
+            await register.register(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.send(false);
+        }
     });
 
     router.get('/Register', function (req, res, next) {
@@ -47,7 +57,12 @@ module.exports = function (app, pool) {
     });
 
     router.post('/Login', async function (req, res, next) {
-        await login.login(req, res, app, pool);
+        try {
+            await login.login(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.send(err);
+        }
     });
 
     router.get('/Logout', function (req, res, next) {
@@ -60,7 +75,12 @@ module.exports = function (app, pool) {
     });
 
     router.post('/Edit', async function (req, res, next) {
-        await edit.edit(req, res, app, pool);
+        try {
+            await edit.edit(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.send(err);
+        }
     });
 
     router.get('/Edit/PW', function (req, res, next) {
@@ -68,7 +88,14 @@ module.exports = function (app, pool) {
     });
 
     router.post('/Edit/PW', async function (req, res, next) {
-        await pwEdit.pwEdit(req, res, app, pool);
+        try {
+            await pwEdit.pwEdit(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.write("<script>alert('Error ocurred. Try again.')</script>");
+            res.write("<script>window.location=\"/User/Edit\"</script>");
+            res.end();
+        }
     });
 
     router.get('/Show', function (req, res, next) {
@@ -80,7 +107,12 @@ module.exports = function (app, pool) {
     });
 
     router.post('/Delete', async function (req, res, next) {
-        await del.delete(req, res, app, pool);
+        try {
+            await del.delete(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.redirect('/User/Edit');
+        }
     });
 
     return router;

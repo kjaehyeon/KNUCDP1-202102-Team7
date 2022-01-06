@@ -34,7 +34,7 @@ exports.sessionCheck = async function(req, res, pool) {
         req.session['warehouseID'] = wid;
         req.session['iotServer'] = req.body.iotServer;
         var connection = null;
-        var results = null;
+        var results = [];
         try {
             connection = await pool.getConnection(async conn => conn);
             [results] = await connection.query('select warehouseName from Warehouse where warehouseID=?', [wid]);
@@ -46,6 +46,7 @@ exports.sessionCheck = async function(req, res, pool) {
             }
         } catch (err) {
             console.log(err.message);
+            res.render('Alert/cannotAccess');
         } finally {
             connection.release();
         }
@@ -67,10 +68,10 @@ exports.sessionCheck = async function(req, res, pool) {
                                                                 + ' union select buyerID as memberID, warehouseID'
                                                                 + ' from Contract) as pb where memberID=? and warehouseID=?', [id, wid]);
                 if (!row.length) throw new Error('err: iot.sessionCheck');
-                else if (!row[0].num) res.render('Alert/cannotAccess');
+                else if (!row[0].num) throw new Error('err: iot.sessionCheck')
                 else {
                     [row] = await connection.query('select iotServer from Warehouse where warehouseID=?', [wid]);
-                    if (!row.length) throw new Error('err: iot.sessionCheck2');
+                    if (!row.length) throw new Error('err: iot.sessionCheck');
                     else {
                         req.session['warehouseID'] = wid;
                         req.session['iotServer'] = row[0].iotServer;
@@ -80,6 +81,7 @@ exports.sessionCheck = async function(req, res, pool) {
             }
         } catch (err) {
             console.log(err.message);
+            res.render('Alert/cannotAccess');
         } finally {
             connection.release();
         }

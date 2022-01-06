@@ -3,7 +3,12 @@ const viewInfo = require('./viewInfo');
 exports.getWHInfo = async function (req, res, app, pool) {
     var warehouseID = req.body.warehouseID;
     var items = {};
-    items = await viewInfo.getWHInfo(pool, warehouseID);
+    try {
+        items = await viewInfo.getWHInfo(pool, warehouseID);
+    } catch (err) {
+        console.log(err.message);
+        items = JSON.stringify(items);
+    }
     return items;
 }
 
@@ -11,12 +16,12 @@ exports.getPVInfo = async function (req, res, app, pool) {
     var warehouseID = req.body.warehouseID;
     var items = {};
     var connection = null;
-    let results = null;
+    let results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
-        [results] = connection.query('select * from Warehouse, Provider' 
-                                    + ' where Warehouse.warehouseID=Provider.warehouseID' 
-                                    + ' and Warehouse.warehouseID=' + warehouseID);
+        [results] = await connection.query('select * from Warehouse, Provider' 
+                                        + ' where Warehouse.warehouseID=Provider.warehouseID' 
+                                        + ' and Warehouse.warehouseID=?',[warehouseID]);
     } catch (err) {
         console.log(err.message);
     } finally {
@@ -25,6 +30,8 @@ exports.getPVInfo = async function (req, res, app, pool) {
     if (results.length > 0) {
         var providerID = results[0].memberID;
         items = await viewInfo.getMemberInfo(pool, providerID);
+    } else {
+        items = JSON.stringify(items);
     }
     return items;
 }
@@ -33,7 +40,7 @@ exports.getIoTInfo = async function (req, res, app, pool) {
     var memberID = req.session.memberID;
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query(`select * from RequestForIoT where providerID='${memberID}'`);
@@ -58,7 +65,7 @@ exports.getCurUsage = async function (req, res, app, pool) {
     var today = new Date(new Date().getTime() + 32400000).toISOString().replace(/T.+/, '');
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     var sql = 'select * from Contract, Member' 
             + ` where Contract.buyerID=Member.memberID and warehouseID=` + warehouseID 
             + ` and endDate >= '` + today + `' and startDate <= '` + today + `'`;
@@ -99,7 +106,7 @@ exports.getNextUsage = async function (req, res, app, pool) {
     var sql = `select * from Contract, Member where Contract.buyerID=Member.memberID and warehouseID=` 
                 + warehouseID + ` and startDate > '` + today + `';`
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query(sql);
@@ -134,7 +141,7 @@ exports.getPreUsage = async function (req, res, app, pool) {
     var today = new Date(new Date().getTime() + 32400000).toISOString().replace(/T.+/, '');
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     var sql = `select * from Contract, Member` 
             + ` where Contract.buyerID=Member.memberID and warehouseID=` 
             + warehouseID + ` and endDate < '` + today + `';`

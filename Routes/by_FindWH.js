@@ -1,13 +1,16 @@
 exports.searchWH = async function(req, res, app, pool) {
     var items = {};
     var connection = null;
-    var results1 = null;
-    var results2 = null;
-    var results = null;
+    var results1 = [];
+    var results2 = [];
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results1] = await connection.query('SELECT * from PublicWarehouse');
         [results2] = await connection.query(`SELECT * from Warehouse where enroll='Y'`);
+        for (index in results2){
+            results2[index].warehouseID += 10000
+        }
         results = results1.concat(results2);
     } catch (err) {
         console.log(err.message);
@@ -51,7 +54,7 @@ exports.searchWH = async function(req, res, app, pool) {
 exports.findImage = async function(req, res, app, pool) {
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query(`SELECT * from FileInfo where warehouseID=${req.body.warehouseID}`);
@@ -72,7 +75,6 @@ exports.findImage = async function(req, res, app, pool) {
 }
 
 exports.inquireWH = async function(req, res, app, pool) {
-    var mysql = require('mysql');
     var reqItem = {
         reqDate: new Date(),
         reqType: "ReqByBuyer",

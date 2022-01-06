@@ -4,7 +4,7 @@ exports.getWHInfo = async function (req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query('select warehouseID from Contract where reqID=' + reqID);
@@ -26,7 +26,7 @@ exports.getPVInfo = async function (req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query('select memberID from Contract, Warehouse, Provider'
@@ -51,7 +51,7 @@ exports.getBYInfo = async function (req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = connection.query('select buyerID from Contract where reqID=' + reqID);

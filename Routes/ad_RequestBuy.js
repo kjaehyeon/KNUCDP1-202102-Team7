@@ -2,7 +2,7 @@ exports.RequestForBuy = async function (req, res, app, pool) {
     var items = {};
     var sql = `select * from RequestForBuy`;
     var connection = null;
-    let results = null;
+    let results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query(sql);

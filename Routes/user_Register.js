@@ -1,48 +1,54 @@
 exports.register = async function (req, res, app, pool) {
     const crypto = require('crypto');
     var connection = null;
-    var user = {
-        memberID: req.body.memberID,
-        type: req.body.type,
-        name: req.body.name,
-        password: crypto.createHash('sha512').update(req.body.password).digest('base64'),         //레인보우 테이블을 이용한 공격방어를 위해 추후 더 나은 보안기법 필요함.
-        email: req.body.email,
-        contactNumber: req.body.contactNumber1 + '-' + req.body.contactNumber2 + '-' + req.body.contactNumber3,
-        zipcode: req.body.zipcode,
-        address: req.body.address,
-        national: req.body.national
-    }
-
-    try {
-        connection = await pool.getConnection(async conn => conn);
-        await connection.beginTransaction();
-        await connection.query('INSERT INTO Member SET ?', user);
-        await connection.commit();
-        req.session['memberID'] = user.memberID;
-        req.session['type'] = user.type;
-        req.session['username'] = user.name;
-        req.session['password'] = user.password;
-        req.session['contactNumber'] = user.contactNumber;
-        req.session['email'] = user.email;
-        req.session['zipcode'] = user.zipcode;
-        req.session['address'] = user.address;
-        req.session['national'] = user.national;
-
-        res.send(true);
-    } catch (err) {
-        console.log(err.message);
-        await connection.rollback();
-        res.send(false);
-    } finally {
-        connection.release();
-    }
+    crypto.randomBytes(64, (err, buf) => {
+        crypto.pbkdf2(req.body.password, buf.toString('base64'), 100000, 64, 'sha512', async (err, key) => {
+            var user = {
+                memberID: req.body.memberID,
+                type: req.body.type,
+                name: req.body.name,
+                password: key.toString('base64'),
+                salt: buf.toString('base64'),
+                //password: crypto.createHash('sha512').update(req.body.password).digest('base64'),         //레인보우 테이블을 이용한 공격방어를 위해 추후 더 나은 보안기법 필요함.
+                email: req.body.email,
+                contactNumber: req.body.contactNumber1 + '-' + req.body.contactNumber2 + '-' + req.body.contactNumber3,
+                zipcode: req.body.zipcode,
+                address: req.body.address,
+                national: req.body.national
+            }
+        
+            try {
+                connection = await pool.getConnection(async conn => conn);
+                await connection.beginTransaction();
+                await connection.query('INSERT INTO Member SET ?', user);
+                await connection.commit();
+                req.session['memberID'] = user.memberID;
+                req.session['type'] = user.type;
+                req.session['username'] = user.name;
+                req.session['password'] = user.password;
+                req.session['contactNumber'] = user.contactNumber;
+                req.session['email'] = user.email;
+                req.session['zipcode'] = user.zipcode;
+                req.session['address'] = user.address;
+                req.session['national'] = user.national;
+        
+                res.send(true);
+            } catch (err) {
+                console.log(err.message);
+                await connection.rollback();
+                res.send(false);
+            } finally {
+                connection.release();
+            }
+        });
+    });
 }
 
 
 exports.checkID = async function (req, res, app, pool) {
     var memberID = req.body.memberID;
     var connection = null;
-    var results = null;
+    var results = [];
 
     try {
         connection = await pool.getConnection(async conn => conn);

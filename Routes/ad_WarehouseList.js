@@ -2,7 +2,7 @@ exports.getWHList = async function (req, res, app, pool) {
     var items = {};
     var sql = `SELECT * from Warehouse,Provider where Warehouse.warehouseID=Provider.warehouseID and enroll='Y'`;
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query(sql);

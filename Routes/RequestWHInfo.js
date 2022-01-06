@@ -4,7 +4,7 @@ exports.getWHInfo = async function(req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
     var connection = null;
-    let results = null;
+    let results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query('select warehouseID from RequestForBuy where reqID=' + reqID);
@@ -17,7 +17,7 @@ exports.getWHInfo = async function(req, res, app, pool) {
         var warehouseID = results[0].warehouseID;
         items = await viewInfo.getWHInfo(pool, warehouseID);
     } else {
-        JSON.stringify(items);
+        items = JSON.stringify(items);
     }
     return items;
 }
@@ -26,7 +26,7 @@ exports.getPVInfo = async function(req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query('select memberID from RequestForBuy, Provider'
@@ -41,7 +41,7 @@ exports.getPVInfo = async function(req, res, app, pool) {
         var providerID = results[0].memberID;
         items = await viewInfo.getMemberInfo(db, providerID);
     } else {
-        console.log("empty");
+        JSON.stringify(items);
     }
     return items;
 }
@@ -50,7 +50,7 @@ exports.getBYInfo = async function(req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query('select buyerID from RequestForBuy where reqID=' + reqID);
@@ -63,7 +63,7 @@ exports.getBYInfo = async function(req, res, app, pool) {
         var buyerID = results[0].buyerID;
         items = await viewInfo.getMemberInfo(pool, buyerID);
     } else {
-        JSON.stringify(items);
+        items = JSON.stringify(items);
     }
     return items;
 }
@@ -72,7 +72,7 @@ exports.getReqInfo = async function(req, res, app, pool) {
     var reqID = req.body.reqID;
     var items = {};
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query('select * from RequestForBuy, Warehouse'

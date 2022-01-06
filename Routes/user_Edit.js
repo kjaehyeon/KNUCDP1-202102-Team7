@@ -5,7 +5,13 @@ exports.edit = async function (req, res, app, pool) {
     var zipcode = req.body.zipcode;
     var national = req.body.national;
     var connection = null;
-    var SQL = `UPDATE Member SET email=?,contactNumber=?,address=?,zipcode=?,national=? WHERE memberID='${req.session.memberID}'`
+    var SQL = `UPDATE Member`
+            + `SET email=?,`
+            + `contactNumber=?,`
+            + `address=?,`
+            + `zipcode=?,`
+            + `national=?` 
+            + `WHERE memberID='${req.session.memberID}'`;
     try {
         connection = await pool.getConnection(async conn => conn);
         await connection.beginTransaction();
@@ -20,7 +26,7 @@ exports.edit = async function (req, res, app, pool) {
     } catch (err) {
         console.log(err.message);
         await connection.rollback();
-        res.send(err.message);
+        res.send(err);
     } finally {
         connection.release();
     }

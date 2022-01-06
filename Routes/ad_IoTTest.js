@@ -1,7 +1,7 @@
 exports.init = async function (req, res, app, pool) {
     var wid = req.body.wid;
     var connection = null;
-    let rows = null;
+    let rows = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [rows] = await connection.query(`SELECT * FROM Warehouse WHERE warehouseID=${wid}`);

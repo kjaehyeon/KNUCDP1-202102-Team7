@@ -16,10 +16,12 @@ exports.pwEdit = async function (req, res, app, pool) {
             console.log("error ocurred. cannot get current PW.", error);
             res.write("<script>alert('Error ocurred. Try again.')</script>");
             res.write("<script>window.location=\"/User/Edit\"</script>");
+            res.end();
         } else if (curPw[0].password != oldPw) {
             console.log("Current password doesn't match original password");
             res.write("<script>alert('Current password does not match original password. Please check current password.')</script>");
             res.write("<script>window.location=\"/User/Edit\"</script>");
+            res.end();
         } else {
             //Check newPw == pwChk and udate password
             if (newPw == pwChk) {
@@ -30,6 +32,7 @@ exports.pwEdit = async function (req, res, app, pool) {
                     console.log("error ocurred. cannot update PW.", error);
                     res.write("<script>alert('Error ocurred. Try again.')</script>");
                     res.write("<script>window.location=\"/User/Edit\"</script>");
+                    res.end();
                 } else {
                     req.session['password'] = password;
                     res.redirect('/User/Edit');
@@ -38,6 +41,7 @@ exports.pwEdit = async function (req, res, app, pool) {
                 console.log("error ocurred. New password does not match password check");
                 res.write("<script>alert('New password does not match password check. Please check new password.')</script>");
                 res.write("<script>window.location=\"/User/Edit\"</script>");
+                res.end();
             }
         }
     } catch (err) {
@@ -45,6 +49,7 @@ exports.pwEdit = async function (req, res, app, pool) {
         await connection.rollback();
         res.write("<script>alert('Error ocurred. Try again.')</script>");
         res.write("<script>window.location=\"/User/Edit\"</script>");
+        res.end();
     } finally {
         connection.release();
     }

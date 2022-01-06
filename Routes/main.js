@@ -8,8 +8,13 @@ module.exports = function (app, pool) {
     });
 
     router.post('/searchWH', async function (req, res, next) {
-        var items = await main_Home.searchWH(req, res, app, pool);
-        res.send(items);
+        try {
+            var items = await main_Home.searchWH(req, res, app, pool);
+            res.send(items);
+        } catch (err) {
+            console.log(err.message);
+            res.send(err);
+        }
     });
 
     return router;

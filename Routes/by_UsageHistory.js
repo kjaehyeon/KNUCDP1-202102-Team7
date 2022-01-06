@@ -5,9 +5,9 @@ exports.getCurUsage = async function (req, res, app, pool) {
             + ` where Warehouse.warehouseID=Contract.warehouseID`
             + ` and buyerID='` + req.session['memberID']
             + `' and endDate >= '` + [today]
-            + `' and startDate <= '` + [today];
+            + `' and startDate <= '` + [today] + `'`;
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query(sql);
@@ -39,9 +39,9 @@ exports.getNextUsage = async function (req, res, app, pool) {
     var sql = `select * from Contract, Warehouse`
             + ` where Warehouse.warehouseID=Contract.warehouseID`
             + ` and buyerID='` + req.session['memberID']
-            + `' and startDate > '` + [today];
+            + `' and startDate > '` + [today] + `'`;
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query(sql);
@@ -73,9 +73,9 @@ exports.getPreUsage = async function (req, res, app, pool) {
     var sql = `select * from Contract, Warehouse` 
             + ` where Warehouse.warehouseID=Contract.warehouseID`
             + ` and buyerID='` + req.session['memberID']
-            + `' and endDate < '` + [today];
+            + `' and endDate < '` + [today] + `'`;
     var connection = null;
-    var results = null;
+    var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
         [results] = await connection.query(sql);
