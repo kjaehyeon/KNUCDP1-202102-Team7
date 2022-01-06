@@ -15,18 +15,18 @@
     </header>
     <section>
       <div class="container">
-        <h2 class="mt-5 mb-3">Usage History</h2>
+        <h2 class="mt-5 mb-3"><%= __('ad_Usage_History') %></h2>
         <table class="board-table table">
           <thead class="thead-dark">
             <tr>
-              <th>Req ID</th>
-              <th>Warehouse ID</th>
-              <th>Buyer ID</th>
-              <th>Rental Period</th>
-              <th>Rental Area</th>
-              <th>Price</th>
+              <th><%= __('Request_id') %></th>
+              <th><%= __('warehouse_id') %></th>
+              <th><%= __('Buyer_id') %></th>
+              <th><%= __('Rental_Period') %></th>
+              <th><%= __('Rental_Area') %></th>
+              <th><%= __('Rental_Price') %></th>
               <th>IoT</th>
-              <th>Info</th>
+              <th><%= __('Info') %></th>
             </tr>
           </thead>
           <tbody>
@@ -42,18 +42,18 @@
               <td id="td-btn">
                 <form action="/IoT" method="POST">
                   <input id="wid" name="wid" type="hidden" value="<%= items['item' + i].warehouseID %>">
-                  <button class="btn btn-td btn-main">IoT Page</button>
+                  <button class="btn btn-td btn-main"><%= __('ad_iot_page') %></button>
                 </form>
               </td>
               <% } else if (items['item' + i].iotStat == "W"){ %>
-              <td id="td-btn">Pending Approval</td>
+              <td id="td-btn"><%= __('Pending_Approval') %></td>
               <% } else if (items['item' + i].iotStat == "N"){ %>
-              <td id="td-btn">Not Currently Used</td>
+              <td id="td-btn"><%= __('Not_Currently_Used') %></td>
               <% } %>
               <td id="td-btn">
                 <form action="/Admin/UsageHistory/INFO" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= items['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                 </form>
               </td>
             </tr>

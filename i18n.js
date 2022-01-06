@@ -3,7 +3,7 @@ const i18n = require('i18n'); //i18n 모듈 불러오기
 i18n.configure({
   locales:['ko', 'en'],
   directory: __dirname + '/locales',
-  defaultLocale: 'ko',
+  defaultLocale: 'en',
   cookie: 'lang',
 });
 

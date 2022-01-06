@@ -160,7 +160,7 @@ const addClickListener = (warehouse_info) => {
     })
 }
 
-const setSocketConnection = (warehouse_info) => {
+const setSocketConnection = (warehouse_info, status_text) => {
     const socket = io(warehouse_info.iotServer);
 
     socket.on('connect', () => {
@@ -244,18 +244,18 @@ const setSocketConnection = (warehouse_info) => {
                 $('.value-wrapper')[4].classList.remove('fine', 'bad');
                 if (sensor_val.flame == 1) {
                     $('.value-wrapper')[4].classList.add('fine');
-                    $('.value')[4].innerHTML = 'FINE';
+                    $('.value')[4].innerHTML = status_text['fine'];
                 } else {
                     $('.value-wrapper')[4].classList.add('bad');
-                    $('.value')[4].innerHTML = 'BAD';
+                    $('.value')[4].innerHTML = status_text['bad'];
                 }
                 $('.value-wrapper')[5].classList.remove('fine', 'bad');
                 if (sensor_val.vibration > 800) {
                     $('.value-wrapper')[5].classList.add('fine');
-                    $('.value')[5].innerHTML = 'FINE';
+                    $('.value')[5].innerHTML = status_text['fine'];
                 } else {
                     $('.value-wrapper')[5].classList.add('bad');
-                    $('.value')[5].innerHTML = 'BAD';
+                    $('.value')[5].innerHTML = status_text['bad'];
                 }
             })
             $(window).on('beforeunload', () => {
@@ -265,6 +265,7 @@ const setSocketConnection = (warehouse_info) => {
         }
     })
 }
+
 
 const generateWarehouseCapabilityChart = (warehouse_info) => {
     const useableArea = warehouse_info.useableArea;
@@ -315,10 +316,10 @@ const generateWarehouseCapabilityChart = (warehouse_info) => {
         plugins: [counter],
     });
 };
-const initMonitoringDashboard = (api_key, warehouse_info) => {
+const initMonitoringDashboard = (api_key, warehouse_info, status_text) => {
     setWeatherInfo(api_key, warehouse_info.latitude, warehouse_info.longitude);
     generateRealtimeGraph();
     addClickListener(warehouse_info);
-    setSocketConnection(warehouse_info);
+    setSocketConnection(warehouse_info , status_text);
     generateWarehouseCapabilityChart(warehouse_info);
 };

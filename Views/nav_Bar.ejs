@@ -61,8 +61,8 @@
                             class="nav-link js-scroll-trigger">Sign Up</a></li>
                         <li class="nav-item js-scroll-trigger"><a href="/User/Login"
                             class="nav-link js-scroll-trigger"><%= __('sign_in') %></a></li>
-                        <li class="nav-item js-scroll-trigger"><a href='/ko'>KR</a></li>
-                        <li class="nav-item js-scroll-trigger"><a href='/en'>EN</a></li>
+                        <li class="nav-item js-scroll-trigger"><a class="nav-link js-scroll-trigger" href='/ko'>KR</a></li>
+                        <li class="nav-item js-scroll-trigger"><a class="nav-link js-scroll-trigger" href='/en'>EN</a></li>
                         <% } else { %>
                           <% if(session.type=='buyer' || session.type=='provider' ) { %>
                             <% if(session.type=='buyer' ) { %>
