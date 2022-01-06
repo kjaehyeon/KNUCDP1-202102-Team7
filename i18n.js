@@ -1,4 +1,4 @@
-const i18n = require('i18n'); //i18n 모듈 불러오기
+const i18n = require('i18n');
 
 i18n.configure({
   locales:['ko', 'en'],
@@ -10,6 +10,5 @@ i18n.configure({
 module.exports = (req, res, next) => {
   i18n.init(req, res);
   res.locals.__ = res.__;
-  const current_locale = i18n.getLocale();
   return next();
 };
