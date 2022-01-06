@@ -12,8 +12,11 @@ const mysql = require('./Module/db');
 const ejs = require('ejs');
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
-var apolloServer = require('./apollo');
-var http = require('http');
+const apolloServer = require('./apollo');
+const http = require('http');
+// 5) 다국어 지원 Module 불러오기
+const i18n = require('./i18n');
+
 
 // 1. 설정
 // 1) View 경로 설정
@@ -58,6 +61,9 @@ app.use(session({
     store: new MySQLStore(mysql.info)
 }));
 
+// 9) 다국어 지원
+app.use(i18n);
+
 // 10) 각 라우터에 인자값을 넘겨주는 것
 app.use('/', require('./Routes/main')(app, mysql.pool));
 app.use('/User', require('./Routes/user')(app, mysql.pool));
@@ -66,6 +72,16 @@ app.use('/Provider', require('./Routes/pv')(app, mysql.pool));
 app.use('/Buyer', require('./Routes/by')(app, mysql.pool));
 app.use('/Iot', require('./Routes/iot')(app, mysql.pool));
 app.use('/api', require('./Routes/api')(app, mysql.pool));
+
+// 11) 다국어 지원
+app.get('/en',function(req,res){
+    res.cookie('lang', 'en');
+    res.redirect('back');
+});
+app.get('/ko', function(req,res){
+    res.cookie('lang', 'ko');
+    res.redirect('back');
+});
 
 app.get('/Public/Upload/:filename', function(req, res) {
     fs.readFile(__dirname + `/Public/Upload/${req.params.filename}`, function(err, data) {
