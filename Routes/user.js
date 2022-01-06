@@ -1,4 +1,4 @@
-module.exports = function (app, db) {
+module.exports = function (app, pool) {
     var express = require('express');
     var router = express.Router();
 
@@ -18,36 +18,51 @@ module.exports = function (app, db) {
     };
     router.use(check);
 
-    router.post('/Register/MemberID', function (req, res, next) {
-        register.checkID(req, res, app, db);
+    router.post('/Register/MemberID', async function (req, res, next) {
+        try {
+            await register.checkID(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.send(false);
+        }
     });
 
     router.post("/Register/checkPW", function (req, res, next) {
-        register.checkPW(req, res, app, db);
+        register.checkPW(req, res, app, pool);
     });
 
     router.post('/Register/EmailIDF', function (req, res, next) {
-        emailIDF.emailIDF(req, res, app, db);
+        emailIDF.emailIDF(req, res, app, pool);
     });
 
-    router.post('/Register', function (req, res, next) {
-        register.register(req, res, app, db);
+    router.post('/Register', async function (req, res, next) {
+        try {
+            await register.register(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.send(false);
+        }
     });
 
     router.get('/Register', function (req, res, next) {
-        res.render('User/user_Register', { 'app': app, 'session': req.session, 'db': db, 'req': req });
+        res.render('User/user_Register', { 'app': app, 'session': req.session, 'pool': pool, 'req': req });
     });
 
     router.get('/Select', function (req, res, next) {
-        res.render('User/user_Select', { 'app': app, 'session': req.session, 'db': db });
+        res.render('User/user_Select', { 'app': app, 'session': req.session, 'pool': pool });
     });
 
     router.get('/Login', function (req, res, next) {
-        res.render('User/user_Login', { 'app': app, 'session': req.session, 'db': db });
+        res.render('User/user_Login', { 'app': app, 'session': req.session, 'pool': pool });
     });
 
-    router.post('/Login', function (req, res, next) {
-        login.login(req, res, app, db);
+    router.post('/Login', async function (req, res, next) {
+        try {
+            await login.login(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.send(err);
+        }
     });
 
     router.get('/Logout', function (req, res, next) {
@@ -56,31 +71,48 @@ module.exports = function (app, db) {
     });
 
     router.get('/Edit', function (req, res, next) {
-        res.render('User/user_Edit', { 'app': app, 'session': req.session, 'db': db });
+        res.render('User/user_Edit', { 'app': app, 'session': req.session, 'pool': pool });
     });
 
-    router.post('/Edit', function (req, res, next) {
-        edit.edit(req, res, app, db);
+    router.post('/Edit', async function (req, res, next) {
+        try {
+            await edit.edit(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.send(err);
+        }
     });
 
     router.get('/Edit/PW', function (req, res, next) {
-        res.render('User/user_PwEdit', { 'app': app, 'session': req.session, 'db': db });
+        res.render('User/user_PwEdit', { 'app': app, 'session': req.session, 'pool': pool });
     });
 
-    router.post('/Edit/PW', function (req, res, next) {
-        pwEdit.pwEdit(req, res, app, db);
+    router.post('/Edit/PW', async function (req, res, next) {
+        try {
+            await pwEdit.pwEdit(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.write("<script>alert('Error ocurred. Try again.')</script>");
+            res.write("<script>window.location=\"/User/Edit\"</script>");
+            res.end();
+        }
     });
 
     router.get('/Show', function (req, res, next) {
-        res.render('User/user_Show', { 'app': app, 'session': req.session, 'db': db });
+        res.render('User/user_Show', { 'app': app, 'session': req.session, 'pool': pool });
     });
 
     router.get('/Help', function (req, res, next) {
-        res.render('User/user_Help', { 'app': app, 'session': req.session, 'db': db });
+        res.render('User/user_Help', { 'app': app, 'session': req.session, 'pool': pool });
     });
 
-    router.post('/Delete', function (req, res, next) {
-        del.delete(req, res, app, db);
+    router.post('/Delete', async function (req, res, next) {
+        try {
+            await del.delete(req, res, app, pool);
+        } catch (err) {
+            console.log(err.message);
+            res.redirect('/User/Edit');
+        }
     });
 
     return router;

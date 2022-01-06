@@ -1,8 +1,21 @@
-exports.getCurUsage = function (req, res, app, db) {
+exports.getCurUsage = async function (req, res, app, pool) {
     var today = new Date(new Date().getTime() + 32400000).toISOString().replace(/T.+/, '');
     var items = {};
-    var sql = `select * from Contract, Warehouse where Warehouse.warehouseID=Contract.warehouseID and buyerID='` + req.session['memberID'] + `' and endDate >= '` + [today] + `' and startDate <= '` + [today] + `';`
-    let results = db.query(sql);
+    var sql = `select * from Contract, Warehouse`
+            + ` where Warehouse.warehouseID=Contract.warehouseID`
+            + ` and buyerID='` + req.session['memberID']
+            + `' and endDate >= '` + [today]
+            + `' and startDate <= '` + [today] + `'`;
+    var connection = null;
+    var results = [];
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(sql);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[`item${step}`] = {
@@ -20,11 +33,23 @@ exports.getCurUsage = function (req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.getNextUsage = function (req, res, app, db) {
+exports.getNextUsage = async function (req, res, app, pool) {
     var today = new Date(new Date().getTime() + 32400000).toISOString().replace(/T.+/, '');
     var items = {};
-    var sql = `select * from Contract, Warehouse where Warehouse.warehouseID=Contract.warehouseID and buyerID='` + req.session['memberID'] + `' and startDate > '` + [today] + `';`
-    let results = db.query(sql);
+    var sql = `select * from Contract, Warehouse`
+            + ` where Warehouse.warehouseID=Contract.warehouseID`
+            + ` and buyerID='` + req.session['memberID']
+            + `' and startDate > '` + [today] + `'`;
+    var connection = null;
+    var results = [];
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(sql);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[`item${step}`] = {
@@ -42,11 +67,23 @@ exports.getNextUsage = function (req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.getPreUsage = function (req, res, app, db) {
+exports.getPreUsage = async function (req, res, app, pool) {
     var today = new Date(new Date().getTime() + 32400000).toISOString().replace(/T.+/, '');
     var items = {};
-    var sql = `select * from Contract, Warehouse where Warehouse.warehouseID=Contract.warehouseID and buyerID='` + req.session['memberID'] + `' and endDate < '` + [today] + `';`
-    let results = db.query(sql);
+    var sql = `select * from Contract, Warehouse` 
+            + ` where Warehouse.warehouseID=Contract.warehouseID`
+            + ` and buyerID='` + req.session['memberID']
+            + `' and endDate < '` + [today] + `'`;
+    var connection = null;
+    var results = [];
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(sql);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[`item${step}`] = {

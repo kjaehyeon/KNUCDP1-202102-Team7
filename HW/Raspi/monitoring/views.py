@@ -87,41 +87,6 @@ def notiEmg(data):
         AuthSmsSend.pre = 0
         return 
 
-#센서 디바이스로 부터 데이터 받아오는 함수
-@api_view(['GET'])
-def sensor_value(request):
-    print(request)
-    if(request.method == 'GET'):
-        try:
-            parsed_data : json = json.loads('{"device_id":'+request.GET['device_id']+
-                                ',"temperature":'+request.GET['temperature']+
-                                ',"humidity":'+request.GET['humidity']+
-                                ',"co":'+request.GET['co']+
-                                ',"propane":'+request.GET['propane']+
-                                ',"flame":'+request.GET['flame']+
-                                ',"vibration":'+request.GET['vibration']+
-                                '}')
-        except Exception as e :
-            print("error", e.with_traceback)
-
-        try:                      
-            data = json.dumps(parsed_data)
-        except Exception as e :
-            print("error", e.with_traceback)
-        
-        try:
-            sio.emit('response', {'data' : data})
-        except Exception as e:
-            print("error", e.with_traceback)
-        
-        try:
-            data_processing(parsed_data)
-        except Exception as e:
-            print("error", e.with_traceback)
-        
-        #notiEmg(parsed_data)
-    return Response(status=200)
-
 #socket.io 테스트 페이지       
 def index_test(request):
     global thread
@@ -136,6 +101,21 @@ def background_thread():
         count += 1
         sio.emit('response', {'data': 'Server generated event'},
                  namespace='/test')
+        
+#센서 디바이스로 부터 데이터 받아오는 함수
+@sio.event
+def sensor_data(sid, message):
+    parsed_data : json = json.loads('{"device_id":'+str(message['device_id'])+
+                            ',"temperature":'+str(message['temperature'])+
+                            ',"humidity":'+str(message['humidity'])+
+                            ',"co":'+str(message['co'])+
+                            ',"propane":'+str(message['propane'])+
+                            ',"flame":'+str(message['flame'])+
+                            ',"vibration":'+str(message['vibration'])+
+                            '}')
+    sio.emit('response', {'data': str(parsed_data)})
+    data_processing(parsed_data)   
+    #notiEmg(parsed_data)
     
 @sio.event
 def my_broadcast_event(sid, message):

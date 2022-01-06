@@ -1,27 +1,54 @@
 const viewInfo = require('./viewInfo');
 
-exports.getWHInfo = function (req, res, app, db) {
+exports.getWHInfo = async function (req, res, app, pool) {
     var warehouseID = req.body.warehouseID;
     var items = {};
-    items = viewInfo.getWHInfo(db, warehouseID);
-    return items;
-}
-
-exports.getPVInfo = function (req, res, app, db) {
-    var warehouseID = req.body.warehouseID;
-    var items = {};
-    let results = db.query(`select * from Warehouse, Provider where Warehouse.warehouseID=Provider.warehouseID and Warehouse.warehouseID=` + warehouseID + `;`);
-    if (results.length > 0) {
-        var providerID = results[0].memberID;
-        items = viewInfo.getMemberInfo(db, providerID);
+    try {
+        items = await viewInfo.getWHInfo(pool, warehouseID);
+    } catch (err) {
+        console.log(err.message);
+        items = JSON.stringify(items);
     }
     return items;
 }
 
-exports.getIoTInfo = function (req, res, app, db) {
+exports.getPVInfo = async function (req, res, app, pool) {
+    var warehouseID = req.body.warehouseID;
+    var items = {};
+    var connection = null;
+    let results = [];
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query('select * from Warehouse, Provider' 
+                                        + ' where Warehouse.warehouseID=Provider.warehouseID' 
+                                        + ' and Warehouse.warehouseID=?',[warehouseID]);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
+    if (results.length > 0) {
+        var providerID = results[0].memberID;
+        items = await viewInfo.getMemberInfo(pool, providerID);
+    } else {
+        items = JSON.stringify(items);
+    }
+    return items;
+}
+
+exports.getIoTInfo = async function (req, res, app, pool) {
     var memberID = req.session.memberID;
     var items = {};
-    let results = db.query(`select * from RequestForIoT where providerID='${memberID}'`);
+    var connection = null;
+    var results = [];
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(`select * from RequestForIoT where providerID='${memberID}'`);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[results[step].warehouseID] = {
@@ -33,12 +60,24 @@ exports.getIoTInfo = function (req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.getCurUsage = function (req, res, app, db) {
+exports.getCurUsage = async function (req, res, app, pool) {
     var warehouseID = req.body.warehouseID;
     var today = new Date(new Date().getTime() + 32400000).toISOString().replace(/T.+/, '');
     var items = {};
-    var sql = `select * from Contract, Member where Contract.buyerID=Member.memberID and warehouseID=` + warehouseID + ` and endDate >= '` + today + `' and startDate <= '` + today + `';`
-    let results = db.query(sql);
+    var connection = null;
+    var results = [];
+    var sql = 'select * from Contract, Member' 
+            + ` where Contract.buyerID=Member.memberID and warehouseID=` + warehouseID 
+            + ` and endDate >= '` + today + `' and startDate <= '` + today + `'`;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(sql);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
+
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[`item${step}`] = {
@@ -60,12 +99,22 @@ exports.getCurUsage = function (req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.getNextUsage = function (req, res, app, db) {
+exports.getNextUsage = async function (req, res, app, pool) {
     var warehouseID = req.body.warehouseID;
     var today = new Date(new Date().getTime() + 32400000).toISOString().replace(/T.+/, '');
     var items = {};
-    var sql = `select * from Contract, Member where Contract.buyerID=Member.memberID and warehouseID=` + warehouseID + ` and startDate > '` + today + `';`
-    let results = db.query(sql);
+    var sql = `select * from Contract, Member where Contract.buyerID=Member.memberID and warehouseID=` 
+                + warehouseID + ` and startDate > '` + today + `';`
+    var connection = null;
+    var results = [];
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(sql);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[`item${step}`] = {
@@ -87,12 +136,23 @@ exports.getNextUsage = function (req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.getPreUsage = function (req, res, app, db) {
+exports.getPreUsage = async function (req, res, app, pool) {
     var warehouseID = req.body.warehouseID;
     var today = new Date(new Date().getTime() + 32400000).toISOString().replace(/T.+/, '');
     var items = {};
-    var sql = `select * from Contract, Member where Contract.buyerID=Member.memberID and warehouseID=` + warehouseID + ` and endDate < '` + today + `';`
-    let results = db.query(sql);
+    var connection = null;
+    var results = [];
+    var sql = `select * from Contract, Member` 
+            + ` where Contract.buyerID=Member.memberID and warehouseID=` 
+            + warehouseID + ` and endDate < '` + today + `';`
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(sql);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[`item${step}`] = {

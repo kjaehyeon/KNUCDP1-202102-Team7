@@ -1,7 +1,16 @@
-exports.RequestForBuy = function (req, res, app, db) {
+exports.RequestForBuy = async function (req, res, app, pool) {
     var items = {};
     var sql = `select * from RequestForBuy`;
-    let results = db.query(sql);
+    var connection = null;
+    let results = [];
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(sql);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {
             items[`item${step}`] = {
@@ -21,68 +30,42 @@ exports.RequestForBuy = function (req, res, app, db) {
     return JSON.stringify(items);
 }
 
-exports.withAnswer = function (req, res, app, db) {
+exports.withAnswer = async function (req, res, app, pool) {
     var reqID = req.body.reqID;
     var reqType = req.body.reqType;
     var answer = req.body.answer;
     var reason = req.body.reason;
-    var mysql = require('mysql');
-    var connection = mysql.createConnection(require('../Module/db').info);
-    connection.connect();
-    if (answer == "Approve") {
-        connection.query(`UPDATE RequestForBuy SET reqType='ReqByAdmin' WHERE reqID=?`, reqID, function (error, results, fields) {
-            if (error) {
-                res.send(false);
-                connection.end()
+    var connection = null;
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        await connection.beginTransaction();
+        if (answer == 'Approve') {
+            await connection.query(`UPDATE RequestForBuy SET reqType='ReqByAdmin' WHERE reqID=?`, reqID);
+        } else if (answer == 'Reject') {
+            await connection.query(`UPDATE RequestForBuy SET reqType='RejByAdmin', rejectCmt=? WHERE reqID =?`,
+                                    [reason, reqID]);
+            var now = new Date(new Date().getTime() + 32400000).toISOString().replace(/T/, ' ').replace(/\..+/, '');
+            var cols = 'reqID, reqDate, reqType, warehouseID, buyerID, area, startDate, endDate, rejectCmt, amount';
+            await connection.query(`INSERT INTO DeletedBuy (${cols}, rejectTime) (SELECT ${cols}, ? FROM RequestForBuy WHERE reqID=?)`,
+                                    [now, reqID]);
+        } else if (answer === 'Confirm') {
+            var viewState = parseInt(reqType.charAt(reqType.length - 1));
+            viewState -= 1;  // flag_admin
+            if (viewState === 0) {
+                await connection.query('DELETE FROM RequestForBuy WHERE reqID=?', [reqID]);
+
             } else {
-                res.send(true);
-                connection.end();
+                reqType = reqType.substring(0, reqType.length - 1) + viewState.toString();
+                await connection.query('UPDATE RequestForBuy SET reqType=? WHERE reqID =?', [reqType, reqID]);
             }
-        });
-    } else if (answer == "Reject") {
-        connection.query(`UPDATE RequestForBuy SET reqType='RejByAdmin', rejectCmt=? WHERE reqID =?`, [reason, reqID], function (error, results, fields) {
-            if (error) {
-                res.send(false);
-                connection.end();
-            } else {
-                var now = new Date(new Date().getTime() + 32400000).toISOString().replace(/T/, ' ').replace(/\..+/, '');
-                var cols = 'reqID, reqDate, reqType, warehouseID, buyerID, area, startDate, endDate, rejectCmt, amount';
-                connection.query(`INSERT INTO DeletedBuy (${cols}, rejectTime) (SELECT ${cols}, ? FROM RequestForBuy WHERE reqID=?)`, [now, reqID], function (error, results, fields) {
-                    if (error) {
-                        console.log(error);
-                        res.send(false);
-                        connection.end();
-                    } else {
-                        res.send(true);
-                        connection.end();
-                    }
-                });
-            }
-        });
-    } else if (answer === "Confirm") {
-        var viewState = parseInt(reqType.charAt(reqType.length - 1));
-        viewState -= 1;  // flag_admin
-        if (viewState === 0) {
-            connection.query(`DELETE FROM RequestForBuy WHERE reqID=?`, reqID, function (error, results, fields) {
-                if (error) {
-                    res.send(false);
-                    connection.end()
-                } else {
-                    res.send(true);
-                    connection.end();
-                }
-            });
-        } else {
-            reqType = reqType.substring(0, reqType.length - 1) + viewState.toString();
-            connection.query(`UPDATE RequestForBuy SET reqType=? WHERE reqID =?`, [reqType, reqID], function (error, results, fields) {
-                if (error) {
-                    res.send(false);
-                    connection.end()
-                } else {
-                    res.send(true);
-                    connection.end();
-                }
-            });
         }
+        await connection.commit();
+        res.send(true);
+    } catch (err) {
+        console.log(err.message);
+        await connection.rollback();
+        res.send(false);
+    } finally {
+        connection.release();
     }
 }

@@ -1,7 +1,16 @@
-exports.getWHList = function (req, res, app, db) {
+exports.getWHList = async function (req, res, app, pool) {
     var items = {};
-    let sql = `SELECT * from Warehouse,Provider where Warehouse.warehouseID=Provider.warehouseID and enroll='Y'`;
-    let results = db.query(sql);
+    var sql = `SELECT * from Warehouse,Provider where Warehouse.warehouseID=Provider.warehouseID and enroll='Y'`;
+    var connection = null;
+    var results = [];
+    try {
+        connection = await pool.getConnection(async conn => conn);
+        [results] = await connection.query(sql);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        connection.release();
+    }
     if (results.length > 0) {
         for (var step = 0; step < results.length; step++) {   
             items[`item${step}`] = {
