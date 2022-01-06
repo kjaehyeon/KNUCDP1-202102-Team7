@@ -15,15 +15,15 @@
         </header>
         <section>
             <div class="container">
-                <h2 class="mt-5 mb-3">IoT Service Request List</h2>
+                <h2 class="mt-5 mb-3"><%= __('ad_IoT_Service_Request_List') %></h2>
                 <table class="board-table table ">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Warehouse ID</th>
-                            <th>Warehouse Name</th>
-                            <th>Provider ID</th>
-                            <th>State</th>
-                            <th>Info</th>
+                            <th><%= __('warehouse_id') %></th>
+                            <th><%= __('warehouse_name') %></th>
+                            <th><%= __('Provider_id') %></th>
+                            <th><%= __('State') %></th>
+                            <th><%= __('Info') %></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -40,17 +40,17 @@
                                     <td>
                                         <%= items['item' + i].memberID %>
                                     </td>
-                                    <td>Waiting for Approval</td>
+                                    <td><%= __('Pending_Approval') %></td>
                                     <td id="td-btn">
                                         <form action="/Admin/IoTWHInfo" method="POST">
                                             <input id="warehouseID" name="warehouseID" type="hidden" value="<%= items['item' + i].warehouseID %>">
-                                            <button class="btn btn-td btn-info">INFO</button>
+                                            <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                                         </form>
                                     </td>
                                     <td id="td-btn">
                                         <form action="IoTTest" method="POST">
                                             <input type="hidden" name="wid" value="<%= items['item' + i].warehouseID %>">
-                                            <button class="btn btn-td btn-main">View</button>
+                                            <button class="btn btn-td btn-main"><%= __('View_cap') %></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -66,15 +66,15 @@
                                         <td>
                                             <%= items['item' + i].memberID %>
                                         </td>
-                                        <td>Canceled by Provider</td>
+                                        <td><%= __('Canceled_by_Buyer') %></td>
                                         <td id="td-btn">
                                             <form action="/Admin/IoTWHInfo" method="POST">
                                                 <input id="warehouseID" name="warehouseID" type="hidden" value="<%= items['item' + i].warehouseID %>">
-                                                <button class="btn btn-td btn-info">INFO</button>
+                                                <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                                             </form>
                                         </td>
                                         <td id="td-btn" class="col-1">
-                                            <button class="btn btn-td btn-info" onclick="adClick('Confirm', <%= i %>)">View</button>
+                                            <button class="btn btn-td btn-info" onclick="adClick('Confirm', <%= i %>)"><%= __('View_cap') %></button>
                                         </td>
                                         <p id="reqID<%= i %>" style="display: none">
                                             <%= items['item' + i].reqID %>
