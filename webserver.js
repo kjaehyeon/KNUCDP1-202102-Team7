@@ -16,6 +16,8 @@ const apolloServer = require('./apollo');
 const http = require('http');
 // 5) 다국어 지원 Module 불러오기
 const i18n = require('./i18n');
+// 6) cookieParser Module 불러오기
+const cookieParser = require('cookie-parser');
 
 
 // 1. 설정
@@ -30,9 +32,11 @@ var session = require('express-session');
 app.use(bodyParser.urlencoded({ extended: true }));
 // 5) JSON 방식의 Content-Type 데이터를 받기
 app.use(bodyParser.json());
-// 6) 'Public' Directory에 정적 파일(사진, 이미지)을 위치시키기
+// 6) cookie 데이터 받기
+app.use(cookieParser());
+// 7) 'Public' Directory에 정적 파일(사진, 이미지)을 위치시키기
 app.use(express.static('Public'));
-// 7) CORS 허용
+// 8) CORS 허용
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
@@ -74,11 +78,11 @@ app.use('/Iot', require('./Routes/iot')(app, mysql.pool));
 app.use('/api', require('./Routes/api')(app, mysql.pool));
 
 // 11) 다국어 지원
-app.get('/en',function(req,res){
+app.get('/en',function(req, res){
     res.cookie('lang', 'en');
     res.redirect('back');
 });
-app.get('/ko', function(req,res){
+app.get('/ko', function(req, res){
     res.cookie('lang', 'ko');
     res.redirect('back');
 });
