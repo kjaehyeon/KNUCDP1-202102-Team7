@@ -15,18 +15,18 @@
     </header>
     <section>
       <div class="container">
-        <h2 class="mt-5 mb-3">Warehouse Usage</h2>
+        <h2 class="mt-5 mb-3"><%= __('by_Warehous_Usage') %></h2>
         <table class="board-table table">
           <thead class="thead-dark">
             <tr>
-              <th>Req ID</th>
-              <th>Warehouse ID</th>
-              <th>Warehouse Name</th>
-              <th>Rental Period</th>
-              <th>Rental Area</th>
-              <th>Price</th>
+              <th><%= __('Request_id') %></th>
+              <th><%= __('warehouse_id') %></th>
+              <th><%= __('warehouse_name') %> Name</th>
+              <th><%= __('Rental_Period') %></th>
+              <th><%= __('Rental_Area') %></th>
+              <th><%= __('Rental_Price') %></th>
               <th>IoT</th>
-              <th>Info</th>
+              <th><%= __('Info') %></th>
             </tr>
           </thead>
           <tbody>
@@ -42,7 +42,7 @@
               <td id="td-btn">
                 <form action="/IoT" method="POST">
                   <input id="wid" name="wid" type="hidden" value="<%= curItems['item' + i].warehouseID %>">
-                  <button class="btn btn-td btn-main">IoT Page</button>
+                  <button class="btn btn-td btn-main"><%= __('ad_iot_page') %></button>
                 </form>
               </td>
               <% } else if (curItems['item' + i].iotStat == "W"){ %>
@@ -53,7 +53,7 @@
               <td id="td-btn">
                 <form action="/Buyer/UsageHistory/INFO" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= curItems['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                 </form>
               </td>
             </tr>
@@ -70,18 +70,18 @@
               <td id="td-btn">
                 <form action="/IoT" method="POST">
                   <input id="wid" name="wid" type="hidden" value="<%= nextItems['item' + i].warehouseID %>">
-                  <button class="btn btn-td btn-main">IoT Page</button>
+                  <button class="btn btn-td btn-main"><%= __('ad_iot_page') %></button>
                 </form>
               </td>
               <% } else if (nextItems['item' + i].iotStat == "W"){ %>
-              <td>Pending Approval</td>
+              <td><%= __('Pending_Approval') %></td>
               <% } else if (nextItems['item' + i].iotStat == "N"){ %>
-              <td>Not Currently Used</td>
+              <td><%= __('Not_Currently_Used') %></td>
               <% } %>
               <td id="td-btn">
                 <form action="/Buyer/UsageHistory/INFO" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= nextItems['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                 </form>
               </td>
             </tr>
@@ -89,19 +89,19 @@
         </table>
       </div>
       <div class="container">
-        <h2 class="mt-5 mb-3">Previous Warehouse Usage
-          <button id="btnView" class="btn btn-big btn-main">View</button>
+        <h2 class="mt-5 mb-3"><%= __('by_previous_Warehous_Usage') %>
+          <button id="btnView" class="btn btn-big btn-main"><%= __('View_cap') %></button>
         </h2>
         <table id="t2" class="board-table table" style="display: none;">
           <thead class="thead-dark">
             <tr>
-              <th>Req ID</th>
-              <th>Warehouse ID</th>
-              <th>Warehouse Name</th>
-              <th>Rental Period</th>
-              <th>Rental Area</th>
-              <th>Price</th>
-              <th>Info</th>
+              <th><%= __('Request_id') %></th>
+              <th><%= __('warehouse_id') %></th>
+              <th><%= __('warehouse_name') %> Name</th>
+              <th><%= __('Rental_Period') %></th>
+              <th><%= __('Rental_Area') %></th>
+              <th><%= __('Rental_Price') %></th>
+              <th><%= __('Info') %></th>
             </tr>
           </thead>
           <tbody>
@@ -116,7 +116,7 @@
               <td id="td-btn">
                 <form action="/Buyer/UsageHistory/INFO" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= preItems['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                 </form>
               </td>
             </tr>

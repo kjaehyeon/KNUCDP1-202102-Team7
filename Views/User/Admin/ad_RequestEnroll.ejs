@@ -16,14 +16,14 @@
     </header>
     <section>
       <div class="container">
-        <h2 class="mt-5 mb-3">Warehouse Register Request List</h2>
+        <h2 class="mt-5 mb-3"><%= __('ad_RequestEnroll_re') %></h2>
         <table class="board-table table ">
           <thead class="thead-dark">
-              <th>Warehouse ID</th>
-              <th>Warehouse Name</th>
-              <th>Provider ID</th>
-              <th>State</th>              
-              <th>Info</th>
+              <th><%= __('warehouse_id') %></th>
+              <th><%= __('warehouse_name') %></th>
+              <th><%= __('Provider_id') %></th>
+              <th><%= __('State') %></th>              
+              <th><%= __('Info') %></th>
               <th></th>
             </tr>
           </thead>
@@ -34,17 +34,17 @@
               <td id="whID<%= i %>"><%= items['item' + i].warehouseID %></td>    
               <td id="name<%= i %>"><%= items['item' + i].warehouseName %></td>          
               <td id="providerID<%= i %>"><%= items['item' + i].providerID %></td>
-              <td id="reqType<%= i %>">Pending Approval</td>     
+              <td id="reqType<%= i %>"><%= __('Pending_Approval') %></td>     
               <td id="td-btn">
                 <form action="/Admin/EnrollWHInfo" method="POST">
                   <input id="warehouseID" name="warehouseID" type="hidden" value="<%= items['item' + i].warehouseID %>">
                   <input id="providerID" name="providerID" type="hidden" value="<%= items['item' + i].providerID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                 </form>
               </td>         
               <td id="td-btn">
-                <button type="button" class="btn btn-td btn-success" onclick="adClick(<%= i %>, 1)">Approve</button>
-                <button type="button" class="btn btn-td btn-danger" onclick="adClick(<%= i %>, 0)">Reject</button>
+                <button type="button" class="btn btn-td btn-success" onclick="adClick(<%= i %>, 1)"><%= __('Approve') %></button>
+                <button type="button" class="btn btn-td btn-danger" onclick="adClick(<%= i %>, 0)"><%= __('Reject') %></button>
               </td>
               <p id="reqID<%= i %>" style="display: none"><%= items['item' + i].reqID %></p>
             </tr>
@@ -54,16 +54,16 @@
                 <td id="whID<%= i %>"><%= items['item' + i].warehouseID %></td>    
                 <td id="name<%= i %>"><%= items['item' + i].warehouseName %></td>          
                 <td id="providerID<%= i %>"><%= items['item' + i].providerID %></td>
-                <td id="reqType<%= i %>">Canceled by Provider</td>
+                <td id="reqType<%= i %>"><%= __('Canceled_by_Provider') %></td>
                 <td id="td-btn">
                   <form action="/Admin/EnrollWHInfo" method="POST">
                     <input id="warehouseID" name="warehouseID" type="hidden" value="<%= items['item' + i].warehouseID %>">
                     <input id="providerID" name="providerID" type="hidden" value="<%= items['item' + i].providerID %>">
-                    <button class="btn btn-td btn-info">INFO</button>
+                    <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                   </form>
                 </td>
                 <td id="td-btn">
-                  <button type="button" class="btn btn-td btn-info" onclick="adClick(<%= i %>, 2)">View</button>
+                  <button type="button" class="btn btn-td btn-info" onclick="adClick(<%= i %>, 2)"><%= __('View_cap') %></button>
                 </td>
                 <p id="reqID<%= i %>" style="display: none"><%= items['item' + i].reqID %></p>
                 <p id="rejectCmt<%= i %>" style="display: none"><%= items['item' + i].rejectCmt %></p>

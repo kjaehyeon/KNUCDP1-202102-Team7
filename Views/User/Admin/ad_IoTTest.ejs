@@ -16,18 +16,18 @@
         </header>
         <section>
             <div class="container-info">
-                <h2 class="mb-3">IoT Connect Page</h2>
+                <h2 class="mb-3"><%= __('ad_IoTTest_ct') %></h2>
                 <div class="form-group row">
                     <div class="col-sm-11">
-                        <input type="text" class="form-control" id="iotServer" placeholder="Input IotServer address          ex) http://localhost:5000">
+                        <input type="text" class="form-control" id="iotServer" placeholder="<%= __('ad_IoTTest_inputiot')>          ex) http://localhost:5000">
                         <br>
-                        <input type="text" class="form-control" id="cctvServer" placeholder="Input cctv Server Address          ex) http://localhost:5000">
+                        <input type="text" class="form-control" id="cctvServer" placeholder="<%= __('ad_IoTTest_inputcctv')>          ex) http://localhost:5000">
                     </div>
                 </div>
                 <div class="center-wrap">
-                    <button class="btn btn-td btn-info" id="btn_test" onclick="adClick('Test')">Test</button>
-                    <button type="button" class="btn btn-td btn-danger btn-two-r ml-1" id="btn_reject" onclick="adClick('Reject')">Reject</button>
-                    <button type="button" class="btn btn-td btn-success btn-two-r ml-1" id="btn_approve" onclick="adClick('Approve')">Approve</button>
+                    <button class="btn btn-td btn-info" id="btn_test" onclick="adClick('Test')"><%= __('ad_IoTTest_test')></button>
+                    <button type="button" class="btn btn-td btn-danger btn-two-r ml-1" id="btn_reject" onclick="adClick('Reject')"><%= __('Reject') %></button>
+                    <button type="button" class="btn btn-td btn-success btn-two-r ml-1" id="btn_approve" onclick="adClick('Approve')"><%= __('Approve') %></button>
                 </div>
                 <input type="hidden" id="wid" value="<%= wid %>">
             </div>

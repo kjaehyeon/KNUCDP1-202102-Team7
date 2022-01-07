@@ -60,28 +60,9 @@
                         <li class="nav-item js-scroll-trigger"><a href="/User/Select"
                             class="nav-link js-scroll-trigger">Sign Up</a></li>
                         <li class="nav-item js-scroll-trigger"><a href="/User/Login"
-                            class="nav-link js-scroll-trigger">Login</a></li>
-                        <li class="nav-item">
-                          <a class="nav-link js-scroll-trigger" rel="tooltip" title="Follow us on Twitter"
-                            data-placement="bottom" href="https://twitter.com/Autoinven" target="_blank">
-                            <i class="fab fa-twitter"></i>
-                            <p class="d-lg-none d-xl-none">Twitter</p>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link js-scroll-trigger" rel="tooltip" title="Like us on Facebook"
-                            data-placement="bottom" href="https://www.facebook.com/autoinven" target="_blank">
-                            <i class="fab fa-facebook-square"></i>
-                            <p class="d-lg-none d-xl-none">Facebook</p>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link js-scroll-trigger" rel="tooltip" title="Follow us on Instagram"
-                            data-placement="bottom" href="https://www.instagram.com/autoininc" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                            <p class="d-lg-none d-xl-none">Instagram</p>
-                          </a>
-                        </li>
+                            class="nav-link js-scroll-trigger"><%= __('sign_in') %></a></li>
+                        <li class="nav-item js-scroll-trigger"><a class="nav-link js-scroll-trigger" href='/ko'>KR</a></li>
+                        <li class="nav-item js-scroll-trigger"><a class="nav-link js-scroll-trigger" href='/en'>EN</a></li>
                         <% } else { %>
                           <% if(session.type=='buyer' || session.type=='provider' ) { %>
                             <% if(session.type=='buyer' ) { %>
