@@ -5,7 +5,7 @@ class SensorValue(models.Model):
     temperature = models.FloatField()
     humidity = models.FloatField()
     co = models.FloatField()
-    propane = models.FloatField()
+    lpg = models.FloatField()
     flame = models.IntegerField()
     vibration = models.IntegerField()
     datetime = models.DateTimeField(auto_now_add=True)
@@ -18,7 +18,7 @@ class DayStatValue(models.Model):
     temperature = models.FloatField()
     humidity = models.FloatField()
     co = models.FloatField()
-    propane = models.FloatField()
+    lpg = models.FloatField()
     datetime = models.DateTimeField()
 
     def __str__(self):
@@ -29,7 +29,7 @@ class MonthStatValue(models.Model):
     temperature = models.FloatField()
     humidity = models.FloatField()
     co = models.FloatField()
-    propane = models.FloatField()
+    lpg = models.FloatField()
     datetime = models.DateTimeField()
 
     def __str__(self):
