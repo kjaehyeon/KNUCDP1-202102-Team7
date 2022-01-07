@@ -18,24 +18,38 @@
     </header>
     <section>
       <div class="container">
-        <h2 class="mt-5 mb-3">Register Warehouse</h2>
+        <h2 class="mt-5 mb-3">
+          <%= __('pv_EnrollWH_register')%>
+        </h2>
         <form action="/Provider/EnrollWH" method="post" enctype="multipart/form-data" id="enrollForm"
           onsubmit="return false;">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Warehouse Name (창고 이름) <a style="color: #f96332;">*</a>
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_wh_name')%>
+              <a style="color: #f96332;">*</a>
             </label>
             <div class="col-sm-4"><input type="text" class="form-control" id="warehouseName" name="warehouseName"
-                placeholder="Warehouse Name"></div>
+                placeholder="<%= __('pv_EnrollWH_wh_name')%>"></div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Warehouse Address (창고 주소) <a style="color: #f96332;">*</a></label>
-
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_wh_address')%>
+              <a style="color: #f96332;">*</a>
+            </label>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Zip Code" readonly>
+              <input
+                type="text"
+                class="form-control"
+                id="zipcode"
+                name="zipcode"
+                placeholder="<%= __('pv_EnrollWH_wh_zip')%>"
+                readonly>
             </div>
             <div class="col-sm-2">
               <label class="form-control btn-main" for="search_address"
-                style="text-align:center; display: inline-block;">Search Address</label>
+                style="text-align:center; display: inline-block;">
+                <%= __('pv_EnrollWH_wh_search')%>
+              </label>
               <input type="button" class="upload-btn-hidden" id='search_address' name='search_address'
                 onclick="sample4_execDaumPostcode()" value="Find address"><br>
             </div>
@@ -43,74 +57,173 @@
           <div class="form-group row">
             <label class="col-sm-3 col-form-label"></label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="address" name="address" placeholder="Address" readonly>
+              <input
+                type="text"
+                class="form-control"
+                id="address"
+                name="address"
+                placeholder="<%= __('pv_EnrollWH_wh_address')%>"
+                readonly>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-sm-3 col-form-label"></label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="addressDetail" name="addressDetail"
-                placeholder="Detail Address (ex. 3rd Floor)">
+              <input
+                type="text"
+                class="form-control"
+                id="addressDetail"
+                name="addressDetail"
+                placeholder="<%= __('pv_EnrollWH_wh_address_detail')%>">
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Email (이메일) <a style="color: #f96332;">*</a></label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="warehouseEmail" name="warehouseEmail"
-                placeholder="Contact Email"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_email')%>  
+              <a style="color: #f96332;">*</a>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="warehouseEmail"
+                name="warehouseEmail"
+                placeholder="<%= __('pv_EnrollWH_email_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Tel (창고 전화 번호) <a style="color: #f96332;">*</a></label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="warehouseTel" name="warehouseTel"
-                placeholder="Telephone Number (ex. 010-0000-0000)"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_tel')%>
+              <a style="color: #f96332;">*</a>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="warehouseTel"
+                name="warehouseTel"
+                placeholder="<%= __('pv_EnrollWH_tel_ph')%>"></div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">LandArea (총 면적) <a style="color: #f96332;">*</a></label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="landArea" name="landArea"
-                placeholder="Numbers Only (m²)"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_land_area')%>
+              <a style="color: #f96332;">*</a>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="landArea"
+                name="landArea"
+                placeholder="<%= __('pv_EnrollWH_area_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">FloorArea (층 면적) <a style="color: #f96332;">*</a></label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="floorArea" name="floorArea"
-                placeholder="Numbers Only (m²)"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_floor_area')%>
+              <a style="color: #f96332;">*</a>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="floorArea"
+                name="floorArea"
+                placeholder="<%= __('pv_EnrollWH_area_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Useable Area (사용가능 면적) <a style="color: #f96332;">*</a></label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="useableArea" name="useableArea"
-                placeholder="Numbers Only (m²)"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_usable_area')%>
+              <a style="color: #f96332;">*</a>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="useableArea"
+                name="useableArea"
+                placeholder="<%= __('pv_EnrollWH_area_ph')%> (m²)">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Price Per m<sup>2</sup> (m²당 가격) <a style="color: #f96332;">*</a></label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="price" name="price"
-                placeholder="ex. 100 ($)"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_price_per')%>
+              <a style="color: #f96332;">*</a>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="price"
+                name="price"
+                placeholder="<%= __('pv_EnrollWH_price_per_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Info Comment (추가 정보) </label>
-            <div class="col-sm-9"><input type="text" class="form-control" id="infoComment" name="infoComment"
-                placeholder="Information Comment"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_info')%>
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="infoComment"
+                name="infoComment"
+                placeholder="<%= __('pv_EnrollWH_info_ph')%>">
+              </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Etc Comment (기타 정보)</label>
-            <div class="col-sm-9"><input type="text" class="form-control" id="etcComment" name="etcComment"
-                placeholder="Etc Comment"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_etc')%>
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="etcComment"
+                name="etcComment"
+                placeholder="<%= __('pv_EnrollWH_etc')%>">
+            </div>
           </div>
           <div class="col-sm-10"><input type="hidden" class="form-control" id="lat" name="lat" placeholder="latitude">
           </div>
           <div class="col-sm-10"><input type="hidden" class="form-control" id="lng" name="lng" placeholder="longitude">
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Warehouse Image (창고 사진) <a style="color: #f96332;">*</a></label>
+            <label class="col-sm-3 col-form-label">
+              <%= __('pv_EnrollWH_wh_img')%>
+              <a style="color: #f96332;">*</a>
+            </label>
             <div class="col-sm-7">
-              <input type="text" class="form-control" id="img_name" name="img_name" readonly="readonly"
-                disabled="disabled" placeholder="Warehouse Image (1개만 등록 가능)">
+              <input
+                type="text"
+                class="form-control"
+                id="img_name"
+                name="img_name"
+                readonly="readonly"
+                disabled="disabled"
+                placeholder="<%= __('pv_EnrollWH_wh_img_ph')%>">
             </div>
             <div class="col-sm-2">
-              <label class="form-control btn-main" for="profile_img" style="text-align:center;">Upload Image</label>
-              <input type='file' class="upload-btn-hidden" id='profile_img' name='profile_img' accept='image/*'
+              <label class="form-control btn-main" for="profile_img" style="text-align:center;">
+                <%= __('pv_EnrollWH_upload_img')%>
+              </label>
+              <input
+                type='file'
+                class="upload-btn-hidden"
+                id='profile_img'
+                name='profile_img'
+                accept='image/*'
                 multiple />
             </div>
           </div>
           <div class="center-wrap">
-            <input type="submit" class="btn btn-main" id="enrollBtn" value="Submit">
+            <input
+              type="submit"
+              class="btn btn-main"
+              id="enrollBtn"
+              value="<%= __('pv_EnrollWH_submit')%>">
           </div>
         </form>
       </div>
