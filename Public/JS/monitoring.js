@@ -249,7 +249,7 @@ const setSocketConnection = (warehouse_info) => {
                     $('.value')[4].innerHTML = 'BAD';
                 }
                 $('.value-wrapper')[5].classList.remove('fine', 'bad');
-                if (sensor_val.vibration > 800) {
+                if (sensor_val.vibration === 1) {
                     $('.value-wrapper')[5].classList.add('fine');
                     $('.value')[5].innerHTML = 'FINE';
                 } else {
