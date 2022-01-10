@@ -41,7 +41,7 @@ module.exports = function(app, pool) {
             await iot_Monitoring.init(req, res, pool)
         } catch (err) {
             console.log(err.message);
-            res.render('Alert/errorOccured');
+            res.render('Alert/errorOccured', {'req' : req});
         }
     });
 
