@@ -5,9 +5,9 @@ const temperature_yaxis = [0, 40];
 const humidity_array = new Array(10).fill(0);
 const humidity_yaxis = [0, 100];
 const co_array = new Array(10).fill(0);
-const co_yaxis = [0, 100];
+const co_yaxis = [0, 10];
 const lpg_array = new Array(10).fill(0);
-const lpg_yaxis = [0, 40];
+const lpg_yaxis = [0, 1];
 
 const setWeatherInfo = (api_key, latitude, longitude) => {
     const icon_name = {
