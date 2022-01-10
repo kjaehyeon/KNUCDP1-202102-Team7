@@ -95,9 +95,9 @@
         const status_text = {
             fine : "<%= __('iot_Monitoring_fine') %>",
             bad : "<%= __('iot_Monitoring_bad') %>",
-            locale: "<%= __('locale') %>",
+            locale: "<%= __('locale') %>"
         }
-
+        console.log(req);
         $('iframe').attr('src', result.cctvServer);
         initMonitoringDashboard('<%=process.env.WEATHER_API_KEY%>', result, status_text);
     </script>
