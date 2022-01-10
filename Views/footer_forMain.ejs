@@ -3,7 +3,7 @@
     <div class="row align-items-center">
       <div class="col-lg-4"></div>
       <div class="col-lg-4 my-lg-0">
-        <h5 style="font-size: 14px;">Copyright © 2020 Autoinven</h5>
+        <h5 style="font-size: 14px;">Copyright © <span id="copyright_year"></span> Autoinven</h5>
         <div style="margin-top:11px;">
           <a class="btn-footer btn-social mx-2" href="https://twitter.com/Autoinven" target="_blank"><i
               class="fab fa-twitter"></i></a>
@@ -17,3 +17,6 @@
     </div>
   </div>
 </div>
+<script>
+  $('#copyright_year').html(new Date().getFullYear());
+</script>
