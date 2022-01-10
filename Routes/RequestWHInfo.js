@@ -39,7 +39,7 @@ exports.getPVInfo = async function(req, res, app, pool) {
     }
     if (results.length > 0) {
         var providerID = results[0].memberID;
-        items = await viewInfo.getMemberInfo(db, providerID);
+        items = await viewInfo.getMemberInfo(pool, providerID);
     } else {
         JSON.stringify(items);
     }
@@ -86,12 +86,12 @@ exports.getReqInfo = async function(req, res, app, pool) {
     if (results.length > 0) {
         items = {
             reqID: results[0].reqID,
-            reqDate: results[0].reqDate.substring(0, 10),
+            reqDate: results[0].reqDate.toString().substring(0, 10),
             warehouseID: results[0].warehouseID,
             buyerID: results[0].buyerID,
             amount: results[0].amount,
-            startDate: results[0].startDate.substring(0, 10),
-            endDate: results[0].endDate.substring(0, 10),
+            startDate: results[0].startDate.toString().substring(0, 10),
+            endDate: results[0].endDate.toString().substring(0, 10),
             area: results[0].area
         };
     }

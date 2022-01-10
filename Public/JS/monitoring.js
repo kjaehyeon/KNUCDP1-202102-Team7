@@ -6,8 +6,8 @@ const humidity_array = new Array(10).fill(0);
 const humidity_yaxis = [0, 100];
 const co_array = new Array(10).fill(0);
 const co_yaxis = [0, 100];
-const propane_array = new Array(10).fill(0);
-const propane_yaxis = [0, 40];
+const lpg_array = new Array(10).fill(0);
+const lpg_yaxis = [0, 40];
 
 const setWeatherInfo = (api_key, latitude, longitude) => {
     const icon_name = {
@@ -162,18 +162,18 @@ const addClickListener = (warehouse_info, status_text) => {
         
         chart1.update();
     })
-    $('.propane').click(() => {
-        chart1.data.datasets[0].data = propane_array;
+    $('.lpg').click(() => {
+        chart1.data.datasets[0].data = lpg_array;
         chart1.data.datasets[0].backgroundColor = '#f29d00';
         chart1.data.datasets[0].borderColor = '#f29d00';
-        chart1.options.scales.y.min = propane_yaxis[0];
-        chart1.options.scales.y.max = propane_yaxis[1];
+        chart1.options.scales.y.min = lpg_yaxis[0];
+        chart1.options.scales.y.max = lpg_yaxis[1];
         if (status_text['locale'] == 'ko') {
             $('.realtime .title span').html('&nbsp;실시간 LPG');
         } else{
             $('.realtime .title span').html('&nbsp;Realtime LPG');
         }
-        graph = 'propane';
+        graph = 'lpg';
         chart1.update();
     })
 }
@@ -190,12 +190,11 @@ const setSocketConnection = (warehouse_info, status_text) => {
                 socket.emit('camera_move', { data: 'r' });
             });
             socket.on('response', (sensor) => {
-                let data = chart1.data.datasets[0].data;
                 const sensor_val = JSON.parse(sensor.data);
                 const temperature = sensor_val.temperature.toFixed(1);
                 const humidity = sensor_val.humidity.toFixed(1);
-                const co = Math.round(sensor_val.co);
-                const propane = Math.round(sensor_val.propane);
+                const co = sensor_val.co.toFixed(2);
+                const lpg = sensor_val.lpg.toFixed(2);
 
                 temperature_array.unshift(temperature);
                 temperature_array.pop();
@@ -203,8 +202,8 @@ const setSocketConnection = (warehouse_info, status_text) => {
                 humidity_array.pop();
                 co_array.unshift(co);
                 co_array.pop();
-                propane_array.unshift(propane);
-                propane_array.pop();
+                lpg_array.unshift(lpg);
+                lpg_array.pop();
 
                 if (Math.min(...temperature_array) < temperature_yaxis[0]) {
                     temperature_yaxis[0] = Math.min(...temperature_array) - 10;
@@ -224,11 +223,11 @@ const setSocketConnection = (warehouse_info, status_text) => {
                 if (Math.max(...co_array) > co_yaxis[1]) {
                     co_yaxis[1] = Math.max(...co_array) + 10;
                 }
-                if (Math.min(...propane_array) < propane_yaxis[0]) {
-                    propane_yaxis[0] = Math.min(...propane_array) - 10;
+                if (Math.min(...lpg_array) < lpg_yaxis[0]) {
+                    lpg_yaxis[0] = Math.min(...lpg_array) - 10;
                 }
-                if (Math.max(...propane_array) > propane_yaxis[1]) {
-                    propane_yaxis[1] = Math.max(...propane_array) + 10;
+                if (Math.max(...lpg_array) > lpg_yaxis[1]) {
+                    lpg_yaxis[1] = Math.max(...lpg_array) + 10;
                 }
 
                 switch (graph) {
@@ -247,10 +246,10 @@ const setSocketConnection = (warehouse_info, status_text) => {
                         chart1.options.scales.y.min = co_yaxis[0];
                         chart1.options.scales.y.max = co_yaxis[1];
                         break;
-                    case 'propane':
-                        data = propane_array;
-                        chart1.options.scales.y.min = propane_yaxis[0];
-                        chart1.options.scales.y.max = propane_yaxis[1];
+                    case 'lpg':
+                        data = lpg_array;
+                        chart1.options.scales.y.min = lpg_yaxis[0];
+                        chart1.options.scales.y.max = lpg_yaxis[1];
                         break;
                 }
                 chart1.update();
@@ -258,7 +257,7 @@ const setSocketConnection = (warehouse_info, status_text) => {
                 $('.value')[0].innerHTML = `${temperature}&#8451;`;
                 $('.value')[1].innerHTML = `${humidity}%`;
                 $('.value')[2].innerHTML = `${co}ppm`;
-                $('.value')[3].innerHTML = `${propane}ppm`;
+                $('.value')[3].innerHTML = `${lpg}ppm`;
                 $('.value-wrapper')[4].classList.remove('fine', 'bad');
                 if (sensor_val.flame == 1) {
                     $('.value-wrapper')[4].classList.add('fine');
@@ -268,7 +267,7 @@ const setSocketConnection = (warehouse_info, status_text) => {
                     $('.value')[4].innerHTML = status_text['bad'];
                 }
                 $('.value-wrapper')[5].classList.remove('fine', 'bad');
-                if (sensor_val.vibration > 800) {
+                if (sensor_val.vibration === 1) {
                     $('.value-wrapper')[5].classList.add('fine');
                     $('.value')[5].innerHTML = status_text['fine'];
                 } else {

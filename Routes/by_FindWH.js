@@ -8,8 +8,11 @@ exports.searchWH = async function(req, res, app, pool) {
         connection = await pool.getConnection(async conn => conn);
         [results1] = await connection.query('SELECT * from PublicWarehouse');
         [results2] = await connection.query(`SELECT * from Warehouse where enroll='Y'`);
+        for (index in results1){
+            results1[index].isPubilc = true;
+        }
         for (index in results2){
-            results2[index].warehouseID += 10000
+            results2[index].isPublic = false;
         }
         results = results1.concat(results2);
     } catch (err) {
@@ -44,7 +47,7 @@ exports.searchWH = async function(req, res, app, pool) {
                 zipcode: results[step].zipcode,
                 iotStat: results[step].iotStat,
                 enroll: results[step].enroll,
-                isPublic: parseInt(results[step].warehouseID) < 10000
+                isPublic: results[step].isPubilc
             };
         }
     }
@@ -57,7 +60,8 @@ exports.findImage = async function(req, res, app, pool) {
     var results = [];
     try {
         connection = await pool.getConnection(async conn => conn);
-        [results] = await connection.query(`SELECT * from FileInfo where warehouseID=${req.body.warehouseID}`);
+        [results] = await connection.query(`SELECT * from FileInfo`
+                                        + ` where warehouseID=${req.body.warehouseID}`);
     } catch (err) {
         console.log(err.message);
     } finally {

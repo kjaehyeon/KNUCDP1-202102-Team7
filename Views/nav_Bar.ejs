@@ -15,11 +15,19 @@
               <li class="nav-item" id="resizemenu">
                 <div class="dropdown">
                   <a class="nav-link js-scroll-trigger dropdown-toggle" href="#" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false" style="background-color:transparent;">Request</a>
+                    aria-haspopup="true" aria-expanded="false" style="background-color:transparent;">
+                    <%= __('nav_Bar_ad_request')%>
+                  </a>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="accountMenu">
-                    <a class="dropdown-item" href="/Admin/RequestEnroll" id="account_ctrl">Warehouse Register</a>
-                    <a class="dropdown-item" href="/Admin/RequestBuy">Warehouse Purchase</a>
-                    <a class="dropdown-item" href="/Admin/RequestIoT">Warehouse IoT</a>
+                    <a class="dropdown-item" href="/Admin/RequestEnroll" id="account_ctrl">
+                      <%= __('nav_Bar_ad_wh_reg')%>
+                    </a>
+                    <a class="dropdown-item" href="/Admin/RequestBuy">
+                      <%= __('nav_Bar_ad_wh_purchase')%>
+                    </a>
+                    <a class="dropdown-item" href="/Admin/RequestIoT">
+                      <%= __('nav_Bar_ad_wh_iot')%>
+                    </a>
                   </div>
                 </div>
               </li>
@@ -28,41 +36,120 @@
               <li class="nav-item" id="resizemenu">
                 <div class="dropdown"><a class="nav-link js-scroll-trigger dropdown-toggle" href="#"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    style="background-color:transparent;">List</a>
+                    style="background-color:transparent;">
+                    <%= __('nav_Bar_ad_list')%>
+                  </a>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="accountMenu">
-                    <a class="dropdown-item" href="/Admin/WarehouseList">Warehouse</a>
-                    <a class="dropdown-item" href="/Admin/UsageHistory">Usage History</a>
+                    <a class="dropdown-item" href="/Admin/WarehouseList">
+                      <%= __('nav_Bar_ad_wh_list')%>
+                    </a>
+                    <a class="dropdown-item" href="/Admin/UsageHistory">
+                      <%= __('nav_Bar_wh_usage_history')%>
+                    </a>
                   </div>
                 </div>
               </li>
             </div>
             <div class="x990">
-              <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Admin/RequestEnroll">Warehouse Register
-                  Request</a></li>
-              <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Admin/RequestBuy">Warehouse Purchase
-                  Request</a></li>
-              <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Admin/RequestIoT">Warehouse IoT
-                  Request</a></li>
-              <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Admin/WarehouseList">Warehouse List</a>
-              <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/Admin/UsageHistory">Usage History</a>
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="/Admin/RequestEnroll">
+                <%= __('nav_Bar_ad_wh_reg')%>
+                <%= __('nav_Bar_ad_request')%>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="/Admin/RequestBuy">
+                  <%= __('nav_Bar_ad_wh_purchase')%>
+                  <%= __('nav_Bar_ad_request')%>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="/Admin/RequestIoT">
+                  <%= __('nav_Bar_ad_wh_iot')%>
+                  <%= __('nav_Bar_ad_request')%>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="/Admin/WarehouseList">
+                  <%= __('nav_Bar_ad_wh_list')%>
+                  <%= __('nav_Bar_ad_list')%>
+                </a>
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="/Admin/UsageHistory">
+                  <%= __('nav_Bar_wh_usage_history')%>
+                </a>
               </li>
             </div>
-            <li class="nav-item"><a href="/User/Show" class="nav-link js-scroll-trigger">My Info</a></li>
+            <li class="nav-item">
+              <a href="/User/Show" class="nav-link js-scroll-trigger">
+                <%= __('nav_Bar_my_info')%>
+              </a>
+            </li>
             <% } else if(session.type=='buyer' ) { %>
-              <li class="nav-item"><a href="/Buyer/FindWH" class="nav-link js-scroll-trigger">Search Warehouse</a></li>
+              <li class="nav-item">
+                <a href="/Buyer/FindWH" class="nav-link js-scroll-trigger">
+                  <%= __('nav_Bar_by_search_wh')%>
+                </a>
+              </li>
               <% } else if(session.type=='provider' ) { %>
-                <li class="nav-item"><a href="/Provider/EnrollWH" class="nav-link js-scroll-trigger">Register
-                    Warehouse</a></li>
+                <li class="nav-item">
+                  <a href="/Provider/EnrollWH" class="nav-link js-scroll-trigger">
+                    <%= __('nav_Bar_pv_reg_wh')%>
+                  </a>
+                </li>
                 <% } %>
                   <% } %>
                     <ul class="navbar-nav">
                       <% if(!session.memberID) { %>
-                        <li class="nav-item js-scroll-trigger"><a href="/User/Select"
-                            class="nav-link js-scroll-trigger">Sign Up</a></li>
-                        <li class="nav-item js-scroll-trigger"><a href="/User/Login"
-                            class="nav-link js-scroll-trigger"><%= __('sign_in') %></a></li>
-                        <li class="nav-item js-scroll-trigger"><a class="nav-link js-scroll-trigger" href='/ko'>KR</a></li>
-                        <li class="nav-item js-scroll-trigger"><a class="nav-link js-scroll-trigger" href='/en'>EN</a></li>
+                        <li class="nav-item js-scroll-trigger">
+                          <a href="/User/Select"
+                            class="nav-link js-scroll-trigger">
+                            <%= __('nav_Bar_sign_up')%>
+                          </a>
+                        </li>
+                        <li class="nav-item js-scroll-trigger">
+                          <a href="/User/Login"
+                            class="nav-link js-scroll-trigger">
+                            <%= __('nav_Bar_sign_in')%>
+                          </a>
+                        </li>
+                        <div class="x991">
+                          <ul class="navbar-nav">
+                            <li>
+                              <a href="/ko"
+                                class="nav-link js-scroll-trigger">
+                                KR
+                              </a>
+                            </li>
+                            <li>
+                              <a class="nav-link js-scroll-trigger">
+                                |
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/en"
+                                class="nav-link js-scroll-trigger">
+                                EN
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="x990">
+                          <ul class="navbar-nav">
+                            <li class="nav-item">
+                              <a href="/ko"
+                                  class="nav-link js-scroll-trigger">
+                                  KR
+                                </a>
+                              </li>
+                              <li class="nav-item">
+                                <a href="/en"
+                                  class="nav-link js-scroll-trigger">
+                                  EN
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
                         <% } else { %>
                           <% if(session.type=='buyer' || session.type=='provider' ) { %>
                             <% if(session.type=='buyer' ) { %>
@@ -71,33 +158,99 @@
                                   <div class="dropdown">
                                     <a class="nav-link js-scroll-trigger dropdown-toggle" href="#"
                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                      style="background-color:transparent;">My Warehouse</a>
+                                      style="background-color:transparent;">
+                                      <%= __('nav_Bar_my_wh')%>
+                                    </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="accountMenu">
-                                      <a class="dropdown-item" href="/Buyer/UsageHistory" id="account_ctrl">Usage
-                                        History</a>
-                                      <a class="dropdown-item" href="/Buyer/RequestStatus">Request Status</a>
+                                      <a class="dropdown-item" href="/Buyer/UsageHistory" id="account_ctrl">
+                                        <%= __('nav_Bar_wh_usage_history')%>
+                                      </a>
+                                      <a class="dropdown-item" href="/Buyer/RequestStatus">
+                                        <%= __('nav_Bar_by_req_status')%>
+                                      </a>
                                     </div>
                                   </div>
                                 </li>
                               </div>
                               <div class="x990">
-                                <li class="nav-item"><a class="nav-link js-scroll-trigger"
-                                    href="/Buyer/UsageHistory">Usage History</a></li>
-                                <li class="nav-item"><a class="nav-link js-scroll-trigger"
-                                    href="/Buyer/RequestStatus">Request Status</a></li>
+                                <li class="nav-item">
+                                  <a class="nav-link js-scroll-trigger"
+                                    href="/Buyer/UsageHistory">
+                                    <%= __('nav_Bar_wh_usage_history')%>
+                                  </a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link js-scroll-trigger"
+                                    href="/Buyer/RequestStatus">
+                                    <%= __('nav_Bar_by_req_status')%>
+                                  </a>
+                                </li>
                               </div>
                               <% } %>
                                 <% if(session.type=='provider' ) { %>
-                                  <li class="nav-item"><a href="/Provider/MyWarehouse"
-                                      class="nav-link js-scroll-trigger">My Warehouse</a></li>
+                                  <li class="nav-item">
+                                    <a href="/Provider/MyWarehouse"
+                                      class="nav-link js-scroll-trigger">
+                                      <%= __('nav_Bar_my_wh')%>
+                                    </a>
+                                  </li>
                                   <% } %>
-                                    <li class="nav-item"><a href="/User/Show"
-                                        class="nav-link js-scroll-trigger">MyInfo</a></li>
-                                    <li class="nav-item"><a href="/User/Help"
-                                        class="nav-link js-scroll-trigger">Help</a></li>
+                                    <li class="nav-item">
+                                      <a href="/User/Show"
+                                        class="nav-link js-scroll-trigger">
+                                        <%= __('nav_Bar_my_info')%>
+                                      </a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a href="/User/Help"
+                                        class="nav-link js-scroll-trigger">
+                                        <%= __('nav_Bar_help')%>
+                                      </a>
+                                    </li>
                                     <% } %>
-                                      <li class="nav-item"><a href="/User/Logout" class="nav-link js-scroll-trigger"
-                                          style="color: lightsalmon;">Logout</a></li>
+                                      <li class="nav-item">
+                                        <a href="/User/Logout" class="nav-link js-scroll-trigger"
+                                          style="color: lightsalmon;">
+                                          <%= __('nav_Bar_sign_out')%>
+                                        </a>
+                                      </li>
+                                      <div class="x991">
+                                        <ul class="navbar-nav">
+                                          <li>
+                                            <a href="/ko"
+                                              class="nav-link js-scroll-trigger">
+                                              KR
+                                            </a>
+                                          </li>
+                                          <li>
+                                            <a class="nav-link js-scroll-trigger">
+                                              |
+                                            </a>
+                                          </li>
+                                          <li>
+                                            <a href="/en"
+                                              class="nav-link js-scroll-trigger">
+                                              EN
+                                            </a>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                      <div class="x990">
+                                        <ul class="navbar-nav">
+                                          <li class="nav-item">
+                                            <a href="/ko"
+                                                class="nav-link js-scroll-trigger">
+                                                KR
+                                              </a>
+                                            </li>
+                                            <li class="nav-item">
+                                              <a href="/en"
+                                                class="nav-link js-scroll-trigger">
+                                                EN
+                                              </a>
+                                            </li>
+                                          </ul>
+                                        </div>
                                       <% } %>
                     </ul>
       </ul>

@@ -16,14 +16,16 @@
     </header>
     <section>
       <div class="container">
-        <h2 class="mt-5 mb-3">My Warehouse</h2>
+        <h2 class="mt-5 mb-3">
+          <%= __('pv_MyWH_my_wh')%>
+        </h2>
         <table class="board-table table " id="myWH">
           <thead class="thead-dark">
             <tr>
-              <th>Warehouse ID</th>
-              <th>Warehouse Name</th>
-              <th>IoT</th>
-              <th>Info</th>
+              <th><%= __('pv_MyWH_wh_id')%></th>
+              <th><%= __('pv_MyWH_wh_name')%></th>
+              <th><%= __('pv_MyWH_wh_iot')%></th>
+              <th><%= __('pv_MyWH_info')%></th>
             </tr>
           </thead>
           <tbody>
@@ -39,14 +41,18 @@
               <td id="td-btn">
                 <form action="/IoT" method="POST">
                   <input id="wid" name="wid" type="hidden" value="<%= wList['item' + i].warehouseID %>">
-                  <button class="btn btn-td btn-main">IoT Page</button>
+                  <button class="btn btn-td btn-main">
+                    <%= __('pv_MyWH_iot_pg')%>
+                  </button>
                 </form>
               </td>
               <% } else if (wList['item' + i].iotStat=="W" ){ %>
               <td id="td-btn">
-                Pending Approval
+                <%= __('pv_MyWH_pending')%>
                 <button class="btn btn-td btn-grey"
-                  onclick="reqClick(<%= i %>, <%= wList['item' + i].warehouseID %>, 0)" type="button">Cancel</button>
+                  onclick="reqClick(<%= i %>, <%= wList['item' + i].warehouseID %>, 0)" type="button">
+                  <%= __('pv_MyWH_cancel')%>
+                </button>
                 <p id="IoTReqID<%= i %>" style="display: none"><%= IoTitems[wList['item' + i].warehouseID].reqID %></p>
               </td>
               <% } else if (wList['item' + i].iotStat=="R" ){ %>
@@ -59,13 +65,17 @@
               <% } else if (wList['item' + i].iotStat=="N" ){ %>
               <td id="td-btn">
                 <button class="btn btn-td btn-main"
-                  onclick="reqClick(<%= i %>, <%= wList['item' + i].warehouseID %>, 3)" type="button">Request Service</button>
+                  onclick="reqClick(<%= i %>, <%= wList['item' + i].warehouseID %>, 3)" type="button">
+                  <%= __('pv_MyWH_req_service')%>
+                </button>
               </td>
               <% } %>
               <td id="td-btn">
                 <form action="/Provider/WHInfo" method="POST">
                   <input id="warehouseID" name="warehouseID" type="hidden" value="<%= wList['item' + i].warehouseID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info">
+                    <%= __('pv_MyWH_info')%>
+                  </button>
                 </form>
               </td>
             </tr>
@@ -74,7 +84,9 @@
         </table>
       </div>
       <div class="container">
-        <h2 class="mt-5 mb-3">Warehouse Register List</h2>
+        <h2 class="mt-5 mb-3">
+          <%= __('pv_MyWH_wh_reg_list')%>
+        </h2>
         <% for(var i = 0; i < Object.keys(enrollItems).length; i++) { %>
         <p id="whID0<%= i %>" style="display: none"><%= enrollItems['item' + i].warehouseID %></p>
         <p id="reqID0<%= i %>" style="display: none"><%= enrollItems['item' + i].reqID %></p>
@@ -84,10 +96,10 @@
         <table class="board-table table ">
           <thead class="thead-dark">
             <tr>
-              <th>Warehouse ID</th>
-              <th>Warehouse Name</th>
-              <th>State</th>
-              <th>Info</th>
+              <th><%= __('pv_MyWH_wh_id')%></th>
+              <th><%= __('pv_MyWH_wh_name')%></th>
+              <th><%= __('pv_MyWH_state')%></th>
+              <th><%= __('pv_MyWH_info')%></th>
               <th></th>
             </tr>
           </thead>
@@ -102,11 +114,15 @@
                 <form action="/Provider/EnrollWHInfo" method="POST">
                   <input id="warehouseID" name="warehouseID" type="hidden"
                     value="<%= enrollItems['item' + i].warehouseID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info">
+                    <%= __('pv_MyWH_info')%>
+                  </button>
                 </form>
               </td>
               <td id="td-btn">
-                <button class="btn btn-td btn-grey" onclick="pvClick(0,<%= i %>, 0)" type="button">Cancel</button>
+                <button class="btn btn-td btn-grey" onclick="pvClick(0,<%= i %>, 0)" type="button">
+                  <%= __('pv_MyWH_cancel')%>
+                </button>
               </td>
             </tr>
             <% } %>
@@ -114,17 +130,23 @@
             <tr class="table-danger">
               <td><%= enrollItems['item' + i].warehouseID %></td>
               <td><%= enrollItems['item' + i].warehouseName %></td>
-              <td>Rejected by Admin</td>
+              <td>
+                <%= __('pv_MyWH_rejected_admin')%>
+              </td>
               <td id="td-btn">
                 <form action="/Provider/EnrollWHInfo" method="POST">
                   <input id="warehouseID" name="warehouseID" type="hidden"
                     value="<%= enrollItems['item' + i].warehouseID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info">
+                    <%= __('pv_MyWH_info')%>
+                  </button>
                 </form>
               </td>
               <input id="enrollRejectCmt<%= i %>" type="hidden" value="<%= enrollItems['item' + i].rejectCmt %>">
               <td id="td-btn">
-                <button class="btn btn-td btn-info" onclick="pvClick(0, <%= i %>, 2)" type="button">View</button>
+                <button class="btn btn-td btn-info" onclick="pvClick(0, <%= i %>, 2)" type="button">
+                  <%= __('pv_MyWH_view')%>
+                </button>
               </td>
             </tr>
             <% } %>
@@ -133,16 +155,18 @@
         </table>
       </div>
       <div class="container">
-        <h2 class="mt-5 mb-3">Warehouse Buy Request List</h2>
+        <h2 class="mt-5 mb-3">
+          <%= __('pv_MyWH_wh_by_req_list')%>
+        </h2>
         <table class="board-table table">
           <thead class="thead-dark">
             <tr>
-              <th>Req ID</th>
-              <th>Warehouse ID</th>
-              <th>Buyer ID</th>
-              <th>State</th>
-              <th>Rental Period</th>
-              <th>Info</th>
+              <th><%= __('pv_MyWH_req_id')%></th>
+              <th><%= __('pv_MyWH_wh_id')%></th>
+              <th><%= __('pv_MyWH_by_id')%></th>
+              <th><%= __('pv_MyWH_state')%></th>
+              <th><%= __('pv_MyWH_rent_period')%></th>
+              <th><%= __('pv_MyWH_info')%></th>
               <th></th>
             </tr>
           </thead>
@@ -155,17 +179,22 @@
               <td><%= requestItems['item' + i].reqID %></td>
               <td><%= requestItems['item' + i].warehouseID %></td>
               <td><%= requestItems['item' + i].buyerID %></td>
-              <td>Pending Approval</td>
+              <td><%= __('pv_MyWH_pending')%></td>
               <td><%= requestItems['item' + i].startDate %> ~ <%= requestItems['item' + i].endDate %></td>
               <td id="td-btn">
                 <form action="/Provider/RequestWHInfo" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= requestItems['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info">
+                    <%= __('pv_MyWH_info')%>
+                  </button>
                 </form>
               </td>
               <td id="td-btn">
-                <button class="btn btn-td btn-success" onclick="pvClick(1, <%= i %>, 1)" type="button">Approve</button>
-                <button class="btn btn-td btn-danger" onclick="pvClick(1, <%= i %>, 0)" type="button">Reject</button>
+                <button class="btn btn-td btn-success" onclick="pvClick(1, <%= i %>, 1)" type="button">
+                  <%= __('pv_MyWH_approve')%>
+                </button>
+                <button class="btn btn-td btn-danger" onclick="pvClick(1, <%= i %>, 0)" type="button">
+                  <%= __('pv_MyWH_reject')%></button>
               </td>
             </tr>
 
@@ -174,12 +203,14 @@
               <td><%= requestItems['item' + i].reqID %></td>
               <td><%= requestItems['item' + i].warehouseID %></td>
               <td><%= requestItems['item' + i].buyerID %></td>
-              <td>Waiting for Payment</td>
+              <td><%= __('pv_MyWH_wait')%></td>
               <td><%= requestItems['item' + i].startDate %> ~ <%= requestItems['item' + i].endDate %></td>
               <td id="td-btn">
                 <form action="/Provider/RequestWHInfo" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= requestItems['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info">
+                    <%= __('pv_MyWH_info')%>
+                  </button>
                 </form>
               </td>
               <td id="td-btn">
@@ -191,12 +222,14 @@
               <td><%= requestItems['item' + i].reqID %></td>
               <td><%= requestItems['item' + i].warehouseID %></td>
               <td><%= requestItems['item' + i].buyerID %></td>
-              <td>Canceled by Buyer</td>
+              <td><%= __('pv_MyWH_canceled')%> Buyer</td>
               <td><%= requestItems['item' + i].startDate %> ~ <%= requestItems['item' + i].endDate %></td>
               <td id="td-btn">
                 <form action="/Provider/RequestWHInfo" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= requestItems['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info">
+                    <%= __('pv_MyWH_info')%>
+                  </button>
                 </form>
               </td>
               <td id="td-btn">

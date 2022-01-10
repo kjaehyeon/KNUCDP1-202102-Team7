@@ -15,9 +15,13 @@
     </header>
     <section>
       <div class="container">
-        <h2 class="mt-5 mb-3">Edit</h2>
+        <h2 class="mt-5 mb-3">
+          <%= __('user_Edit_edit')%>
+        </h2>
         <div class="form-group row">
-          <label for="memberID" class="col-sm-2 col-form-label">ID</label>
+          <label for="memberID" class="col-sm-2 col-form-label">
+            <%= __('user_Edit_id')%>
+          </label>
           <div class="col-sm-3">
             <input type="text" id="memberID" name="memberID" value="<%= session.memberID %>" disabled="disabled"
               class="form-control">
@@ -27,9 +31,13 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="password" class="col-sm-2 col-form-label">Password</label>
+          <label for="password" class="col-sm-2 col-form-label">
+            <%= __('user_Edit_pw')%>
+          </label>
           <div class="col-sm-2">
-            <label id="form-control-btn" class="form-control btn-form" for="change_password">Change Password</label>
+            <label id="form-control-btn" class="form-control btn-form" for="change_password">
+              <%= __('user_Edit_change_pw')%>
+            </label>
             <input type="button" class="upload-btn-hidden" id='change_password' name='change_password'
               onclick=location.href="/User/Edit/PW"><br>
             <% if(locals.err){ %>
@@ -38,7 +46,9 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="type" class="col-sm-2 col-form-label">Type</label>
+          <label for="type" class="col-sm-2 col-form-label">
+            <%= __('user_Edit_type')%>
+          </label>
           <div class="col-sm-3">
             <input type="text" id="type" name="type" value="<%= session.type %>" disabled="disabled"
               class="form-control">
@@ -48,7 +58,9 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="name" class="col-sm-2 col-form-label">Name</label>
+          <label for="name" class="col-sm-2 col-form-label">
+            <%= __('user_Edit_name')%>
+          </label>
           <div class="col-sm-3">
             <input type="text" id="name" name="name" value="<%= session.username %>" disabled="disabled"
               class="form-control">
@@ -59,7 +71,9 @@
         </div>
 
         <div class="form-group row">
-          <label for="national" class="col-sm-2 col-form-label">National</label>
+          <label for="national" class="col-sm-2 col-form-label">
+            <%= __('user_Edit_national')%>
+          </label>
           <div class="col-sm-8">
             <input type="text" id="national" name="national" value="<%= session.national %>" class="form-control">
             <% if(locals.err){ %>
@@ -69,7 +83,9 @@
         </div>
 
         <div class="form-group row">
-          <label for="email" class="col-sm-2 col-form-label">Email</label>
+          <label for="email" class="col-sm-2 col-form-label">
+            <%= __('user_Edit_email')%>
+          </label>
           <div class="col-sm-8">
             <input type="text" id="email" name="email" value="<%= session.email %>" class="form-control">
             <% if(locals.err){ %>
@@ -77,7 +93,9 @@
             <% } %>
           </div>
           <div class="col-sm-2">
-            <label id="form-control-btn" class="form-control btn-form" for="sendAuthCode">Send Auth Code</label>
+            <label id="form-control-btn" class="form-control btn-form" for="sendAuthCode">
+              <%= __('user_Edit_send_auth')%>
+            </label>
             <input type="button" class="upload-btn-hidden" id='sendAuthCode' name='sendAuthCode'
               value="email Check" disabled><br>
           </div>
@@ -86,19 +104,34 @@
         <div class="form-group row" id="div_auth" style="display: none;">
           <label for="authCode" class="col-sm-2 col-form-label"></label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="authCode" name="authCode" placeholder="Auth Code" />
+            <input
+              type="text"
+              class="form-control"
+              id="authCode"
+              name="authCode"
+              placeholder="<%= __('user_Edit_send_auth_ph')%>" />
             <% if(locals.err){ %>
               <span class="invalid-feedback"><%= locals.err %></span>
             <% } %>
           </div>
           <div class="col-sm-2">
-            <label id="form-control-btn" class="form-control btn-form" for="codeCheck">Check</label>
-            <input type="button" class="upload-btn-hidden" id="codeCheck" name="codeCheck" value="check"><br>
+            <label id="form-control-btn" class="form-control btn-form" for="codeCheck">
+              <%= __('user_Edit_check')%>
+            </label>
+            <input
+              type="button"
+              class="upload-btn-hidden"
+              id="codeCheck"
+              name="codeCheck"
+              value="<%= __('user_Edit_check_ph')%>">
+              <br>
           </div>
         </div>
 
         <div class="form-group row">
-          <label for="contactNumber" class="col-sm-2 col-form-label">Tel</label>
+          <label for="contactNumber" class="col-sm-2 col-form-label">
+            <%= __('user_Edit_tel')%>
+          </label>
           <div class="col-sm-8">
             <input type="text" id="contactNumber" name="contactNumber" value="<%= session.contactNumber %>"
               class="form-control">
@@ -109,22 +142,42 @@
         </div>
 
         <div class="form-group row">
-          <label for="address" class="col-sm-2 col-form-label">Address</label>
+          <label for="address" class="col-sm-2 col-form-label">
+            <%=__('user_Edit_address')%>
+          </label>
           <div class="col-sm-2">
-            <input type="text" class="form-control" id="zipcode" name="zipcode" value="<%= session.zipcode %>" placeholder="zipcode">
+            <input
+              type="text"
+              class="form-control"
+              id="zipcode"
+              name="zipcode"
+              value="<%= session.zipcode %>"
+              placeholder="<%= __('user_Edit_zip_ph')%>">
           </div>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="address" name="address" value="<%=session.address%>" placeholder="address">
+            <input
+              type="text"
+              class="form-control"
+              id="address"
+              name="address"
+              value="<%=session.address%>"
+              placeholder="<%= __('user_Edit_address_ph')%>">
             <% if(locals.err){ %>
             <span class="invalid-feedback"><%= locals.err %></span>
             <% } %>
           </div>
         </div>
         <div class="center-wrap">
-          <button class="btn btn-main btn-two-l" id="save">Save</button>
+          <button class="btn btn-main btn-two-l" id="save">
+            <%= __('user_Edit_save')%>
+          </button>
         </div>
         <form action="/" method="get">
-          <input type="button" class="btn btn-grey btn-two-l ml-1" onclick=location.href="/User/Show" value="Back">
+          <input
+            type="button"
+            class="btn btn-grey btn-two-l ml-1"
+            onclick=location.href="/User/Show"
+            value="<%= __('user_Edit_back')%>">
         </form>
       </div>
     </section>

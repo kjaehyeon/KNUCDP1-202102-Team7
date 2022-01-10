@@ -30,7 +30,7 @@ exports.login = async (req, res, pool) => {
                             zipcode: results[0].zipcode,
                             national: results[0].national
                         }, secret_key, {
-                            expiresIn: '2h',
+                            expiresIn: '1m',
                             issuer: 'autoin.com',
                             subject: 'user_info'
                         });
@@ -39,7 +39,9 @@ exports.login = async (req, res, pool) => {
                             token
                         });
                     } else {
-                        throw new Error('login fail');
+                        res.status(400).json({
+                            message: 'login fail'
+                        });
                     }
                 });
             }

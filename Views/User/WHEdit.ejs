@@ -17,15 +17,21 @@
     </header>
     <section>
       <div class="container">
-        <h2 class="mt-5 mb-5">Edit Warehouse</h2>
+        <h2 class="mt-5 mb-5">
+          <%= __('WHEdit_edit')%>
+        </h2>
         <form action="Edit/Save" method="post" enctype="multipart/form-data" id="enrollForm" onsubmit="return false;">
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Warehouse Name (창고 이름)</label>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_wh_name')%>
+            </label>
             <div class="col-sm-4"><input type="text" class="form-control" value="<%= wh.warehouseName %>" readonly>
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Warehouse Address (창고 주소)</label>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_wh_address')%>
+            </label>
             <div class="col-sm-2">
               <input type="text" class="form-control" value="<%= wh.zipcode %>" readonly>
             </div>
@@ -43,64 +49,154 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Email (이메일)</label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="warehouseEmail" name="warehouseEmail"
-                value="<%= wh.warehouseEmail %>" placeholder="Contact Email"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_email')%>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="warehouseEmail"
+                name="warehouseEmail"
+                value="<%= wh.warehouseEmail %>"
+                placeholder="<%= __('WHEdit_email_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Tel (창고 전화 번호)</label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="warehouseTel" name="warehouseTel"
-                value="<%= wh.warehouseTEL %>" placeholder="Telephone Number (ex. 010-0000-0000)"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_tel')%>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="warehouseTel"
+                name="warehouseTel"
+                value="<%= wh.warehouseTEL %>"
+                placeholder="<%= __('WHEdit_tel_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">LandArea (총 면적)</label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="landArea" name="landArea"
-                value="<%= wh.landArea %>" placeholder="Numbers Only (m²)"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_land_area')%>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="landArea"
+                name="landArea"
+                value="<%= wh.landArea %>"
+                placeholder="<%= __('WHEdit_area_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">FloorArea (층 면적)</label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="floorArea" name="floorArea"
-                value="<%= wh.floorArea %>" placeholder="Numbers Only (m²)"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_floor_area')%>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="floorArea"
+                name="floorArea"
+                value="<%= wh.floorArea %>"
+                placeholder="<%= __('WHEdit_area_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Useable Area (사용가능 면적)</label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="useableArea" name="useableArea"
-                value="<%= wh.useableArea %>" placeholder="Numbers Only (m²)"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_usable_area')%>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="useableArea"
+                name="useableArea"
+                value="<%= wh.useableArea %>"
+                placeholder="<%= __('WHEdit_area_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Price Per m<sup>2</sup> (m²당 가격)</label>
-            <div class="col-sm-4"><input type="text" class="form-control" id="price" name="price"
-                value="<%= wh.perprice %>" placeholder="(ex. 100$)"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_price_per')%>
+            </label>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                id="price"
+                name="price"
+                value="<%= wh.perprice %>"
+                placeholder="<%= __('WHEdit_price_per_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Info Comment (추가 정보)</label>
-            <div class="col-sm-9"><input type="text" class="form-control" id="infoComment" name="infoComment"
-                value="<%= wh.infoComment %>" placeholder="Information Comment"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_info')%>
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="infoComment"
+                name="infoComment"
+                value="<%= wh.infoComment %>"
+                placeholder="<%= __('WHEdit_info_ph')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Etc Comment (기타 정보)</label>
-            <div class="col-sm-9"><input type="text" class="form-control" id="etcComment" name="etcComment"
-                value="<%= wh.etcComment %>" placeholder="Etc Comment"></div>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_etc')%>
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                id="etcComment"
+                name="etcComment"
+                value="<%= wh.etcComment %>"
+                placeholder="<%= __('WHEdit_etc')%>">
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Warehouse Image (창고 사진)</label>
+            <label class="col-sm-3 col-form-label">
+              <%= __('WHEdit_wh_img')%>
+            </label>
             <div class="col-sm-7">
-              <input type="text" class="form-control" id="img_name" name="img_name" readonly="readonly"
-                disabled="disabled" placeholder="Warehouse Image(1개만 등록 가능)">
+              <input
+                type="text"
+                class="form-control"
+                id="img_name"
+                name="img_name"
+                readonly="readonly"
+                disabled="disabled"
+                placeholder="<%= __('WHEdit_wh_img_ph')%>">
             </div>
             <div class="col-sm-2">
-              <label class="form-control btn-primary" for="profile_img" style="text-align:center;">Upload Image</label>
+              <label class="form-control btn-primary" for="profile_img" style="text-align:center;">
+                <%= __('WHEdit_upload_img')%>
+              </label>
               <input type='file' class="upload-btn-hidden" id='profile_img' name='profile_img' accept='image/*'
                 multiple />
             </div>
           </div>
           <input type="hidden" name="warehouseID" value="<%= wh.warehouseID %>">
           <div class="center-wrap">
-            <input type="submit" class="btn btn-main btn-two-l" id="enrollBtn" value="Apply">
+            <input
+              type="submit"
+              class="btn btn-main btn-two-l"
+              id="enrollBtn"
+              value="<%= __('WHEdit_apply')%>">
           </div>
         </form>
         <div>
-          <input type="submit" class="btn btn-grey btn-two-l ml-1" id="cancelBtn" value="Cancel"
+          <input
+            type="submit"
+            class="btn btn-grey btn-two-l ml-1"
+            id="cancelBtn"
+            value="<%= __('WHEdit_cancel')%>"
             onclick="history.back()">
         </div>
       </div>
