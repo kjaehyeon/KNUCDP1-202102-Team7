@@ -17,21 +17,21 @@
         <div class="container">
           <div class="content-center">
             <h1 class="h1-seo">Autoinven</h1>
-            <h3 style="font-weight:600; font-style: italic;">Connect to the Global Automotive Industry</h3>
+            <h3 style="font-weight:600; font-style: italic;"><%= __('main_slogan')%></h3>
             <div style="font-size:17px; text-align:left; padding: 45px 0 30px 40px;margin-bottom: 40px;">
-              <p>· Provide a warehouse and earn money!</p>
-              <p>· Use the space you need for as long as you need at an affordable price!</p>
-              <p>· Check the status of the warehouse where goods are stored in real time!</p>
-              <p>· Start autoinven right now!</p>
+              <p>· <%= __('main_p1')%></p>
+              <p>· <%= __('main_p2')%></p>
+              <p>· <%= __('main_p3')%></p>
+              <p>· <%= __('main_p4')%></p>
             </div>
             <% if(!session.memberID) { %>
             <div style="display:inline-block">
-              <button class="btn btn-main btn-round btn-lg m-3" onclick="location.href = '/User/Login'">Start Autoinven</button>
-              <button class="btn btn-main btn-round btn-lg m-3" onclick="location.href = '/User/Help'">More Information</button>
+              <button class="btn btn-main btn-round btn-lg m-3" onclick="location.href = '/User/Login'"><%= __('main_start')%></button>
+              <button class="btn btn-main btn-round btn-lg m-3" onclick="location.href = '/User/Help'"><%= __('main_moreinfo')%></button>
             </div>
             <% } else { %>
               <div style="display:inline-block">
-                <button class="btn btn-main btn-round btn-lg m-3" onclick="location.href = '/User/Help'">More Information</button>
+                <button class="btn btn-main btn-round btn-lg m-3" onclick="location.href = '/User/Help'"><%= __('main_moreinfo')%></button>
               </div>
             <% } %>
           </div>

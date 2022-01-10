@@ -86,35 +86,35 @@
       </div>
       <% if (session.type === 'admin') { %>
       <div class="container-info">
-        <h2 class="mt-5 mb-3">Provider Info</h2>
+        <h2 class="mt-5 mb-3"><%= __('ad_Provider_info') %></h2>
         <table class="table table-bordered">
           <tbody>
             <tr>
-              <th class="thead-dark-vertical">Provider ID</th>
+              <th class="thead-dark-vertical"><%= __('Provider_id') %></th>
               <td><%= PVitems.memberID %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Provider Name</th>
+              <th class="thead-dark-vertical"><%= __('Provider_name') %></th>
               <td><%= PVitems.name %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">National</th>
+              <th class="thead-dark-vertical"><%= __('ad_national') %></th>
               <td><%= PVitems.national %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Zip Code</th>
+              <th class="thead-dark-vertical"><%= __('ad_zipcode') %></th>
               <td><%= PVitems.zipcode %></td>
             </tr>
             <tr >
-              <th class="thead-dark-vertical">Address</th>
+              <th class="thead-dark-vertical"><%= __('ad_address') %></th>
               <td><%= PVitems.address %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Email</th>
+              <th class="thead-dark-vertical"><%= __('ad_email') %></th>
               <td><%= PVitems.email %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Tel</th>
+              <th class="thead-dark-vertical"><%= __('ad_tel') %></th>
               <td><%= PVitems.contactNumber %></td>
             </tr>
           </tbody>
@@ -122,16 +122,16 @@
       </div>
       <% } %>
       <div class="container">
-        <h2 class="mt-5 mb-3">Warehouse Usage</h2>
+        <h2 class="mt-5 mb-3"><%= __('by_Warehous_Usage') %></h2>
         <table id="t1" class="board-table table">
           <thead class="thead-dark">
             <tr>
-              <th>Req ID</th>
-              <th>Buyer ID</th>
-              <th>Rental Period</th>
-              <th>Rental Area</th>
-              <th>Price</th>
-              <th>Info</th>
+              <th><%= __('Request_id') %></th>
+              <th><%= __('Buyer_id') %></th>
+              <th><%= __('Rental_Period') %></th>
+              <th><%= __('Rental_Area') %></th>
+              <th><%= __('Rental_Price') %></th>
+              <th><%= __('Info') %></th>
             </tr>
           </thead>
           <tbody>
@@ -146,41 +146,41 @@
                 <button id="modal_btn" class="btn btn-td btn-info" onclick="curItemsClick('<%= i %>')">INFO</button>
                 <div class="modal_wrap" id="curItems<%= i %>" style="display:none;">
                   <div class="modal_body">
-                    <h2 class="mt-5 mb-3">Buyer ID Info</h2>
+                    <h2 class="mt-5 mb-3"><%= __('ad_buyer_info') %></h2>
                     <table class="table table-bordered">
                       <tbody>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Buyer ID</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('Buyer_id') %></th>
                           <td id="modal_border"><%= curItems['item' + i].buyerID %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Buyer Name</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('Buyer_name') %></th>
                           <td id="modal_border"><%= curItems['item' + i].name %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">National</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_national') %></th>
                           <td id="modal_border"><%= curItems['item' + i].national %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Zip Code</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_zipcode') %></th>
                           <td id="modal_border"><%= curItems['item' + i].zipcode %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Address</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_address') %></th>
                           <td id="modal_border"><%= curItems['item' + i].address %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Email</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_email') %></th>
                           <td id="modal_border"><%= curItems['item' + i].email %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Tel</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_tel') %></th>
                           <td id="modal_border"><%= curItems['item' + i].contactNumber %></td>
                         </tr>
                       </tbody>
                     </table>
                     <div class="modal_close">
-                      <button type="button" class="btn btn-grey" onclick="curItemsClose('<%= i %>')">Close</button>
+                      <button type="button" class="btn btn-grey" onclick="curItemsClose('<%= i %>')"><%= __('close') %></button>
                     </div>
                   </div>
                 </div>
@@ -195,45 +195,45 @@
               <td id="area<%= i %>"><%= nextItems['item' + i].area %> m<sup>2</sup></td>
               <td id="amount<%= i %>"><%= nextItems['item' + i].amount %> $</td>
               <td id="td-btn">
-                <button id="modal_btn" class="btn btn-td btn-info" onclick="nextItemsClick('<%= i %>')">INFO</button>
+                <button id="modal_btn" class="btn btn-td btn-info" onclick="nextItemsClick('<%= i %>')"><%= __('Info_cap') %></button>
                 <div class="black_bg"></div>
                 <div class="modal_wrap" id="nextItems<%= i %>" style="display:none;">
                   <div class="modal_body">
-                    <h2 class="mt-5 mb-3">Buyer ID Info</h2>
+                    <h2 class="mt-5 mb-3"><%= __('ad_buyer_info') %></h2>
                     <table class="table table-bordered">
                       <tbody>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Buyer ID</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('Buyer_id') %></th>
                           <td id="modal_border"><%= nextItems['item' + i].buyerID %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Buyer Name</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('Buyer_name') %></th>
                           <td id="modal_border"><%= nextItems['item' + i].name %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">National</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_national') %></th>
                           <td id="modal_border"><%= nextItems['item' + i].national %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Zip Code</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_zipcode') %></th>
                           <td id="modal_border"><%= nextItems['item' + i].zipcode %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Address</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_address') %></th>
                           <td id="modal_border"><%= nextItems['item' + i].address %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Email</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_email') %></th>
                           <td id="modal_border"><%= nextItems['item' + i].email %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Contact Number</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('main_contact_number') %></th>
                           <td id="modal_border"><%= nextItems['item' + i].contactNumber %></td>
                         </tr>
                       </tbody>
                     </table>
                     <div class="modal_close">
-                      <button type="button" class="btn btn-grey" onclick="nextItemsClose('<%= i %>')">Close</button>
+                      <button type="button" class="btn btn-grey" onclick="nextItemsClose('<%= i %>')"><%= __('close') %></button>
                     </div>
                   </div>
                 </div>
@@ -244,18 +244,18 @@
         </table>
       </div>
       <div class="container">
-        <h2 class="mt-5 mb-3">Previous Warehouse Usage
-          <button id="btnView" class="btn btn-big btn-main">View</button>
+        <h2 class="mt-5 mb-3"><%= __('by_previous_Warehous_Usage') %>
+          <button id="btnView" class="btn btn-big btn-main"><%= __('View_cap') %></button>
         </h2>
         <table id="t2" class="board-table table" style="display: none;">
           <thead class="thead-dark">
             <tr>
-              <th>Req ID</th>
-              <th>Buyer ID</th>
-              <th>Rental Period</th>
-              <th>Rental Area</th>
-              <th>Price</th>
-              <th>Info</th>
+              <th><%= __('Request_id') %></th>
+              <th><%= __('Buyer_id') %></th>
+              <th><%= __('Rental_Period') %></th>
+              <th><%= __('Rental_Area') %></th>
+              <th><%= __('Rental_Price') %></th>
+              <th><%= __('Info') %></th>
             </tr>
           </thead>
           <tbody>
@@ -267,45 +267,45 @@
               <td id="area<%= i %>"><%= preItems['item' + i].area %> m<sup>2</sup></td>
               <td id="amount<%= i %>"><%= preItems['item' + i].amount %> $</td>
               <td id="td-btn">
-                <button id="modal_btn" class="btn btn-td btn-info" onclick="preItemsClick('<%= i %>')">INFO</button>
+                <button id="modal_btn" class="btn btn-td btn-info" onclick="preItemsClick('<%= i %>')"><%= __('Info_cap') %></button>
                 <div class="black_bg"></div>
                 <div class="modal_wrap" id="preItems<%= i %>" style="display:none;">
                   <div class="modal_body">
-                    <h2 class="mt-5 mb-3">Buyer ID Info</h2>
+                    <h2 class="mt-5 mb-3"><%= __('ad_buyer_info') %></h2>
                     <table class="table table-bordered">
                       <tbody>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Buyer ID</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('Buyer_id') %></th>
                           <td id="modal_border"><%= preItems['item' + i].buyerID %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Buyer Name</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('Buyer_name') %></th>
                           <td id="modal_border"><%= preItems['item' + i].name %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">National</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_national') %></th>
                           <td id="modal_border"><%= preItems['item' + i].national %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Zip Code</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_zipcode') %></th>
                           <td id="modal_border"><%= preItems['item' + i].zipcode %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Address</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_address') %></th>
                           <td id="modal_border"><%= preItems['item' + i].address %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Email</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_email') %></th>
                           <td id="modal_border"><%= preItems['item' + i].email %></td>
                         </tr>
                         <tr>
-                          <th class="thead-dark-vertical" id="modal_border">Tel</th>
+                          <th class="thead-dark-vertical" id="modal_border"><%= __('ad_tel') %></th>
                           <td id="modal_border"><%= preItems['item' + i].contactNumber %></td>
                         </tr>
                       </tbody>
                     </table>
                     <div class="modal_close">
-                      <button type="button" class="btn btn-grey" onclick="preItemsClose('<%= i %>')">Close</button>
+                      <button type="button" class="btn btn-grey" onclick="preItemsClose('<%= i %>')"><%= __('close') %></button>
                     </div>
                   </div>
                 </div>

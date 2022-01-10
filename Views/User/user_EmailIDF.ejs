@@ -2,9 +2,16 @@
 
 <body>
   <div>
-    <p>Following number is the register code you should use it to register member!</p>
-    <h2><%= authCode %></h2>
+    <img src="https://raw.githubusercontent.com/kjaehyeon/KNUCDP1-202102-Team7/master/Public/Image/inven_logo.png" style="width:17rem;">
+    <hr>
+    <h2 style="font-weight: bold;"><%= __('user_auth') %></h2>
+    <h2 style = "font-weight: bold; color: white; background-color:rgb(46, 46, 46); width:fit-content; padding:1rem;"><%= authCode %></h2>
+    <p style="font-size: 1rem; font-weight: bold;"><%= __('user_auth_ment1') %></p>
+    <p style="font-size: 1rem; font-weight: bold;"><%= __('user_auth_ment2') %></p>
+    <p style="font-size: 1rem; font-weight: bold;"><%= __('user_auth_ment3') %></p>
   </div>
+  <br>
+  <br>
+  Copyright © <span id="year"><%= this_year %> </span><a href="http://autoinven.com">AUTOINVEN</a>
 </body>
-
 </html>
