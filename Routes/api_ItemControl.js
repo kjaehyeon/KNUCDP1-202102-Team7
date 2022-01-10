@@ -51,6 +51,7 @@ exports.receivedItem = async function receivedItem(req, res, pool) {
         let [it_id] = await connection.query(`SELECT it_id FROM Item WHERE qrcode='${qr}';`);
         // item이 없을 경우엔 에러
         if (it_id.length == 0) {
+            res.status(400);
             throw new Error('err: Item is empty');
         }
         it_id = it_id[0].it_id;
@@ -90,6 +91,7 @@ exports.releaseItem = async function releaseItem(req, res, pool) {
         let [it_id] = await connection.query(`SELECT it_id FROM Item WHERE qrcode='${qr}';`);
         // item이 없을 경우엔 에러
         if (it_id.length == 0) {
+            res.status(400);
             throw new Error('err: Item is empty');
         }
         it_id = it_id[0].it_id;
