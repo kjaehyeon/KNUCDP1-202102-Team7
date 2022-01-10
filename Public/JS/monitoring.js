@@ -175,8 +175,8 @@ const setSocketConnection = (warehouse_info) => {
                 const sensor_val = JSON.parse(sensor.data);
                 const temperature = sensor_val.temperature.toFixed(1);
                 const humidity = sensor_val.humidity.toFixed(1);
-                const co = Math.round(sensor_val.co);
-                const lpg = Math.round(sensor_val.lpg);
+                const co = sensor_val.co.toFixed(2);
+                const lpg = sensor_val.lpg.toFixed(2);
 
                 temperature_array.unshift(temperature);
                 temperature_array.pop();
