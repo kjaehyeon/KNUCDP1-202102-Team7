@@ -16,69 +16,69 @@
     </header>
     <section>
       <div class="container-info">
-        <h2 class="mt-5 mb-3">Warehouse Info
+        <h2 class="mt-5 mb-3"><%= __('ad_Warehouse_info') %>
           <% if (WHitems.iotStat === 'Y') { %>
           <button class="btn btn-big btn-main" onclick="btnClick('pv', 'iot')">IoT</button>
           <% } %>
           <% if (session.type === 'provider') { %>
-          <button class="btn btn-big btn-info two-btn-l ml-1" onclick="btnClick('pv', 'edit')">Edit</button>
+          <button class="btn btn-big btn-info two-btn-l ml-1" onclick="btnClick('pv', 'edit')"><%= __('user_edit') %></button>
           <% } %>
         </h2>
         <table class="table table-bordered">
           <tbody>
             <tr>
-              <th class="thead-dark-vertical">Warehouse ID</th>
+              <th class="thead-dark-vertical"><%= __('warehouse_id') %></th>
               <td><%= WHitems.warehouseID %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Warehouse Name</th>
+              <th class="thead-dark-vertical"><%= __('warehouse_name') %></th>
               <td><%= WHitems.warehouseName %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Zip Code</th>
+              <th class="thead-dark-vertical"><%= __('ad_zipcode') %></th>
               <td><%= WHitems.zipcode %></td>
             </tr>
             <tr>
-              <th rowspan="2" class="thead-dark-vertical">Address</th>
+              <th rowspan="2" class="thead-dark-vertical"><%= __('ad_address') %></th>
               <td><%= WHitems.address %></td>
             </tr>
             <tr>
               <td><%= WHitems.addressDetail %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Email</th>
+              <th class="thead-dark-vertical"><%= __('ad_email') %></th>
               <td><%= WHitems.warehouseEmail %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Tel</th>
+              <th class="thead-dark-vertical"><%= __('ad_tel') %></th>
               <td><%= WHitems.warehouseTEL %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Registered Date</th>
+              <th class="thead-dark-vertical"><%= __('ad_registered_date') %></th>
               <td><%= WHitems.enrolledDate %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Land Area</th>
+              <th class="thead-dark-vertical"><%= __('ad_Land_Area') %></th>
               <td><%= WHitems.landArea %> m<sup>2</sup></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Floor Area</th>
+              <th class="thead-dark-vertical"><%= __('ad_Floor_Area') %></th>
               <td><%= WHitems.floorArea %> m<sup>2</sup></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Usable Area</th>
+              <th class="thead-dark-vertical"><%= __('ad_Usable_Area') %></th>
               <td><%= WHitems.useableArea %> m<sup>2</sup></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Price Per m<sup>2</sup></th>
+              <th class="thead-dark-vertical"><%= __('ad_Price_Per') %> m<sup>2</sup></th>
               <td><%= WHitems.perprice %> $</td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Info Comment</th>
+              <th class="thead-dark-vertical"><%= __('ad_Info_Comment') %></th>
               <td><%= WHitems.infoComment %></td>
             </tr>
             <tr>
-              <th class="thead-dark-vertical">Etc Comment</th>
+              <th class="thead-dark-vertical"><%= __('ad_Etc_Comment') %></th>
               <td><%= WHitems.etcComment %></td>
             </tr>
           </tbody>
