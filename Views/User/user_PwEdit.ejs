@@ -16,32 +16,32 @@
     </header>
     <section>
       <div class="container-info">
-        <h2 class="mt-5 mb-3">Edit Password</h2>
+        <h2 class="mt-5 mb-3"><%= __('user_pw_head') %></h2>
         <form action="/User/Edit/PW" method="post" class="form" id="form" name="form">
           <div class="form-group row">
-            <label for="oldPw" class="col-sm-3 col-form-label">Current Password</label>
+            <label for="oldPw" class="col-sm-3 col-form-label"><%= __('user_pw_current') %></label>
             <div class="col-sm-9">
               <input type="password" id="oldPw" name="oldPw" class="form-control">
             </div>
           </div>
           <div class="form-group row">
-            <label for="newPw" class="col-sm-3 col-form-label">New Password</label>
+            <label for="newPw" class="col-sm-3 col-form-label"><%= __('user_pw_new') %></label>
             <div class="col-sm-9">
               <input type="password" id="newPw" name="newPw" class="form-control">
             </div>
           </div>
           <div class="form-group row">
-            <label for="pwChk" class="col-sm-3 col-form-label">Check New Password</label>
+            <label for="pwChk" class="col-sm-3 col-form-label"><%= __('user_pw_check') %></label>
             <div class="col-sm-9">
               <input type="password" id="pwChk" name="pwChk" class="form-control">
             </div>
           </div>
           <div class="center-wrap">
-            <button type="submit" class="btn btn-main btn-two-l">Save</button>
+            <button type="submit" class="btn btn-main btn-two-l"><%= __('user_pw_save') %></button>
           </div>
         </form>
         <form action="/" method="get">
-          <input type="button" class="btn btn-grey btn-two-l ml-1" onclick=location.href="/User/Edit" value="Back">
+          <input type="button" class="btn btn-grey btn-two-l ml-1" onclick=location.href="/User/Edit" value="<%= __('user_pw_back') %>">
         </form>
       </div>
     </section>

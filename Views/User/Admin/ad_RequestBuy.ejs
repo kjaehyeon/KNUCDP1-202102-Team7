@@ -15,16 +15,16 @@
     </header>
     <section>
       <div class="container">
-        <h2 class="mt-5 mb-3">Warehouse Buy Request list</h2>
+        <h2 class="mt-5 mb-3"><%= __('ad_IoTTest_rb') %></h2>
         <table class="board-table table ">
           <thead class="thead-dark">
             <tr>
-              <th>Req ID</th>
-              <th>Warehouse ID</th>
-              <th>Buyer ID</th>
-              <th>State</th>
-              <th>Rental Period</th>
-              <th>Info</th>
+              <th><%= __('Request_id') %></th>
+              <th><%= __('warehouse_id') %></th>
+              <th><%= __('Buyer_id') %></th>
+              <th><%= __('State') %></th>
+              <th><%= __('Rental_Period') %></th>
+              <th><%= __('Info') %></th>
               <th></th>
             </tr>
           </thead>
@@ -37,17 +37,17 @@
               <td><%= items['item' + i].reqID %></td>
               <td><%= items['item' + i].warehouseID %></td>
               <td><%= items['item' + i].buyerID %></td>
-              <td>Pending Approval</td>
+              <td><%= __('Pending_Approval') %></td>
               <td><%= items['item' + i].startDate %> ~ <%= items['item' + i].endDate %></td>
               <td id="td-btn">
                 <form action="/Admin/RequestWHInfo" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= items['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                 </form>
               </td>
               <td id="td-btn">
-                <button type="button" class="btn btn-td btn-success" onclick="adClick(<%= i %>, 1)">Approve</button>
-                <button type="button" class="btn btn-td btn-danger" onclick="adClick(<%= i %>, 0)">Reject</button>
+                <button type="button" class="btn btn-td btn-success" onclick="adClick(<%= i %>, 1)"><%= __('Approve') %></button>
+                <button type="button" class="btn btn-td btn-danger" onclick="adClick(<%= i %>, 0)"><%= __('Reject') %></button>
               </td>
             </tr>
 
@@ -56,12 +56,12 @@
               <td><%= items['item' + i].reqID %></td>
               <td><%= items['item' + i].warehouseID %></td>
               <td><%= items['item' + i].buyerID %></td>
-              <td>In Progress</td>
+              <td><%= __('In_Progress') %></td>
               <td><%= items['item' + i].startDate %> ~ <%= items['item' + i].endDate %></td>
               <td id="td-btn">
                 <form action="/Admin/RequestWHInfo" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= items['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                 </form>
               </td>
               <td></td>
@@ -72,16 +72,16 @@
               <td><%= items['item' + i].reqID %></td>
               <td><%= items['item' + i].warehouseID %></td>
               <td><%= items['item' + i].buyerID %></td>
-              <td>Rejected by Provider</td>
+              <td><%= __('Rejected_by_Provider') %></td>
               <td><%= items['item' + i].startDate %> ~ <%= items['item' + i].endDate %></td>
               <td id="td-btn">
                 <form action="/Admin/RequestWHInfo" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= items['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                 </form>
               </td>
               <td id="td-btn"><button type="button" class="btn btn-td btn-info"
-                  onclick="adClick(<%= i %>, 2)">View</button></td>
+                  onclick="adClick(<%= i %>, 2)"><%= __('View_cap') %></button></td>
             </tr>
 
             <% } else if (items['item' + i].reqType.includes('CnlByBuyer')) { %>
@@ -89,16 +89,16 @@
               <td><%= items['item' + i].reqID %></td>
               <td><%= items['item' + i].warehouseID %></td>
               <td><%= items['item' + i].buyerID %></td>
-              <td>Canceled by Buyer</td>
+              <td><%= __('Canceled_by_Buyer') %></td>
               <td><%= items['item' + i].startDate %> ~ <%= items['item' + i].endDate %></td>
               <td id="td-btn">
                 <form action="/Admin/RequestWHInfo" method="POST">
                   <input id="reqID" name="reqID" type="hidden" value="<%= items['item' + i].reqID %>">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                 </form>
               </td>
               <td id="td-btn"><button type="button" class="btn btn-td btn-info"
-                  onclick="adClick(<%= i %>, 2)">View</button></td>
+                  onclick="adClick(<%= i %>, 2)"><%= __('View_cap') %></button></td>
             </tr>
             <% } %>
 

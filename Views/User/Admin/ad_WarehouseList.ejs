@@ -15,15 +15,15 @@
     </header>
     <section>
       <div class="container">
-        <h2 class="mt-5 mb-3">Warehouse List</h2>
+        <h2 class="mt-5 mb-3"><%= __('ad_Warehouse_list') %></h2>
         <table class="board-table table " id="myWH">
           <thead class="thead-dark">
             <tr>
-              <th>Warehouse ID</th>
-              <th>Warehouse Name</th>
-              <th>Member ID</th>
+              <th><%= __('warehouse_id') %></th>
+              <th><%= __('warehouse_name') %></th>
+              <th><%= __('Member_id') %></th>
               <th>IoT</th>
-              <th>Info</th>
+              <th><%= __('Info') %></th>
             </tr>
           </thead>
           <tbody>
@@ -36,17 +36,17 @@
               <td id="td-btn">
                 <form action="/iot" method="POST">
                   <input id="wid" name="wid" type="hidden" value="<%= WHList['item' + i].warehouseID %>">
-                  <button class="btn btn-td btn-main">IoT Page</button>
+                  <button class="btn btn-td btn-main"><%= __('ad_iot_page') %></button>
                 </form>
               </td>
               <% } else if (WHList['item' + i].iotStat == "W"){ %>
-              <td>Pending Approval</td>
+              <td><%= __('Pending_Approval') %></td>
               <% } else if (WHList['item' + i].iotStat == "N"){ %>
-              <td>Not Currently Used</td>
+              <td><%= __('Not_Currently_Used') %></td>
               <% } %>
               <td id="td-btn">
                 <form action="/Admin/WHinfo" method="POST">
-                  <button class="btn btn-td btn-info">INFO</button>
+                  <button class="btn btn-td btn-info"><%= __('Info_cap') %></button>
                   <input id="warehouseID" name="warehouseID" type="hidden" value="<%= WHList['item' + i].warehouseID %>">
                 </form>
               </td>

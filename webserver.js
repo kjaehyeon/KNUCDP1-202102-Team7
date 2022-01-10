@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 const mysql = require('./Module/db');
 // 4) EJS Module 불러오기
 const ejs = require('ejs');
+exports.ejsMain = ejs;
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
 const apolloServer = require('./apollo');

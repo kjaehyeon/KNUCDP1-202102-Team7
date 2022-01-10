@@ -114,7 +114,7 @@ const generateRealtimeGraph = () => {
     });
 }
 
-const addClickListener = (warehouse_info) => {
+const addClickListener = (warehouse_info, status_text) => {
     $('.wd-screen').click(() => {
         window.open(warehouse_info.cctvServer);
     });
@@ -125,7 +125,12 @@ const addClickListener = (warehouse_info) => {
         chart1.options.scales.y.min = temperature_yaxis[0];
         chart1.options.scales.y.max = temperature_yaxis[1];
         graph = 'temperature';
-        $('.realtime .title span').html('&nbsp;Realtime Temperature');
+        if (status_text['locale'] == 'ko') {
+            $('.realtime .title span').html('&nbsp;실시간 온도');
+        } else{
+            $('.realtime .title span').html('&nbsp;Realtime Temperature');
+        }
+        
         chart1.update();
     })
     $('.humidity').click(() => {
@@ -135,7 +140,11 @@ const addClickListener = (warehouse_info) => {
         chart1.options.scales.y.min = humidity_yaxis[0];
         chart1.options.scales.y.max = humidity_yaxis[1];
         graph = 'humidity';
-        $('.realtime .title span').html('&nbsp;Realtime Humidity');
+        if (status_text['locale'] == 'ko') {
+            $('.realtime .title span').html('&nbsp;실시간 습도');
+        } else{
+            $('.realtime .title span').html('&nbsp;Realtime Humidity');
+        }
         chart1.update();
     })
     $('.co').click(() => {
@@ -145,7 +154,12 @@ const addClickListener = (warehouse_info) => {
         chart1.options.scales.y.min = co_yaxis[0];
         chart1.options.scales.y.max = co_yaxis[1];
         graph = 'co';
-        $('.realtime .title span').html('&nbsp;Realtime Co');
+        if (status_text['locale'] == 'ko') {
+            $('.realtime .title span').html('&nbsp;실시간 일산화탄소');
+        } else{
+            $('.realtime .title span').html('&nbsp;Realtime Co');
+        }
+        
         chart1.update();
     })
     $('.lpg').click(() => {
@@ -154,13 +168,17 @@ const addClickListener = (warehouse_info) => {
         chart1.data.datasets[0].borderColor = '#f29d00';
         chart1.options.scales.y.min = lpg_yaxis[0];
         chart1.options.scales.y.max = lpg_yaxis[1];
-        $('.realtime .title span').html('&nbsp;Realtime lpg');
+        if (status_text['locale'] == 'ko') {
+            $('.realtime .title span').html('&nbsp;실시간 LPG');
+        } else{
+            $('.realtime .title span').html('&nbsp;Realtime LPG');
+        }
         graph = 'lpg';
         chart1.update();
     })
 }
 
-const setSocketConnection = (warehouse_info) => {
+const setSocketConnection = (warehouse_info, status_text) => {
     const socket = io(warehouse_info.iotServer);
 
     socket.on('connect', () => {
@@ -243,18 +261,18 @@ const setSocketConnection = (warehouse_info) => {
                 $('.value-wrapper')[4].classList.remove('fine', 'bad');
                 if (sensor_val.flame == 1) {
                     $('.value-wrapper')[4].classList.add('fine');
-                    $('.value')[4].innerHTML = 'FINE';
+                    $('.value')[4].innerHTML = status_text['fine'];
                 } else {
                     $('.value-wrapper')[4].classList.add('bad');
-                    $('.value')[4].innerHTML = 'BAD';
+                    $('.value')[4].innerHTML = status_text['bad'];
                 }
                 $('.value-wrapper')[5].classList.remove('fine', 'bad');
                 if (sensor_val.vibration === 1) {
                     $('.value-wrapper')[5].classList.add('fine');
-                    $('.value')[5].innerHTML = 'FINE';
+                    $('.value')[5].innerHTML = status_text['fine'];
                 } else {
                     $('.value-wrapper')[5].classList.add('bad');
-                    $('.value')[5].innerHTML = 'BAD';
+                    $('.value')[5].innerHTML = status_text['bad'];
                 }
             })
             $(window).on('beforeunload', () => {
@@ -264,6 +282,7 @@ const setSocketConnection = (warehouse_info) => {
         }
     })
 }
+
 
 const generateWarehouseCapabilityChart = (warehouse_info) => {
     const useableArea = warehouse_info.useableArea;
@@ -314,10 +333,10 @@ const generateWarehouseCapabilityChart = (warehouse_info) => {
         plugins: [counter],
     });
 };
-const initMonitoringDashboard = (api_key, warehouse_info) => {
+const initMonitoringDashboard = (api_key, warehouse_info, status_text) => {
     setWeatherInfo(api_key, warehouse_info.latitude, warehouse_info.longitude);
     generateRealtimeGraph();
-    addClickListener(warehouse_info);
-    setSocketConnection(warehouse_info);
+    addClickListener(warehouse_info, status_text);
+    setSocketConnection(warehouse_info , status_text);
     generateWarehouseCapabilityChart(warehouse_info);
 };

@@ -51,25 +51,25 @@ async function getSensorData(type, IpAdd) {
     var ctx1 = $('#chart_temp');
     var ctx2 = $('#chart_humi');
     var ctx3 = $('#chart_co');
-    var ctx4 = $('#chart_pro');
-    //const body = '{"value":[{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"propane" : 15}]}';
+    var ctx4 = $('#chart_lpg');
+    //const body = '{"value":[{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15},{"temperature" : 32,"humidity" : 31,"co" : 12,"lpg" : 15}]}';
     //let returnValue = JSON.parse(body);
     let step = 0;
     let temp = new Array();
     let humi = new Array();
     let co = new Array();
-    let propane = new Array();
+    let lpg = new Array();
     let labels = new Array();
     let date = undefined;
     if (returnValue.length != 0) {
         // canvas
 
         for (step = 0; step < returnValue.length; step++) {
-            //console.log(returnValue[step]['temperature'], returnValue[step]['humidity'], returnValue[step]['co'], returnValue[step]['propane']);
+            //console.log(returnValue[step]['temperature'], returnValue[step]['humidity'], returnValue[step]['co'], returnValue[step]['lpg']);
             temp.push(returnValue[step]['temperature']);
             humi.push(returnValue[step]['humidity']);
             co.push(returnValue[step]['co']);
-            propane.push(returnValue[step]['propane']);
+            lpg.push(returnValue[step]['lpg']);
             if (type === 1) {
                 date = new Date(returnValue[step]['datetime'])
                 let hours = ('0' + date.getHours()).slice(-2);
@@ -123,17 +123,17 @@ async function getSensorData(type, IpAdd) {
         } else {
             chartMinCo = 0
         }
-        //Propane 최대, 최소, 평균
-        maxPro = Math.round(Math.max(...propane));
-        minPro = Math.round(Math.min(...propane));
-        document.getElementById("maxPro").innerHTML = maxPro + "ppm";
-        document.getElementById("minPro").innerHTML = minPro + "ppm";
-        document.getElementById("avgPro").innerHTML = Math.round(average(propane)) + "ppm";
-        chartMaxPro = Math.max(...propane) + 20;
+        //lpg 최대, 최소, 평균
+        maxlpg = Math.round(Math.max(...lpg));
+        minlpg = Math.round(Math.min(...lpg));
+        document.getElementById("maxlpg").innerHTML = maxlpg + "ppm";
+        document.getElementById("minlpg").innerHTML = minlpg + "ppm";
+        document.getElementById("avglpg").innerHTML = Math.round(average(lpg)) + "ppm";
+        chartMaxlpg = Math.max(...lpg) + 20;
         if (Math.min(...temp) <= 0) {
-            chartMinPro = Math.min(...propane) - 20;
+            chartMinlpg = Math.min(...lpg) - 20;
         } else {
-            chartMinPro = 0
+            chartMinlpg = 0
         }
     } else {
         Swal.fire({
@@ -147,8 +147,8 @@ async function getSensorData(type, IpAdd) {
         chartMinHumi = 0;
         chartMaxCo = 1000;
         chartMinCo = -500;
-        chartMaxPro = 1000;
-        chartMinPro = -500;
+        chartMaxlpg = 1000;
+        chartMinlpg = -500;
     }
     // 차트 데이터
     var config1 = {
@@ -261,8 +261,8 @@ async function getSensorData(type, IpAdd) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Propane',
-                data: propane,
+                label: 'LPG',
+                data: lpg,
                 fill: false,
                 borderColor: '#f29d00',
                 tension: 0.1
@@ -271,8 +271,8 @@ async function getSensorData(type, IpAdd) {
         options: {
             scales: {
                 y: {
-                    min: chartMinPro,
-                    max: chartMaxPro
+                    min: chartMinlpg,
+                    max: chartMaxlpg
                 }
             },
             plugins: {
@@ -281,7 +281,7 @@ async function getSensorData(type, IpAdd) {
                 },
                 title: {
                     display: true,
-                    text: 'Propane',
+                    text: 'lpg',
                     font: {
                         size: 25
                     }

@@ -31,16 +31,16 @@ def data_processing(parsed_data):
         if(not SensorValue.objects.filter(device_id=parsed_data["device_id"], datetime__year = now.year, datetime__month = now.month, 
                                         datetime__day = now.day, datetime__hour=now.hour, datetime__minute=now.minute).exists()):
             SensorValue.objects.create(device_id=parsed_data["device_id"], temperature=parsed_data["temperature"]
-                                        , humidity=parsed_data["humidity"], co=parsed_data["co"], propane=parsed_data["propane"],
+                                        , humidity=parsed_data["humidity"], co=parsed_data["co"], lpg=parsed_data["lpg"],
                                         flame=parsed_data["flame"], vibration=parsed_data["vibration"])
     #store statistic data of yesterday
     if(now.hour == 0 and now.minute == 1 and now.second == 0):
         yesterday = now - timedelta(days=1)
         if(not DayStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month, datetime__day=yesterday.day).exists()):
             yesterdayValueList : SensorValue = SensorValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month, datetime__day=yesterday.day)
-            aggreResult = yesterdayValueList.values('device_id').aggregate(Avg('temperature'), Avg('humidity'), Avg('co'), Avg('propane'))
+            aggreResult = yesterdayValueList.values('device_id').aggregate(Avg('temperature'), Avg('humidity'), Avg('co'), Avg('lpg'))
             tmp = DayStatValue(device_id=parsed_data["device_id"],temperature=aggreResult['temperature__avg'], humidity=aggreResult['humidity__avg'],
-                            co=aggreResult['co__avg'], propane=aggreResult['propane__avg'], datetime=yesterday)
+                            co=aggreResult['co__avg'], lpg=aggreResult['lpg__avg'], datetime=yesterday)
             tmp.save()
             
     #store statistic data of last month
@@ -48,9 +48,9 @@ def data_processing(parsed_data):
         yesterday = now - timedelta(days=1)
         if(not MonthStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month).exists()):
             LastMonthValueList : DayStatValue = DayStatValue.objects.filter(device_id=parsed_data["device_id"],datetime__year=yesterday.year, datetime__month=yesterday.month)
-            aggreResult = LastMonthValueList.values('device_id').aggregate(Avg('temperature'), Avg('humidity'), Avg('co'), Avg('propane'))
+            aggreResult = LastMonthValueList.values('device_id').aggregate(Avg('temperature'), Avg('humidity'), Avg('co'), Avg('lpg'))
             tmp = MonthStatValue(device_id=parsed_data["device_id"],temperature=aggreResult['temperature__avg'], humidity=aggreResult['humidity__avg'],
-                            co=aggreResult['co__avg'], propane=aggreResult['propane__avg'], datetime=yesterday)
+                            co=aggreResult['co__avg'], lpg=aggreResult['lpg__avg'], datetime=yesterday)
             tmp.save()
 
 
@@ -61,7 +61,7 @@ class AuthSmsSend():
     time = None
 
 def notiEmg(data):
-    if data["flame"] == 0 or data["temperature"] > 100 or data["co"] > 1000 or data["propane"] > 500 or data["vibration"] < 1:
+    if data["flame"] == 0 or data["temperature"] > 50 or data["co"] > 100 or data["lpg"] > 10000 or data["vibration"] == 0:
         AuthSmsSend.pre = 1
         ip = requests.get("https://api.ipify.org").text
         if (AuthSmsSend.time is not None):
@@ -87,41 +87,6 @@ def notiEmg(data):
         AuthSmsSend.pre = 0
         return 
 
-#센서 디바이스로 부터 데이터 받아오는 함수
-@api_view(['GET'])
-def sensor_value(request):
-    print(request)
-    if(request.method == 'GET'):
-        try:
-            parsed_data : json = json.loads('{"device_id":'+request.GET['device_id']+
-                                ',"temperature":'+request.GET['temperature']+
-                                ',"humidity":'+request.GET['humidity']+
-                                ',"co":'+request.GET['co']+
-                                ',"propane":'+request.GET['propane']+
-                                ',"flame":'+request.GET['flame']+
-                                ',"vibration":'+request.GET['vibration']+
-                                '}')
-        except Exception as e :
-            print("error", e.with_traceback)
-
-        try:                      
-            data = json.dumps(parsed_data)
-        except Exception as e :
-            print("error", e.with_traceback)
-        
-        try:
-            sio.emit('response', {'data' : data})
-        except Exception as e:
-            print("error", e.with_traceback)
-        
-        try:
-            data_processing(parsed_data)
-        except Exception as e:
-            print("error", e.with_traceback)
-        
-        #notiEmg(parsed_data)
-    return Response(status=200)
-
 #socket.io 테스트 페이지       
 def index_test(request):
     global thread
@@ -136,6 +101,22 @@ def background_thread():
         count += 1
         sio.emit('response', {'data': 'Server generated event'},
                  namespace='/test')
+        
+#센서 디바이스로 부터 데이터 받아오는 함수
+@sio.event
+def sensor_data(sid, message):
+    jsonString = '{"device_id":'+str(message['device_id'])+\
+                            ',"temperature":'+str(message['temperature'])+\
+                            ',"humidity":'+str(message['humidity'])+\
+                            ',"co":'+str(message['co'])+\
+                            ',"lpg":'+str(message['lpg'])+\
+                            ',"flame":'+str(message['flame'])+\
+                            ',"vibration":'+str(message['vibration'])+\
+                            '}'
+    parsed_data : json = json.loads(jsonString)
+    sio.emit('response', {'data': jsonString})
+    data_processing(parsed_data)   
+    #notiEmg(parsed_data)
     
 @sio.event
 def my_broadcast_event(sid, message):

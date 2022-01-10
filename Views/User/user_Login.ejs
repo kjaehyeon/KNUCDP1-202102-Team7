@@ -27,22 +27,22 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="far fa-id-badge"></i></span>
                   </div>
-                  <input type="text" name="memberID" id="memberID" class="form-control" placeholder="ID">
+                  <input type="text" name="memberID" id="memberID" class="form-control" placeholder="<%= __('user_id') %>">
                 </div>
                 <div class="input-group no-border input-lg">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-key"></i></span>
                   </div>
-                  <input type="password" name="password" id="password" placeholder="Password" class="form-control" />
+                  <input type="password" name="password" id="password" placeholder="<%= __('user_pass') %>" class="form-control" />
                 </div>
               </div>
               <div class="card-footer text-center">
-                <button type="submit" id="loginFormBtn" class="btn btn-main btn-round btn-lg btn-block">SIGN IN</button>
+                <button type="submit" id="loginFormBtn" class="btn btn-main btn-round btn-lg btn-block"><%= __('user_login_button') %></button>
                 <div style="float: left;">
-                  <h4><a href="Select" class="link">Create Account</a></h4>
+                  <h4><a href="Select" class="link"><%= __('user_login_head') %></a></h4>
                 </div>
                 <div style="float: right;">
-                  <h4><a href="Help" class="link">Need Help?</a></h4>
+                  <h4><a href="Help" class="link"><%= __('user_login_help') %></a></h4>
                 </div>
               </div>
             </form>

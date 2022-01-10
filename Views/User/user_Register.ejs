@@ -16,7 +16,7 @@
         <div class="container" style="width: max-content;">
           <form role="form" id="regForm" onsubmit="return false;">
             <h1>Step2</h1>
-            <h3>Fill in the form below to get instant access</h3>
+            <h3><%= __('user_register_head') %></h3>
             <div class="mt-5 mb-4">
               <div class="form-group row">
                 <div class="col-sm-9">
@@ -26,74 +26,74 @@
                   <% } %>
                 </div>
                 <div class="col-sm-3">
-                  <label id="form-control-btn" class="form-control" for="idCheckButton">ID Check</label>
+                  <label id="form-control-btn" class="form-control" for="idCheckButton"><%= __('user_idcheck') %></label>
                   <input type="button" class="upload-btn-hidden" id="idCheckButton" name="idCheckButton"
-                    value="ID Check"><br>
+                    value="<%= __('user_idcheck') %>"><br>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-sm-12">
                   <input type="text" name="type" id="type" value="<%= req.query.userType %>" style="display: none;">
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  <input type="password" class="form-control" id="password" name="password" placeholder="<%= __('user_pass') %>">
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-sm-9">
-                  <input type="password" class="form-control" id="passwordConfirmation" name="passwordConfirmation" placeholder="Password Confirm" />
+                  <input type="password" class="form-control" id="passwordConfirmation" name="passwordConfirmation" placeholder="<%= __('user_passconfirm') %>" />
                   <% if(locals.err){ %>
                   <span class="invalid-feedback"><%= locals.err %></span>
                   <% } %>
                 </div>
                 <div class="col-sm-3">
-                  <label id="form-control-btn" class="form-control" for="passwordCheckButton">PW Check</label>
-                  <input type="button" class="upload-btn-hidden" id="passwordCheckButton" name="passwordCheckButton" value="PW Check"><br>
+                  <label id="form-control-btn" class="form-control" for="passwordCheckButton"><%= __('user_pwcheck') %></label>
+                  <input type="button" class="upload-btn-hidden" id="passwordCheckButton" name="passwordCheckButton" value="<%= __('user_pwcheck') %>"><br>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="email" name="email" placeholder="Email" />
+                  <input type="text" class="form-control" id="email" name="email" placeholder="<%= __('ad_email') %>" />
                   <% if(locals.err){ %>
                   <span class="invalid-feedback"><%= locals.err %></span>
                   <% } %>
                 </div>
                 <div class="col-sm-3">
-                  <label id="form-control-btn" class="form-control" for="sendAuthCode">Send Auth Code</label>
+                  <label id="form-control-btn" class="form-control" for="sendAuthCode"><%= __('user_Send_Auth_Code') %></label>
                   <input type="button" class="upload-btn-hidden" id="sendAuthCode" name="sendAuthCode"
-                    value="Send Auth Code"><br>
+                    value="<%= __('user_Send_Auth_Code') %>"><br>
                 </div>
               </div>
               <div class="form-group row" id="div_auth" style="display: none;">
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="authCode" name="authCode" placeholder="Auth Code" />
+                  <input type="text" class="form-control" id="authCode" name="authCode" placeholder="<%= __('user_auth_code') %>" />
                   <% if(locals.err){ %>
                   <span class="invalid-feedback"><%= locals.err %></span>
                   <% } %>
                 </div>
                 <div class="col-sm-3">
-                  <label id="form-control-btn" class="form-control" for="codeCheck">Check</label>
-                  <input type="button" class="upload-btn-hidden" id="codeCheck" name="codeCheck" value="check"><br>
+                  <label id="form-control-btn" class="form-control" for="codeCheck"><%= __('user_check') %></label>
+                  <input type="button" class="upload-btn-hidden" id="codeCheck" name="codeCheck" value="<%= __('user_check') %>"><br>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-sm-7">
-                  <input type="text" class="form-control" id="name" name="name" placeholder="User Name" />
+                  <input type="text" class="form-control" id="name" name="name" placeholder="<%= __('user_name') %>" />
                 </div>
                 <div class="col-sm-5">
-                  <input type="text" class="form-control" id="national" name="national" placeholder="Nation" />
+                  <input type="text" class="form-control" id="national" name="national" placeholder="<%= __('ad_national') %>" />
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-sm-3">
-                  <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Zip Code" />
+                  <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="<%= __('ad_zipcode') %>" />
                 </div>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="address" name="address" placeholder="Address" />
+                  <input type="text" class="form-control" id="address" name="address" placeholder="<%= __('ad_address') %>" />
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-sm-4">
                   <input type="text" class="form-control" id="contactNumber1" name="contactNumber1"
-                    placeholder="Phone Number" />
+                    placeholder="<%= __('user_phone') %>" />
                 </div>
                 <!--<div style="width:25px; font-weight: bold; font-size: large;">_</div>-->
                 <div class="col-sm-4">
@@ -105,7 +105,7 @@
                 </div>
               </div>
             </div>
-            <button type="submit" class="btn btn-main btn-round btn-lg" id="regFormBtn">Sign Up</button>
+            <button type="submit" class="btn btn-main btn-round btn-lg" id="regFormBtn"><%= __('user_signup') %></button>
           </form>
         </div>
       </div>

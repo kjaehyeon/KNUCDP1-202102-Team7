@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 </head>
 <style>
     .iot-top {
@@ -25,9 +24,12 @@
 
 <body>
     <div class='iot-top'>
-        <div class='title'>Dashboard</div>
-        <div class='user'>
+        <div class='title'><%= __('iot_Nav_Dashboard') %></div>
+        <div class='user' style='display:flex; flex-direction:row;'>
             <%= user_name%>
+            <div style="margin-left:2rem"><a href="/ko">KR</a></div>
+            <div style="margin:0 0.2rem 0 0.2rem">|</div>
+            <div><a href="/en">EN</a></div>
         </div>
     </div>
 </body>

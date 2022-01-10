@@ -39,17 +39,58 @@ module.exports = (app, pool) => {
         }
     });
     router.post('/EnrollItem', async (req, res, next) => {
-        await itemControl.enrollItem(req, res, pool);
+        try {
+            await itemControl.enrollItem(req, res, pool);
+        } catch (err){
+            console.log(err);
+            res.status(500).json({
+                messge: err.message
+            });
+        }
     });
-    router.post('/item/in', user.check, async (req, res, next) => {
-        await itemControl.receivedItem(req, res, pool);
+    router.put('/item/in', user.check, async (req, res, next) => {
+        try {
+            console.log("item/in");
+            await itemControl.receivedItem(req, res, pool);
+        } catch (err){
+            console.log(err);
+            res.status(500).json({
+                messge: err.message
+            });
+        }
     });
-    router.post('/item/out', user.check, async (req, res, next) => {
-        await itemControl.releaseItem(req, res, pool);
+    router.put('/item/out', user.check, async (req, res, next) => {
+        try {
+            console.log("item/out");
+            await itemControl.releaseItem(req, res, pool);
+        } catch (err){
+            console.log(err);
+            res.status(500).json({
+                messge: err.message
+            });
+        }
     });
     router.get('/itemlist', user.check, async (req, res, next) => {
-        console.log("itemlist requested");
-        await itemControl.listItem(req, res, pool);
+        try {
+            await itemControl.listItem(req, res, pool);
+        } catch (err){
+            console.log(err);
+            res.status(500).json({
+                messge: err.message
+            });
+        }
+    });
+
+    router.get('/item', user.check, async (req, res, next) => {
+        try {
+            console.log(`GET item - ${req.param('qr')}`);
+            await itemControl.itemInfo(req, res, pool);
+        } catch (err){
+            console.log(err);
+            res.status(500).json({
+                messge: err.message
+            });
+        }
     });
 
     return router;  

@@ -8,6 +8,7 @@
         <link rel='stylesheet' href='/CSS/weather-icons.min.css' />
         <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
         <script src="https://cdn.socket.io/4.3.2/socket.io.js"></script>
+        <title><%= __('iot_Monitoring_title') %></title>
 </head>
 
 <body>
@@ -24,7 +25,7 @@
                 <div class='realtime card'>
                     <div class='title'>
                         <i class='fas fa-chart-line'></i>
-                        <span>&nbsp;Realtime Temperature</span>
+                        <span>&nbsp;<%= __('iot_Monitoring_Realtime_Temp')%></span>
                     </div>
                     <div class='realtime-graph'>
                         <canvas id='chart1' height='120%'></canvas>
@@ -33,33 +34,33 @@
                 <div class='sensor card'>
                     <div class='value-wrapper temperature numerical'>
                         <i class='fas fa-thermometer-half sensor-icon1'></i>
-                        <div>Temperature</div>
+                        <div><%= __('iot_Monitoring_temp')%></div>
                         <div class='value'>36.5&#8451;</div>
                     </div>
                     <div class='value-wrapper humidity numerical'>
                         <i class='fas fa-tint sensor-icon1'></i>
-                        <div>Humidity</div>
+                        <div><%= __('iot_Monitoring_humi')%></div>
                         <div class='value'>58%</div>
                     </div>
                     <div class='value-wrapper co numerical'>
                         <i class='fas fa-smog sensor-icon1'></i>
-                        <div>Co</div>
+                        <div><%= __('iot_Monitoring_co')%></div>
                         <div class='value'>100ppm</div>
                     </div>
                     <div class='value-wrapper lpg numerical'>
                         <i class='fas fa-burn sensor-icon1'></i>
-                        <div>LPG</div>
+                        <div><%= __('iot_Monitoring_lpg')%></div>
                         <div class='value'>35ppm</div>
                     </div>
                     <div class='value-wrapper fine'>
                         <i class='fas fa-fire-alt sensor-icon2'></i>
-                        <div>Flame</div>
-                        <div class='value'>FINE</div>
+                        <div><%= __('iot_Monitoring_flame')%></div>
+                        <div class='value'><%= __('iot_Monitoring_fine') %></div>
                     </div>
                     <div class='value-wrapper fine'>
                         <i class='fas fa-water sensor-icon2'></i>
-                        <div>Vibration</div>
-                        <div class='value'>FINE</div>
+                        <div><%= __('iot_Monitoring_vibration')%></div>
+                        <div class='value'><%= __('iot_Monitoring_fine') %></div>
                     </div>
                 </div>
                 <div class='cctv card'>
@@ -77,7 +78,7 @@
                 </div>
                 <div class='capability card'>
                     <div class='title'>
-                        <i class='fas fa-chart-pie'></i> Warehouse Capability
+                        <i class='fas fa-chart-pie'></i> <%= __('iot_Monitoring_Warehouse_Capability')%>
                     </div>
                     <div class='capability-graph'>
                         <canvas id='chart2' width="400" height="200"></canvas>
@@ -91,8 +92,14 @@
         let warehouse_info = '<%=warehouse_info%>';
         warehouse_info = warehouse_info.replaceAll('&#34;', '"');
         const result = JSON.parse(warehouse_info);
+        const status_text = {
+            fine : "<%= __('iot_Monitoring_fine') %>",
+            bad : "<%= __('iot_Monitoring_bad') %>",
+            locale: "<%= __('locale') %>",
+        }
+
         $('iframe').attr('src', result.cctvServer);
-        initMonitoringDashboard('<%=process.env.WEATHER_API_KEY%>', result);
+        initMonitoringDashboard('<%=process.env.WEATHER_API_KEY%>', result, status_text);
     </script>
 </body>
 
